@@ -27,17 +27,14 @@ export default function Header() {
     >
       <div className="container-site flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 no-underline group">
-          <div className="relative">
-            <div className="absolute inset-0 bg-primary/20 rounded-xl blur-lg group-hover:bg-primary/30 transition-all" />
-            <Image
-              src={IMAGES.logo}
-              alt={SITE_NAME}
-              width={64}
-              height={43}
-              className="rounded-lg relative"
-            />
-          </div>
-          <span className={`font-heading font-bold text-lg hidden sm:inline transition-colors ${
+          <Image
+            src={IMAGES.logo}
+            alt={SITE_NAME}
+            width={96}
+            height={64}
+            className="rounded-xl relative drop-shadow-lg"
+          />
+          <span className={`font-heading font-bold text-xl hidden sm:inline transition-colors ${
             scrolled ? "text-primary-dark" : "text-white"
           }`}>
             {SITE_NAME}
