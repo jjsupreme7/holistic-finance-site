@@ -17,7 +17,7 @@ export const SOCIAL = {
 
 export const IMAGES = {
   logo: "https://i0.wp.com/myholisticfinance.com/wp-content/uploads/2025/12/logo.png?fit=1536%2C1024&ssl=1",
-  hero: "https://myholisticfinance.com/wp-content/uploads/2025/12/city-skyline-2560-1707px-1024x683.jpg",
+  hero: "/hero-mountains.jpg",
   aboutPreview: "/family-hero.png",
   annaPhoto:
     "https://i0.wp.com/myholisticfinance.com/wp-content/uploads/2024/09/img_7771.jpg?fit=1024%2C683&ssl=1",
@@ -236,7 +236,11 @@ export const RESOURCES = [
   },
 ];
 
-export const GOOGLE_FORM_URL = "https://forms.gle/a5awwARBLBPQAA5c6";
+export const EMAIL_CONFIG = {
+  fromName: "Holistic Health and Finance",
+  fromEmail: "newsletter@holistichealthandfinance.com",
+  replyTo: "anna@holistichealthandfinance.com",
+};
 
 export const COURSES = [
   {

@@ -3,18 +3,38 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import FadeIn from "@/components/motion/FadeIn";
-import { GOOGLE_FORM_URL } from "@/lib/constants";
 
 export default function NewsletterSignup() {
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Open Google Form with pre-filled email in a new tab
-    window.open(GOOGLE_FORM_URL, "_blank");
-    setSubmitted(true);
-    setEmail("");
+    setStatus("loading");
+
+    try {
+      const res = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setStatus("error");
+        setMessage(data.error || "Something went wrong.");
+        return;
+      }
+
+      setStatus("success");
+      setMessage(data.message);
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setMessage("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -37,13 +57,13 @@ export default function NewsletterSignup() {
             lasting wealth.
           </p>
 
-          {submitted ? (
+          {status === "success" ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="bg-success-bg text-success px-6 py-4 rounded-2xl font-medium"
             >
-              Thanks for your interest! Complete your signup in the form that just opened.
+              {message}
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
@@ -53,15 +73,27 @@ export default function NewsletterSignup() {
                 placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-5 py-3.5 rounded-full border-2 border-border-light bg-white/80 text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+                disabled={status === "loading"}
+                className="flex-1 px-5 py-3.5 rounded-full border-2 border-border-light bg-white/80 text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm disabled:opacity-60"
               />
               <button
                 type="submit"
-                className="bg-gradient-to-r from-gold to-gold-dark text-dark font-bold px-8 py-3.5 rounded-full transition-all hover:shadow-lg hover:shadow-gold/25 hover:-translate-y-0.5 text-sm whitespace-nowrap cursor-pointer border-none"
+                disabled={status === "loading"}
+                className="bg-gradient-to-r from-gold to-gold-dark text-dark font-bold px-8 py-3.5 rounded-full transition-all hover:shadow-lg hover:shadow-gold/25 hover:-translate-y-0.5 text-sm whitespace-nowrap cursor-pointer border-none disabled:opacity-60 disabled:hover:translate-y-0"
               >
-                Subscribe
+                {status === "loading" ? "Subscribing..." : "Subscribe"}
               </button>
             </form>
+          )}
+
+          {status === "error" && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-red-600 text-sm mt-3"
+            >
+              {message}
+            </motion.p>
           )}
 
           <p className="text-text-muted text-xs mt-5">

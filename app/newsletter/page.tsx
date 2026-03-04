@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
-import { RESOURCES, GOOGLE_FORM_URL } from "@/lib/constants";
+import NewsletterForm from "@/components/sections/NewsletterForm";
+import { RESOURCES } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Newsletter & Resources",
@@ -71,16 +72,8 @@ export default function NewsletterPage() {
               <p className="text-text-light text-sm mb-6">
                 Stay informed with expert financial insights and updates delivered to your inbox.
               </p>
-
-              <a
-                href={GOOGLE_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block bg-gradient-to-r from-primary to-primary-light text-white text-center font-bold py-3.5 px-6 rounded-full no-underline hover:shadow-lg hover:shadow-primary/25 transition-all hover:-translate-y-0.5 mb-4"
-              >
-                Sign Up via Google Form
-              </a>
-              <p className="text-text-muted text-xs text-center italic">
+              <NewsletterForm />
+              <p className="text-text-muted text-xs text-center italic mt-4">
                 We respect your privacy. Unsubscribe anytime.
               </p>
             </div>

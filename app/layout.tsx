@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import StickyCTA from "@/components/layout/StickyCTA";
-import BackToTop from "@/components/ui/BackToTop";
-import PageTransition from "@/components/motion/PageTransition";
+import LayoutShell from "@/components/layout/LayoutShell";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -25,13 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${dmSans.variable} font-body antialiased`}>
-        <Header />
-        <main>
-          <PageTransition>{children}</PageTransition>
-        </main>
-        <Footer />
-        <StickyCTA />
-        <BackToTop />
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );
