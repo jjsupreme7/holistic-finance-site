@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import LayoutShell from "@/components/layout/LayoutShell";
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-dm-sans",
+  weight: ["200", "300", "400", "500", "600"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} font-body antialiased`}>
+      <body className={`${inter.variable} font-body antialiased`}>
         <LayoutShell>{children}</LayoutShell>
       </body>
     </html>

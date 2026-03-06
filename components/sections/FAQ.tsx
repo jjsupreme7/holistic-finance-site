@@ -35,14 +35,14 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-24 px-6 bg-dark-surface relative overflow-hidden">
-      <div className="float-blob w-64 h-64 bg-primary/6 top-20 -right-20" />
-      <div className="max-w-[800px] mx-auto relative z-10">
+    <section className="py-24 px-6 bg-muted">
+      <div className="max-w-[800px] mx-auto">
         <SectionHeader
+          label="FAQ"
           title="Frequently Asked Questions"
           subtitle="Everything you need to know about our services"
         />
-        <div className="space-y-3">
+        <div>
           {faqs.map((faq, i) => (
             <motion.div
               key={i}
@@ -50,25 +50,24 @@ export default function FAQ() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="glass-dark border border-white/5 rounded-2xl overflow-hidden"
+              className="border-b border-border"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 aria-expanded={openIndex === i}
                 aria-controls={`faq-answer-${i}`}
-                className="w-full flex items-center justify-between p-6 text-left bg-transparent border-none cursor-pointer group"
+                className="w-full flex items-center justify-between py-6 text-left bg-transparent border-none cursor-pointer group"
               >
-                <span className="text-white font-bold text-[15px] pr-4 group-hover:text-gold transition-colors">
+                <span className="text-foreground font-medium text-[15px] pr-4 group-hover:text-accent transition-colors">
                   {faq.q}
                 </span>
-                <motion.span
-                  animate={{ rotate: openIndex === i ? 45 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-xl text-gold flex-shrink-0 w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center"
+                <span
+                  className="text-lg text-text-muted flex-shrink-0 w-8 h-8 flex items-center justify-center transition-transform"
+                  style={{ transform: openIndex === i ? "rotate(45deg)" : "rotate(0deg)" }}
                   aria-hidden="true"
                 >
                   +
-                </motion.span>
+                </span>
               </button>
               <AnimatePresence>
                 {openIndex === i && (
@@ -81,7 +80,7 @@ export default function FAQ() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <p className="px-6 pb-6 text-text-on-dark-muted leading-relaxed text-[15px]">
+                    <p className="pb-6 text-text-secondary leading-relaxed text-[15px]">
                       {faq.a}
                     </p>
                   </motion.div>

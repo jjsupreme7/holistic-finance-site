@@ -1,37 +1,33 @@
 "use client";
 
-import { motion } from "framer-motion";
+import FadeIn from "@/components/motion/FadeIn";
 
-const logos = [
-  { name: "Transamerica", sub: "Partner Agent" },
-  { name: "CPMA", sub: "Certified Auditor" },
-  { name: "HIPAA", sub: "Compliant" },
-  { name: "11+ Years", sub: "Experience" },
+const credentials = [
+  "Transamerica Partner",
+  "CPMA Certified",
+  "HIPAA Compliant",
+  "11+ Years Experience",
+  "Licensed Agent",
 ];
 
 export default function TrustLogos() {
   return (
-    <section className="py-8 bg-dark-card border-y border-white/5">
+    <section className="py-5 bg-muted border-y border-border">
       <div className="container-site">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex flex-wrap items-center justify-center gap-8 md:gap-14"
-        >
-          <span className="text-xs text-white/50 uppercase tracking-widest font-medium">
-            Trusted by families since 2014
-          </span>
-          <div className="hidden md:block w-px h-6 bg-white/10" />
-          {logos.map((logo) => (
-            <div key={logo.name} className="flex items-center gap-2">
-              <span className="text-sm font-bold text-white tracking-wide">
-                {logo.name}
-              </span>
-              <span className="text-xs text-white/40">{logo.sub}</span>
-            </div>
-          ))}
-        </motion.div>
+        <FadeIn>
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-0">
+            {credentials.map((cred, i) => (
+              <div key={cred} className="flex items-center">
+                <span className="label text-text-muted px-4 md:px-6">
+                  {cred}
+                </span>
+                {i < credentials.length - 1 && (
+                  <span className="hidden md:block w-px h-4 bg-border" />
+                )}
+              </div>
+            ))}
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

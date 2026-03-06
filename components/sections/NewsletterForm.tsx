@@ -41,7 +41,7 @@ export default function NewsletterForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-success-bg text-success px-5 py-4 rounded-2xl font-medium text-sm text-center"
+        className="bg-success-bg text-success px-5 py-4 font-medium text-sm text-center"
       >
         {message}
       </motion.div>
@@ -57,12 +57,12 @@ export default function NewsletterForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         disabled={status === "loading"}
-        className="w-full px-5 py-3.5 rounded-full border-2 border-white/15 bg-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm disabled:opacity-60"
+        className="w-full px-4 py-3 border border-border bg-background/5 text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent transition-colors text-sm disabled:opacity-60"
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full bg-gradient-to-r from-primary to-primary-light text-white font-bold py-3.5 px-6 rounded-full transition-all hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 text-sm cursor-pointer border-none disabled:opacity-60 disabled:hover:translate-y-0"
+        className="w-full bg-accent text-foreground font-medium py-3 px-6 transition-colors hover:bg-accent-dark text-sm cursor-pointer border-none disabled:opacity-60"
       >
         {status === "loading" ? "Subscribing..." : "Subscribe Now"}
       </button>
@@ -70,7 +70,7 @@ export default function NewsletterForm() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-red-600 text-xs text-center"
+          className="text-red-500 text-xs text-center"
         >
           {message}
         </motion.p>

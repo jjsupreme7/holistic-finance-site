@@ -3,7 +3,6 @@ import Image from "next/image";
 import PageHero from "@/components/ui/PageHero";
 import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
-import Icon from "@/components/ui/Icon";
 import CTABanner from "@/components/sections/CTABanner";
 import { IMAGES } from "@/lib/constants";
 
@@ -14,9 +13,9 @@ export const metadata: Metadata = {
 };
 
 const credentialsList = [
-  { top: "11+ Years", bottom: "Experience", icon: "experience" as const },
-  { top: "Licensed", bottom: "Health & Life", icon: "licensed" as const },
-  { top: "CPMA", bottom: "Certified", icon: "certified" as const },
+  { top: "11+ Years", bottom: "Experience" },
+  { top: "Licensed", bottom: "Health & Life" },
+  { top: "CPMA", bottom: "Certified" },
 ];
 
 export default function AboutPage() {
@@ -24,30 +23,23 @@ export default function AboutPage() {
     <>
       <PageHero title="Meet Anna Huang" tagline="Your Trusted Financial Planning Partner" backgroundImage={IMAGES.heroAbout} />
 
-      <section className="py-20 px-6 relative overflow-hidden">
-        <div className="float-blob w-72 h-72 bg-primary/8 -top-20 -right-20" />
+      <section className="py-20 px-6">
         <div className="container-site grid grid-cols-1 md:grid-cols-[380px_1fr] gap-12">
           <FadeIn direction="left">
             <div className="space-y-6 sticky top-28">
-              <div className="relative">
-                <div className="absolute -inset-3 bg-gradient-to-br from-primary/20 to-gold/20 rounded-3xl blur-xl" />
-                <Image
-                  src={IMAGES.annaPhoto}
-                  alt="Anna Huang - Financial Planner"
-                  width={380}
-                  height={253}
-                  className="rounded-2xl shadow-xl w-full h-auto relative"
-                />
-              </div>
-              <div className="glass-dark rounded-2xl p-6 gradient-border glow-sm">
+              <Image
+                src={IMAGES.annaPhoto}
+                alt="Anna Huang - Financial Planner"
+                width={380}
+                height={253}
+                className="w-full h-auto img-grayscale"
+              />
+              <div className="border border-border p-6">
                 {credentialsList.map((cred) => (
-                  <div key={cred.top} className="flex items-center gap-3 py-3 border-b border-white/10 last:border-0">
-                    <span className="text-gold">
-                      <Icon name={cred.icon} size={22} />
-                    </span>
+                  <div key={cred.top} className="flex items-center gap-3 py-3 border-b border-border last:border-0">
                     <div>
-                      <div className="font-bold text-gradient-gold text-lg leading-tight">{cred.top}</div>
-                      <div className="text-white/60 text-sm">{cred.bottom}</div>
+                      <div className="text-lg font-extralight text-foreground leading-tight">{cred.top}</div>
+                      <div className="text-text-muted text-sm">{cred.bottom}</div>
                     </div>
                   </div>
                 ))}
@@ -57,8 +49,8 @@ export default function AboutPage() {
 
           <FadeIn direction="right">
             <div className="space-y-8">
-              <div className="glass-dark rounded-2xl p-6 gradient-border italic">
-                <p className="font-heading text-xl text-white leading-relaxed">
+              <div className="border-l-2 border-accent pl-6">
+                <p className="text-2xl font-extralight text-foreground leading-snug">
                   &ldquo;No family left behind &mdash; everyone deserves a financial education and
                   planning.&rdquo;
                 </p>
@@ -83,8 +75,8 @@ export default function AboutPage() {
                 },
               ].map((section) => (
                 <div key={section.title}>
-                  <h2 className="text-2xl font-bold text-white mb-3">{section.title}</h2>
-                  <p className="text-text-on-dark-muted leading-relaxed">{section.text}</p>
+                  <h2 className="text-2xl font-extralight text-foreground mb-3">{section.title}</h2>
+                  <p className="text-text-secondary leading-relaxed">{section.text}</p>
                 </div>
               ))}
 

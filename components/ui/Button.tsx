@@ -2,22 +2,20 @@ import Link from "next/link";
 
 interface ButtonProps {
   href: string;
-  variant?: "gold" | "outline" | "primary";
+  variant?: "primary" | "outline" | "dark";
   children: React.ReactNode;
   className?: string;
   external?: boolean;
 }
 
-export default function Button({ href, variant = "gold", children, className = "", external }: ButtonProps) {
+export default function Button({ href, variant = "primary", children, className = "", external }: ButtonProps) {
   const base =
-    "inline-block font-bold text-center rounded-full transition-all duration-300 no-underline";
+    "inline-block font-medium text-center transition-colors duration-200 no-underline text-sm uppercase tracking-[0.15em] px-8 py-3.5";
 
   const variants = {
-    gold: "bg-gradient-to-r from-gold to-gold-dark text-dark px-8 py-3.5 text-[1.05rem] hover:shadow-xl hover:shadow-gold/25 hover:-translate-y-1",
-    outline:
-      "border border-white/20 text-white px-6 py-2.5 hover:border-gold/40 hover:text-gold hover:-translate-y-0.5 backdrop-blur-sm",
-    primary:
-      "bg-gradient-to-r from-primary to-primary-light text-white px-8 py-3.5 text-[1.05rem] hover:shadow-xl hover:shadow-primary/25 hover:-translate-y-1",
+    primary: "bg-accent text-foreground hover:bg-accent-dark",
+    outline: "border border-foreground text-foreground hover:bg-foreground hover:text-background",
+    dark: "border border-background text-background hover:bg-background hover:text-foreground",
   };
 
   const classes = `${base} ${variants[variant]} ${className}`;

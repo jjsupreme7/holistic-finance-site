@@ -54,65 +54,60 @@ const plans = [
 
 export default function PricingTable() {
   return (
-    <section className="py-20 px-6 relative overflow-hidden">
-      <div className="float-blob w-72 h-72 bg-gold/8 -top-10 right-10" />
-      <div className="float-blob w-56 h-56 bg-primary/6 bottom-10 -left-10" />
-      <div className="max-w-[1100px] mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section className="py-20 px-6">
+      <div className="max-w-[1100px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              whileHover={{ y: -6 }}
-              className={`rounded-3xl p-8 relative overflow-hidden transition-all ${
-                plan.popular
-                  ? "glass-dark text-white glow-gold"
-                  : "glass-dark glow-sm hover:glow-md"
+              transition={{ delay: i * 0.1, duration: 0.6 }}
+              className={`p-8 relative bg-background ${
+                plan.popular ? "bg-foreground text-background" : ""
               }`}
             >
               {plan.popular && (
-                <span className="absolute top-4 right-4 bg-gradient-to-r from-gold to-gold-dark text-dark text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                <span className="absolute top-4 right-4 bg-accent text-foreground text-[10px] font-medium uppercase tracking-[0.15em] px-3 py-1">
                   Most Popular
                 </span>
               )}
-              <p className={`text-sm font-bold uppercase tracking-wider mb-4 ${
-                plan.popular ? "text-gold" : "text-primary-light"
+              <p className={`label mb-4 ${
+                plan.popular ? "text-accent" : "text-text-muted"
               }`}>
                 {plan.name}
               </p>
               <div className="flex items-baseline gap-1 mb-1">
-                <span className={`text-4xl font-bold ${
-                  plan.popular ? "text-white" : "text-white"
+                <span className={`text-4xl font-extralight ${
+                  plan.popular ? "text-background" : "text-foreground"
                 }`}>
                   {plan.price}
                 </span>
                 <span className={`text-sm ${
-                  plan.popular ? "text-white/50" : "text-white/50"
+                  plan.popular ? "text-background/50" : "text-text-muted"
                 }`}>
                   {plan.per}
                 </span>
               </div>
               <p className={`text-sm mb-6 ${
-                plan.popular ? "text-white/60" : "text-white/60"
+                plan.popular ? "text-background/60" : "text-text-secondary"
               }`}>
                 {plan.description}
               </p>
               <ul className="space-y-3 mb-8">
                 {plan.features.map((f) => (
                   <li key={f} className={`flex items-start gap-2.5 text-sm ${
-                    plan.popular ? "text-white/80" : "text-white/80"
+                    plan.popular ? "text-background/80" : "text-text-secondary"
                   }`}>
-                    <span className="text-gold mt-0.5 flex-shrink-0">&#10003;</span>
+                    <span className={`mt-0.5 flex-shrink-0 ${plan.popular ? "text-accent" : "text-accent"}`}>&#10003;</span>
                     {f}
                   </li>
                 ))}
               </ul>
               <Button
                 href="/contact"
-                variant={plan.popular ? "gold" : "outline"}
+                variant={plan.popular ? "primary" : "outline"}
                 className="w-full text-center text-sm"
               >
                 {plan.cta}

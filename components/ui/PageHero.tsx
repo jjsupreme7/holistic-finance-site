@@ -25,10 +25,10 @@ function Breadcrumbs() {
     <nav aria-label="Breadcrumb" className="mb-6">
       <ol className="flex items-center gap-2 text-xs text-white/50">
         <li>
-          <a href="/" className="hover:text-gold transition-colors no-underline text-white/50">Home</a>
+          <a href="/" className="hover:text-white transition-colors no-underline text-white/50">Home</a>
         </li>
         <li aria-hidden="true">/</li>
-        <li className="text-gold/80 font-medium">{pageName}</li>
+        <li className="text-white/80 font-medium">{pageName}</li>
       </ol>
     </nav>
   );
@@ -37,31 +37,26 @@ function Breadcrumbs() {
 export default function PageHero({ title, tagline, backgroundImage }: PageHeroProps) {
   return (
     <section
-      className="relative pt-32 pb-20 text-center text-white bg-cover bg-center overflow-hidden"
+      className="relative pt-40 pb-20 text-white bg-cover bg-center overflow-hidden"
       style={{ backgroundImage: `url(${backgroundImage ?? IMAGES.hero})` }}
     >
-      <div className="absolute inset-0 animated-gradient-overlay" />
-      {/* Decorative orbs */}
-      <div className="float-blob w-96 h-96 bg-primary/30 -top-32 -right-32" />
-      <div className="float-blob w-64 h-64 bg-gold/15 bottom-0 left-10" />
+      <div className="absolute inset-0 bg-foreground/50" />
 
-      <div className="container-site">
+      <div className="container-site relative z-10">
         <Breadcrumbs />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+        <motion.span
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-block mb-6"
+          className="label text-white/60 block mb-4"
         >
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-gold/80 bg-gold/10 border border-gold/20 px-4 py-1.5 rounded-full">
-            Holistic Health and Finance
-          </span>
-        </motion.div>
+          Holistic Financials
+        </motion.span>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-[2.75rem] md:text-[3.25rem] font-bold text-white mb-4"
+          className="heading-lg font-extralight text-white mb-4"
         >
           {title}
         </motion.h1>
@@ -69,7 +64,7 @@ export default function PageHero({ title, tagline, backgroundImage }: PageHeroPr
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
-          className="text-xl text-white/70 max-w-xl mx-auto"
+          className="text-xl text-white/70 max-w-xl font-light"
         >
           {tagline}
         </motion.p>

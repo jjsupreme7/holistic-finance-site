@@ -18,8 +18,8 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
 function titleToId(title: string) {
@@ -35,31 +35,30 @@ export default function ServicesPage() {
         backgroundImage={IMAGES.heroServices}
       />
 
-      <section className="py-16 px-6 relative overflow-hidden">
-        <div className="float-blob w-80 h-80 bg-gold/8 -top-20 -right-20" />
-        <FadeIn className="max-w-[800px] mx-auto text-center relative z-10">
-          <div className="glass-dark rounded-3xl p-10 md:p-14 gradient-border glow-md">
-            <p className="text-[2.5rem] font-bold text-gradient-gold mb-5">
+      <section className="py-16 px-6">
+        <FadeIn className="max-w-[800px] mx-auto text-center">
+          <div className="border border-border p-10 md:p-14">
+            <p className="heading-lg font-extralight text-foreground mb-5">
               First Consultation Starts At $59
             </p>
-            <p className="text-white/60 leading-relaxed mb-8 text-lg">
+            <p className="text-text-secondary leading-relaxed mb-8 text-lg">
               Unlock your financial potential with personalized planning services designed to fit
               your unique needs. Whether you&apos;re planning for retirement, saving for your
               child&apos;s education, or seeking to grow your wealth, we are here to guide you every
               step of the way.
             </p>
             <Button href="/contact">Book Your Consultation &mdash; $59</Button>
-            <p className="mt-5 text-sm bg-success/15 text-success inline-block px-5 py-2 rounded-full font-medium">
+            <p className="mt-5 text-sm text-success font-medium">
               You&apos;ll receive a confirmation within 24 hours of booking.
             </p>
           </div>
         </FadeIn>
       </section>
 
-      {/* Pricing Comparison */}
-      <section className="mesh-gradient-dark relative overflow-hidden">
+      <section className="bg-muted">
         <div className="container-site pt-16">
           <SectionHeader
+            label="Pricing"
             title="Choose Your Plan"
             subtitle="Flexible options to fit your needs and budget"
           />
@@ -67,52 +66,42 @@ export default function ServicesPage() {
         <PricingTable />
       </section>
 
-      <section className="py-20 px-6 relative overflow-hidden">
-        <div className="float-blob w-64 h-64 bg-primary/8 bottom-20 -left-10" />
+      <section className="py-20 px-6">
         <div className="container-site">
-          <SectionHeader title="All Services" />
+          <SectionHeader label="All Services" title="What We Offer" />
           <motion.div
             variants={container}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-50px" }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border"
           >
             {SERVICES_DETAIL.map((service) => (
               <motion.div
                 key={service.title}
                 id={titleToId(service.title)}
                 variants={item}
-                whileHover={{ y: -6, transition: { duration: 0.3 } }}
-                className="glass-dark rounded-2xl overflow-hidden gradient-border glow-sm hover:glow-md transition-all duration-300"
+                className="bg-background p-6 group hover:bg-muted transition-colors"
               >
-                <div className="bg-gradient-to-br from-primary/15 to-primary/5 text-center py-6 text-primary-light">
-                  <Icon name={service.icon} size={36} className="mx-auto" />
+                <div className="text-text-muted mb-4">
+                  <Icon name={service.icon} size={28} />
                 </div>
-                <div className="p-5">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-bold text-white">{service.title}</h3>
-                    <span className={`text-xs font-bold px-3 py-1 rounded-full ${
-                      service.price === "Free Quote"
-                        ? "bg-success/15 text-success"
-                        : "bg-gold/15 text-gold"
-                    }`}>
-                      {service.price}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5 mb-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-zoom" />
-                    <span className="text-zoom text-xs font-medium">
-                      Zoom or in-person
-                    </span>
-                  </div>
-                  <p className="text-white/60 text-sm leading-relaxed mb-5">
-                    {service.description}
-                  </p>
-                  <Button href="/contact" variant="outline" className="text-sm w-full text-center">
-                    Get Started
-                  </Button>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-base font-medium text-foreground">{service.title}</h3>
                 </div>
+                <span className={`text-xs font-medium px-3 py-1 inline-block mb-3 ${
+                  service.price === "Free Quote"
+                    ? "bg-success/10 text-success"
+                    : "bg-accent/10 text-accent-dark"
+                }`}>
+                  {service.price}
+                </span>
+                <p className="text-text-secondary text-sm leading-relaxed mb-5">
+                  {service.description}
+                </p>
+                <Button href="/contact" variant="outline" className="text-xs w-full text-center">
+                  Get Started
+                </Button>
               </motion.div>
             ))}
           </motion.div>

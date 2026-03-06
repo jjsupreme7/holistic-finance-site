@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -9,30 +9,43 @@ import { NAV_LINKS, IMAGES, SITE_NAME } from "@/lib/constants";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      setHidden(y > 100 && y > lastScrollY.current);
+      lastScrollY.current = y;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
+      } ${
         scrolled
-          ? "glass-dark shadow-lg shadow-black/20 py-2"
-          : "bg-transparent py-4"
+          ? "bg-background/80 backdrop-blur-md border-b border-border py-3"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="container-site flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 no-underline group">
+        <Link href="/" className="flex items-center gap-3 no-underline">
           <Image
             src={IMAGES.logo}
             alt={SITE_NAME}
-            width={240}
-            height={56}
-            className="relative drop-shadow-lg"
+            width={200}
+            height={48}
+            className="relative"
           />
         </Link>
 
@@ -45,12 +58,14 @@ export default function Header() {
           {[0, 1, 2].map((i) => (
             <span
               key={i}
-              className={`block w-6 h-[2px] rounded transition-all duration-300 bg-white ${
-                menuOpen && i === 0 ? "rotate-45 translate-y-[7px]" : ""
+              className={`block w-6 h-[2px] transition-all duration-300 ${
+                scrolled ? "bg-foreground" : "bg-white"
+              } ${
+                menuOpen && i === 0 ? "rotate-45 translate-y-[7px] !bg-foreground" : ""
               } ${
                 menuOpen && i === 1 ? "opacity-0" : ""
               } ${
-                menuOpen && i === 2 ? "-rotate-45 -translate-y-[7px]" : ""
+                menuOpen && i === 2 ? "-rotate-45 -translate-y-[7px] !bg-foreground" : ""
               }`}
             />
           ))}
@@ -60,7 +75,7 @@ export default function Header() {
           aria-label="Main navigation"
           className={`md:flex items-center gap-1 ${
             menuOpen
-              ? "flex flex-col absolute top-full left-4 right-4 glass-dark rounded-2xl py-4 px-5 shadow-xl mt-2"
+              ? "flex flex-col absolute top-full left-0 right-0 bg-background border-b border-border py-6 px-6"
               : "hidden"
           }`}
         >
@@ -72,15 +87,15 @@ export default function Header() {
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 aria-current={isActive ? "page" : undefined}
-                className={`relative text-sm font-medium no-underline transition-all px-4 py-2 rounded-lg ${
+                className={`relative text-xs uppercase tracking-[0.2em] no-underline transition-all px-4 py-2 ${
                   isActive
-                    ? "text-gold font-bold bg-gold/10"
-                    : "text-white/70 hover:text-gold hover:bg-white/10"
+                    ? `font-medium ${scrolled || menuOpen ? "text-foreground" : "text-white"}`
+                    : `${scrolled || menuOpen ? "text-text-secondary hover:text-foreground" : "text-white/70 hover:text-white"}`
                 }`}
               >
                 {link.label}
-                {isActive && !menuOpen && (
-                  <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-current" />
+                {isActive && (
+                  <span className="absolute bottom-0 left-4 right-4 h-px bg-current" />
                 )}
               </Link>
             );
@@ -88,7 +103,7 @@ export default function Header() {
           <Link
             href="/contact"
             onClick={() => setMenuOpen(false)}
-            className="bg-gradient-to-r from-gold to-gold-dark text-dark text-sm font-bold px-6 py-2.5 rounded-full no-underline transition-all hover:shadow-lg hover:shadow-gold/25 hover:-translate-y-0.5 ml-2"
+            className="bg-accent text-foreground text-xs uppercase tracking-[0.15em] font-medium px-6 py-2.5 no-underline transition-colors hover:bg-accent-dark ml-2"
           >
             Book a Consultation
           </Link>

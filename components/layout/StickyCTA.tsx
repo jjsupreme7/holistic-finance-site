@@ -9,7 +9,6 @@ export default function StickyCTA() {
   const [visible, setVisible] = useState(false);
   const pathname = usePathname();
 
-  // Hide on contact page since they're already there
   const isContactPage = pathname === "/contact";
 
   useEffect(() => {
@@ -32,14 +31,14 @@ export default function StickyCTA() {
           transition={{ duration: 0.3 }}
           className="fixed bottom-0 left-0 right-0 z-40 p-3 md:p-4"
         >
-          <div className="max-w-[600px] mx-auto glass-dark rounded-2xl shadow-xl shadow-black/20 px-5 py-3 flex items-center justify-between gap-4">
+          <div className="max-w-[600px] mx-auto bg-foreground px-5 py-3 flex items-center justify-between gap-4">
             <div className="hidden sm:block">
-              <p className="text-white font-bold text-sm">Ready to start?</p>
-              <p className="text-white/60 text-xs">First consultation from $59</p>
+              <p className="text-background font-medium text-sm">Ready to start?</p>
+              <p className="text-background/50 text-xs">First consultation from $59</p>
             </div>
             <Link
               href="/contact"
-              className="bg-gradient-to-r from-gold to-gold-dark text-dark font-bold py-2.5 px-6 rounded-full text-sm no-underline hover:shadow-lg hover:shadow-gold/25 transition-all whitespace-nowrap"
+              className="bg-accent text-foreground font-medium py-2.5 px-6 text-sm no-underline hover:bg-accent-dark transition-colors whitespace-nowrap"
             >
               Book a Consultation
             </Link>
