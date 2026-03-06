@@ -70,7 +70,7 @@ export default function PricingTable() {
               className={`rounded-3xl p-8 relative overflow-hidden transition-all ${
                 plan.popular
                   ? "glass-dark text-white glow-gold"
-                  : "card-solid glow-sm hover:glow-md"
+                  : "glass-dark glow-sm hover:glow-md"
               }`}
             >
               {plan.popular && (
@@ -79,31 +79,31 @@ export default function PricingTable() {
                 </span>
               )}
               <p className={`text-sm font-bold uppercase tracking-wider mb-4 ${
-                plan.popular ? "text-gold" : "text-primary"
+                plan.popular ? "text-gold" : "text-primary-light"
               }`}>
                 {plan.name}
               </p>
               <div className="flex items-baseline gap-1 mb-1">
                 <span className={`text-4xl font-bold ${
-                  plan.popular ? "text-white" : "text-dark"
+                  plan.popular ? "text-white" : "text-white"
                 }`}>
                   {plan.price}
                 </span>
                 <span className={`text-sm ${
-                  plan.popular ? "text-white/50" : "text-text-muted"
+                  plan.popular ? "text-white/50" : "text-white/50"
                 }`}>
                   {plan.per}
                 </span>
               </div>
               <p className={`text-sm mb-6 ${
-                plan.popular ? "text-white/60" : "text-text-light"
+                plan.popular ? "text-white/60" : "text-white/60"
               }`}>
                 {plan.description}
               </p>
               <ul className="space-y-3 mb-8">
                 {plan.features.map((f) => (
                   <li key={f} className={`flex items-start gap-2.5 text-sm ${
-                    plan.popular ? "text-white/80" : "text-text"
+                    plan.popular ? "text-white/80" : "text-white/80"
                   }`}>
                     <span className="text-gold mt-0.5 flex-shrink-0">&#10003;</span>
                     {f}

@@ -22,7 +22,7 @@ const credentialsList = [
 export default function AboutPage() {
   return (
     <>
-      <PageHero title="Meet Anna Huang" tagline="Your Trusted Financial Planning Partner" />
+      <PageHero title="Meet Anna Huang" tagline="Your Trusted Financial Planning Partner" backgroundImage={IMAGES.heroAbout} />
 
       <section className="py-20 px-6 relative overflow-hidden">
         <div className="float-blob w-72 h-72 bg-primary/8 -top-20 -right-20" />
@@ -39,15 +39,15 @@ export default function AboutPage() {
                   className="rounded-2xl shadow-xl w-full h-auto relative"
                 />
               </div>
-              <div className="glass rounded-2xl p-6 gradient-border glow-sm">
+              <div className="glass-dark rounded-2xl p-6 gradient-border glow-sm">
                 {credentialsList.map((cred) => (
-                  <div key={cred.top} className="flex items-center gap-3 py-3 border-b border-border-light last:border-0">
-                    <span className="text-primary">
+                  <div key={cred.top} className="flex items-center gap-3 py-3 border-b border-white/10 last:border-0">
+                    <span className="text-gold">
                       <Icon name={cred.icon} size={22} />
                     </span>
                     <div>
-                      <div className="font-bold text-gradient text-lg leading-tight">{cred.top}</div>
-                      <div className="text-text-muted text-sm">{cred.bottom}</div>
+                      <div className="font-bold text-gradient-gold text-lg leading-tight">{cred.top}</div>
+                      <div className="text-white/60 text-sm">{cred.bottom}</div>
                     </div>
                   </div>
                 ))}
@@ -57,8 +57,8 @@ export default function AboutPage() {
 
           <FadeIn direction="right">
             <div className="space-y-8">
-              <div className="glass rounded-2xl p-6 gradient-border italic">
-                <p className="font-heading text-xl text-dark leading-relaxed">
+              <div className="glass-dark rounded-2xl p-6 gradient-border italic">
+                <p className="font-heading text-xl text-white leading-relaxed">
                   &ldquo;No family left behind &mdash; everyone deserves a financial education and
                   planning.&rdquo;
                 </p>
@@ -83,8 +83,8 @@ export default function AboutPage() {
                 },
               ].map((section) => (
                 <div key={section.title}>
-                  <h2 className="text-2xl font-bold text-dark mb-3">{section.title}</h2>
-                  <p className="text-text-light leading-relaxed">{section.text}</p>
+                  <h2 className="text-2xl font-bold text-white mb-3">{section.title}</h2>
+                  <p className="text-text-on-dark-muted leading-relaxed">{section.text}</p>
                 </div>
               ))}
 

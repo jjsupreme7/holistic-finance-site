@@ -17,7 +17,7 @@ const item = {
 
 export default function PillarsGrid() {
   return (
-    <section className="mesh-gradient py-20 px-6 relative overflow-hidden">
+    <section className="py-24 px-6 bg-[#f8faff] relative overflow-hidden">
       <div className="float-blob w-72 h-72 bg-primary/10 top-10 -left-20" />
       <div className="container-site">
         <SectionHeader title="Our Approach" />
@@ -33,7 +33,7 @@ export default function PillarsGrid() {
               key={pillar.title}
               variants={item}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className="glass rounded-3xl p-9 text-center gradient-border glow-sm hover:glow-md transition-shadow duration-300"
+              className="bg-white rounded-3xl p-9 text-center border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center text-primary">
                 <Icon name={pillar.icon} size={28} />

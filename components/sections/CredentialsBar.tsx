@@ -17,10 +17,8 @@ const item = {
 
 export default function CredentialsBar() {
   return (
-    <section className="relative py-20 px-6 overflow-hidden">
-      {/* Dark gradient background */}
-      <div className="absolute inset-0 mesh-gradient-dark" />
-      <div className="float-blob w-80 h-80 bg-primary/20 -top-20 right-20" />
+    <section className="relative py-20 px-6 overflow-hidden bg-dark">
+      <div className="float-blob w-80 h-80 bg-primary/30 -top-20 right-20" />
       <div className="float-blob w-56 h-56 bg-gold/10 bottom-0 -left-10" />
 
       <div className="container-site">
@@ -37,7 +35,7 @@ export default function CredentialsBar() {
               key={cred.label}
               variants={item}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="glass-dark rounded-2xl p-6 text-center"
+              className="glass-dark gradient-border rounded-2xl p-6 text-center"
             >
               <div className="text-gold mb-3 flex justify-center">
                 <Icon name={cred.icon} size={28} />

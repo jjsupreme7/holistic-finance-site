@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     }
 
     // Send welcome email
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://holistichealthandfinance.com";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://myholisticfinance.com";
     const unsubscribeUrl = `${siteUrl}/unsubscribe?token=${unsubscribeToken}`;
     const welcome = welcomeEmail(unsubscribeUrl);
 

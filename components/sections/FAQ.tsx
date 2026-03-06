@@ -35,7 +35,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-20 px-6 relative overflow-hidden">
+    <section className="py-24 px-6 bg-dark-surface relative overflow-hidden">
       <div className="float-blob w-64 h-64 bg-primary/6 top-20 -right-20" />
       <div className="max-w-[800px] mx-auto relative z-10">
         <SectionHeader
@@ -50,7 +50,7 @@ export default function FAQ() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="card-soft rounded-2xl overflow-hidden"
+              className="glass-dark border border-white/5 rounded-2xl overflow-hidden"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
@@ -58,13 +58,13 @@ export default function FAQ() {
                 aria-controls={`faq-answer-${i}`}
                 className="w-full flex items-center justify-between p-6 text-left bg-transparent border-none cursor-pointer group"
               >
-                <span className="text-dark font-bold text-[15px] pr-4 group-hover:text-primary transition-colors">
+                <span className="text-white font-bold text-[15px] pr-4 group-hover:text-gold transition-colors">
                   {faq.q}
                 </span>
                 <motion.span
                   animate={{ rotate: openIndex === i ? 45 : 0 }}
                   transition={{ duration: 0.2 }}
-                  className="text-xl text-primary flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center"
+                  className="text-xl text-gold flex-shrink-0 w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center"
                   aria-hidden="true"
                 >
                   +
@@ -81,7 +81,7 @@ export default function FAQ() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <p className="px-6 pb-6 text-text-light leading-relaxed text-[15px]">
+                    <p className="px-6 pb-6 text-text-on-dark-muted leading-relaxed text-[15px]">
                       {faq.a}
                     </p>
                   </motion.div>

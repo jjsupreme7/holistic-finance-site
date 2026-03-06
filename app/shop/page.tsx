@@ -8,7 +8,7 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import Icon from "@/components/ui/Icon";
 import CTABanner from "@/components/sections/CTABanner";
-import { PRODUCTS } from "@/lib/constants";
+import { PRODUCTS, IMAGES } from "@/lib/constants";
 
 const categories = ["All", "Apparel", "Wellness", "Drinkware", "Accessories"];
 
@@ -38,6 +38,7 @@ export default function ShopPage() {
       <PageHero
         title="Shop"
         tagline="Merchandise and wellness products to support your journey"
+        backgroundImage={IMAGES.heroShop}
       />
 
       {/* Featured Product Hero */}
@@ -45,7 +46,7 @@ export default function ShopPage() {
         <section className="py-16 px-6 relative overflow-hidden">
           <div className="float-blob w-96 h-96 bg-gold/8 -top-32 -right-32" />
           <FadeIn className="container-site">
-            <div className="glass rounded-3xl overflow-hidden gradient-border glow-md">
+            <div className="glass-dark rounded-3xl overflow-hidden gradient-border glow-md">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 <div
                   className="relative min-h-[360px] flex items-center justify-center"
@@ -53,7 +54,7 @@ export default function ShopPage() {
                     background: `linear-gradient(135deg, ${featured.gradient[0]}, ${featured.gradient[1]})`,
                   }}
                 >
-                  <span className="absolute top-5 left-5 z-10 text-[10px] font-bold uppercase tracking-[0.2em] text-primary bg-white/70 backdrop-blur-sm px-4 py-1.5 rounded-full">
+                  <span className="absolute top-5 left-5 z-10 text-[10px] font-bold uppercase tracking-[0.2em] text-white bg-primary/70 backdrop-blur-sm px-4 py-1.5 rounded-full">
                     Featured
                   </span>
                   <Image
@@ -72,16 +73,16 @@ export default function ShopPage() {
                   )}
                 </div>
                 <div className="p-10 md:p-12 flex flex-col justify-center">
-                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-gold-dark bg-gold/15 px-4 py-1.5 rounded-full inline-block w-fit mb-4">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-gold bg-gold/15 px-4 py-1.5 rounded-full inline-block w-fit mb-4">
                     Best Seller
                   </span>
-                  <h2 className="text-3xl font-bold text-dark mb-2">{featured.title}</h2>
+                  <h2 className="text-3xl font-bold text-white mb-2">{featured.title}</h2>
                   <p className="text-3xl font-bold text-gradient-gold mb-4">{featured.price}</p>
-                  <p className="text-text-light leading-relaxed mb-6">{featured.description}</p>
+                  <p className="text-white/60 leading-relaxed mb-6">{featured.description}</p>
 
                   {featured.colors && (
                     <div className="mb-5">
-                      <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Color</p>
+                      <p className="text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Color</p>
                       <div className="flex gap-2">
                         {featured.colors.map((color, i) => (
                           <button
@@ -97,7 +98,7 @@ export default function ShopPage() {
 
                   {featured.sizes && (
                     <div className="mb-6">
-                      <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Size</p>
+                      <p className="text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Size</p>
                       <div className="flex gap-2">
                         {featured.sizes.map((size) => (
                           <button
@@ -108,7 +109,7 @@ export default function ShopPage() {
                             className={`w-10 h-10 rounded-lg text-xs font-bold transition-all border cursor-pointer ${
                               selectedSizes[featured.title] === size
                                 ? "bg-dark text-white border-dark"
-                                : "bg-white text-text border-border-light hover:border-dark"
+                                : "bg-white/10 text-white/70 border-white/15 hover:border-white/30"
                             }`}
                           >
                             {size}
@@ -133,11 +134,11 @@ export default function ShopPage() {
       )}
 
       {/* Category Filters + Product Grid */}
-      <section className="py-16 px-6 mesh-gradient relative overflow-hidden">
+      <section className="py-16 px-6 mesh-gradient-dark relative overflow-hidden">
         <div className="float-blob w-64 h-64 bg-primary/8 bottom-10 -left-10" />
         <div className="container-site">
           <FadeIn className="text-center mb-10">
-            <h2 className="text-[2.25rem] font-bold text-gradient mb-6">All Products</h2>
+            <h2 className="text-[2.25rem] font-bold text-white mb-6">All Products</h2>
             <div className="flex flex-wrap justify-center gap-2">
               {categories.map((cat) => (
                 <button
@@ -146,7 +147,7 @@ export default function ShopPage() {
                   className={`px-5 py-2 rounded-full text-sm font-medium transition-all border cursor-pointer ${
                     activeCategory === cat
                       ? "bg-dark text-white border-dark shadow-lg"
-                      : "glass border-border-light text-text-light hover:text-dark hover:border-dark/20"
+                      : "glass-dark border-white/15 text-white/60 hover:text-white hover:border-white/30"
                   }`}
                 >
                   {cat}
@@ -169,7 +170,7 @@ export default function ShopPage() {
                   key={product.title}
                   variants={item}
                   whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                  className="glass rounded-2xl overflow-hidden gradient-border glow-sm hover:glow-md transition-all duration-300 group"
+                  className="glass-dark rounded-2xl overflow-hidden gradient-border glow-sm hover:glow-md transition-all duration-300 group"
                 >
                   {/* Product image area */}
                   <div
@@ -178,7 +179,7 @@ export default function ShopPage() {
                       background: `linear-gradient(135deg, ${product.gradient[0]}, ${product.gradient[1]})`,
                     }}
                   >
-                    <span className="absolute top-3 left-3 z-10 text-[10px] font-bold uppercase tracking-wider text-text-muted bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full">
+                    <span className="absolute top-3 left-3 z-10 text-[10px] font-bold uppercase tracking-wider text-white bg-dark/60 backdrop-blur-sm px-3 py-1 rounded-full">
                       {product.category}
                     </span>
                     <Image
@@ -200,7 +201,7 @@ export default function ShopPage() {
                   {/* Product details */}
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-1">
-                      <h3 className="text-base font-bold text-dark leading-tight pr-2">
+                      <h3 className="text-base font-bold text-white leading-tight pr-2">
                         {product.title}
                       </h3>
                       <span className="text-lg font-bold text-gradient-gold flex-shrink-0">
@@ -208,21 +209,21 @@ export default function ShopPage() {
                       </span>
                     </div>
 
-                    <p className="text-text-light text-sm leading-relaxed mb-4">
+                    <p className="text-white/60 text-sm leading-relaxed mb-4">
                       {product.description}
                     </p>
 
                     {/* Color swatches */}
                     {product.colors && (
                       <div className="flex items-center gap-3 mb-4">
-                        <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">
+                        <span className="text-[10px] font-bold text-white/50 uppercase tracking-wider">
                           Colors
                         </span>
                         <div className="flex gap-1.5">
                           {product.colors.map((color, i) => (
                             <span
                               key={i}
-                              className="w-5 h-5 rounded-full border border-black/10 shadow-sm"
+                              className="w-5 h-5 rounded-full border border-white/20 shadow-sm"
                               style={{ backgroundColor: color }}
                             />
                           ))}
@@ -242,7 +243,7 @@ export default function ShopPage() {
                             className={`w-8 h-8 rounded-md text-[10px] font-bold transition-all border cursor-pointer ${
                               selectedSizes[product.title] === size
                                 ? "bg-dark text-white border-dark"
-                                : "bg-white/60 text-text-muted border-border-light hover:border-dark/30"
+                                : "bg-white/10 text-white/50 border-white/15 hover:border-white/30"
                             }`}
                           >
                             {size}
@@ -253,7 +254,7 @@ export default function ShopPage() {
 
                     <Link
                       href="/newsletter"
-                      className="w-full bg-primary/10 hover:bg-primary/15 text-primary font-bold py-3 px-6 rounded-full text-sm no-underline transition-colors inline-flex items-center justify-center gap-2"
+                      className="w-full bg-primary/15 hover:bg-primary/20 text-primary-light font-bold py-3 px-6 rounded-full text-sm no-underline transition-colors inline-flex items-center justify-center gap-2"
                     >
                       <Icon name="bell" size={14} />
                       Notify Me When Available

@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import Icon from "@/components/ui/Icon";
 import CTABanner from "@/components/sections/CTABanner";
-import { COURSES } from "@/lib/constants";
+import { COURSES, IMAGES } from "@/lib/constants";
 
 const container = {
   hidden: {},
@@ -28,6 +28,7 @@ export default function CoursesPage() {
       <PageHero
         title="Courses & Classes"
         tagline="Financial education for you and your family"
+        backgroundImage={IMAGES.heroCourses}
       />
 
       <section className="py-16 px-6 relative overflow-hidden">
@@ -58,7 +59,7 @@ export default function CoursesPage() {
       </section>
 
       {/* Free Courses */}
-      <section className="py-16 px-6 mesh-gradient relative overflow-hidden">
+      <section className="py-16 px-6 mesh-gradient-dark relative overflow-hidden">
         <div className="float-blob w-64 h-64 bg-primary/8 bottom-10 -left-10" />
         <div className="container-site">
           <SectionHeader
@@ -77,23 +78,23 @@ export default function CoursesPage() {
                 key={course.title}
                 variants={item}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
-                className="glass rounded-2xl p-8 gradient-border glow-sm hover:glow-md transition-all duration-300"
+                className="glass-dark rounded-2xl p-8 gradient-border glow-sm hover:glow-md transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-success/15 to-success/5 flex items-center justify-center text-success">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-success/20 to-success/8 flex items-center justify-center text-success">
                     <Icon name={course.icon} size={24} />
                   </div>
-                  <span className="bg-success-bg text-success text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                  <span className="bg-success/15 text-success text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
                     Free
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-dark mb-2">{course.title}</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{course.title}</h3>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="text-xs text-text-muted bg-white/60 px-3 py-1 rounded-full">{course.duration}</span>
-                  <span className="text-xs text-text-muted bg-white/60 px-3 py-1 rounded-full">{course.format}</span>
-                  <span className="text-xs text-primary bg-primary/8 px-3 py-1 rounded-full font-medium">{course.date}</span>
+                  <span className="text-xs text-white/50 bg-white/8 px-3 py-1 rounded-full">{course.duration}</span>
+                  <span className="text-xs text-white/50 bg-white/8 px-3 py-1 rounded-full">{course.format}</span>
+                  <span className="text-xs text-primary-light bg-primary/15 px-3 py-1 rounded-full font-medium">{course.date}</span>
                 </div>
-                <p className="text-text-light leading-relaxed mb-6">{course.description}</p>
+                <p className="text-white/60 leading-relaxed mb-6">{course.description}</p>
                 <Button href="/contact" variant="primary" className="text-sm">
                   Register Free
                 </Button>
@@ -123,23 +124,23 @@ export default function CoursesPage() {
                 key={course.title}
                 variants={item}
                 whileHover={{ y: -4, transition: { duration: 0.3 } }}
-                className="glass rounded-2xl p-8 gradient-border glow-sm hover:glow-md transition-all duration-300"
+                className="glass-dark rounded-2xl p-8 gradient-border glow-sm hover:glow-md transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/5 flex items-center justify-center text-gold-dark">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/8 flex items-center justify-center text-gold">
                     <Icon name={course.icon} size={24} />
                   </div>
                   <span className="bg-gradient-to-r from-gold to-gold-dark text-dark text-sm font-bold px-4 py-1.5 rounded-full">
                     {course.price}
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-dark mb-2">{course.title}</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{course.title}</h3>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="text-xs text-text-muted bg-white/60 px-3 py-1 rounded-full">{course.duration}</span>
-                  <span className="text-xs text-text-muted bg-white/60 px-3 py-1 rounded-full">{course.format}</span>
-                  <span className="text-xs text-primary bg-primary/8 px-3 py-1 rounded-full font-medium">{course.date}</span>
+                  <span className="text-xs text-white/50 bg-white/8 px-3 py-1 rounded-full">{course.duration}</span>
+                  <span className="text-xs text-white/50 bg-white/8 px-3 py-1 rounded-full">{course.format}</span>
+                  <span className="text-xs text-primary-light bg-primary/15 px-3 py-1 rounded-full font-medium">{course.date}</span>
                 </div>
-                <p className="text-text-light leading-relaxed mb-6">{course.description}</p>
+                <p className="text-white/60 leading-relaxed mb-6">{course.description}</p>
                 <Button href="/contact" className="text-sm">
                   Enroll Now
                 </Button>

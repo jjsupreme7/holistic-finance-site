@@ -7,6 +7,7 @@ import { IMAGES } from "@/lib/constants";
 interface PageHeroProps {
   title: string;
   tagline: string;
+  backgroundImage?: string;
 }
 
 function Breadcrumbs() {
@@ -33,11 +34,11 @@ function Breadcrumbs() {
   );
 }
 
-export default function PageHero({ title, tagline }: PageHeroProps) {
+export default function PageHero({ title, tagline, backgroundImage }: PageHeroProps) {
   return (
     <section
       className="relative pt-32 pb-20 text-center text-white bg-cover bg-center overflow-hidden"
-      style={{ backgroundImage: `url(${IMAGES.hero})` }}
+      style={{ backgroundImage: `url(${backgroundImage ?? IMAGES.hero})` }}
     >
       <div className="absolute inset-0 animated-gradient-overlay" />
       {/* Decorative orbs */}

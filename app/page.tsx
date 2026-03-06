@@ -1,26 +1,26 @@
 import HeroSection from "@/components/sections/HeroSection";
-import MissionStatement from "@/components/sections/MissionStatement";
-import PillarsGrid from "@/components/sections/PillarsGrid";
+import TrustLogos from "@/components/sections/TrustLogos";
+import AboutPreview from "@/components/sections/AboutPreview";
+import HowItWorks from "@/components/sections/HowItWorks";
+import ServicesGrid from "@/components/sections/ServicesGrid";
 import StatsCounter from "@/components/sections/StatsCounter";
 import CredentialsBar from "@/components/sections/CredentialsBar";
-import ServicesGrid from "@/components/sections/ServicesGrid";
 import TestimonialsGrid from "@/components/sections/TestimonialsGrid";
 import FAQ from "@/components/sections/FAQ";
 import ComingSoon from "@/components/sections/ComingSoon";
 import NewsletterSignup from "@/components/sections/NewsletterSignup";
 import CTABanner from "@/components/sections/CTABanner";
-import AboutPreview from "@/components/sections/AboutPreview";
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <MissionStatement />
+      <TrustLogos />
       <AboutPreview />
-      <PillarsGrid />
+      <HowItWorks />
+      <ServicesGrid />
       <StatsCounter />
       <CredentialsBar />
-      <ServicesGrid />
       <TestimonialsGrid />
       <FAQ />
       <ComingSoon />

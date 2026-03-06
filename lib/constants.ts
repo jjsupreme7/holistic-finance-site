@@ -18,9 +18,32 @@ export const SOCIAL = {
 export const IMAGES = {
   logo: "https://i0.wp.com/myholisticfinance.com/wp-content/uploads/2025/12/logo.png?fit=1536%2C1024&ssl=1",
   hero: "/hero-mountains.jpg",
-  aboutPreview: "/family-hero.png",
+  aboutPreview: "https://images.unsplash.com/photo-1709216461598-018ae6307dc0?w=1080&auto=format&fit=crop&q=80",
   annaPhoto:
     "https://i0.wp.com/myholisticfinance.com/wp-content/uploads/2024/09/img_7771.jpg?fit=1024%2C683&ssl=1",
+  // PNW nature hero images
+  heroHome:
+    "https://images.unsplash.com/photo-1695232087488-01bff539617b?w=1920&auto=format&fit=crop&q=80",
+  heroAbout:
+    "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=1920&auto=format&fit=crop&q=80",
+  heroServices:
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&auto=format&fit=crop&q=80",
+  heroCourses: "/courses-hero.png",
+  heroEvents:
+    "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=1920&auto=format&fit=crop&q=80",
+  heroShop:
+    "https://images.unsplash.com/photo-1500534623283-312aade85981?w=1920&auto=format&fit=crop&q=80",
+  heroContact:
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&auto=format&fit=crop&q=80",
+  heroNewsletter:
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&auto=format&fit=crop&q=80",
+  // PNW nature section backgrounds
+  bgForestCanopy:
+    "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&auto=format&fit=crop&q=80",
+  bgAerialForest:
+    "https://images.unsplash.com/photo-1511497584788-876760111969?w=1920&auto=format&fit=crop&q=80",
+  bgCoast:
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&auto=format&fit=crop&q=80",
 };
 
 export const EMBEDS = {
@@ -238,9 +261,14 @@ export const RESOURCES = [
 
 export const EMAIL_CONFIG = {
   fromName: "Holistic Health and Finance",
-  fromEmail: "newsletter@holistichealthandfinance.com",
+  fromEmail: "newsletter@myholisticfinance.com",
   replyTo: "anna@holistichealthandfinance.com",
 };
+
+// Google Calendar Appointment Scheduling URL
+// Update this once Anna creates the schedule at calendar.google.com
+export const BOOKING_URL =
+  "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0aFT-dPbtf8VLPfrwMBwdBEU91FiVBNgH6Km_3NklPClBQb6MsxVtVdxr44-nJMqpWdZn_5bpL?gv=true";
 
 export const COURSES = [
   {

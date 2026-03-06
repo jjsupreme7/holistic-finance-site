@@ -21,7 +21,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "glass-strong shadow-lg shadow-primary/5 py-2"
+          ? "glass-dark shadow-lg shadow-black/20 py-2"
           : "bg-transparent py-4"
       }`}
     >
@@ -34,9 +34,7 @@ export default function Header() {
             height={64}
             className="rounded-xl relative drop-shadow-lg"
           />
-          <span className={`font-heading font-bold text-xl hidden sm:inline transition-colors ${
-            scrolled ? "text-primary-dark" : "text-white"
-          }`}>
+          <span className="font-heading font-bold text-xl hidden sm:inline text-white">
             {SITE_NAME}
           </span>
         </Link>
@@ -50,9 +48,7 @@ export default function Header() {
           {[0, 1, 2].map((i) => (
             <span
               key={i}
-              className={`block w-6 h-[2px] rounded transition-all duration-300 ${
-                scrolled ? "bg-dark" : "bg-white"
-              } ${
+              className={`block w-6 h-[2px] rounded transition-all duration-300 bg-white ${
                 menuOpen && i === 0 ? "rotate-45 translate-y-[7px]" : ""
               } ${
                 menuOpen && i === 1 ? "opacity-0" : ""
@@ -67,7 +63,7 @@ export default function Header() {
           aria-label="Main navigation"
           className={`md:flex items-center gap-1 ${
             menuOpen
-              ? "flex flex-col absolute top-full left-4 right-4 glass-strong rounded-2xl py-4 px-5 shadow-xl mt-2"
+              ? "flex flex-col absolute top-full left-4 right-4 glass-dark rounded-2xl py-4 px-5 shadow-xl mt-2"
               : "hidden"
           }`}
         >
@@ -81,12 +77,8 @@ export default function Header() {
                 aria-current={isActive ? "page" : undefined}
                 className={`relative text-sm font-medium no-underline transition-all px-4 py-2 rounded-lg ${
                   isActive
-                    ? scrolled || menuOpen
-                      ? "text-primary bg-primary/10 font-bold"
-                      : "text-gold font-bold bg-white/10"
-                    : scrolled || menuOpen
-                      ? "text-text hover:text-primary hover:bg-primary/5"
-                      : "text-white/90 hover:text-gold hover:bg-white/10"
+                    ? "text-gold font-bold bg-gold/10"
+                    : "text-white/70 hover:text-gold hover:bg-white/10"
                 }`}
               >
                 {link.label}

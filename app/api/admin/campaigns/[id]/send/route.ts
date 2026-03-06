@@ -57,7 +57,7 @@ export async function POST(
     }
 
     const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "https://holistichealthandfinance.com";
+      process.env.NEXT_PUBLIC_SITE_URL || "https://myholisticfinance.com";
 
     let sentCount = 0;
     const errors: string[] = [];

@@ -32,10 +32,10 @@ export default function StickyCTA() {
           transition={{ duration: 0.3 }}
           className="fixed bottom-0 left-0 right-0 z-40 p-3 md:p-4"
         >
-          <div className="max-w-[600px] mx-auto glass-strong rounded-2xl shadow-xl shadow-dark/10 px-5 py-3 flex items-center justify-between gap-4">
+          <div className="max-w-[600px] mx-auto glass-dark rounded-2xl shadow-xl shadow-black/20 px-5 py-3 flex items-center justify-between gap-4">
             <div className="hidden sm:block">
-              <p className="text-dark font-bold text-sm">Ready to start?</p>
-              <p className="text-text-muted text-xs">First consultation from $59</p>
+              <p className="text-white font-bold text-sm">Ready to start?</p>
+              <p className="text-white/60 text-xs">First consultation from $59</p>
             </div>
             <Link
               href="/contact"

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Icon from "@/components/ui/Icon";
-import { STATS } from "@/lib/constants";
+import { STATS, IMAGES } from "@/lib/constants";
 
 function AnimatedNumber({ value, prefix, suffix }: { value: number; prefix?: string; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -46,9 +46,13 @@ const item = {
 
 export default function StatsCounter() {
   return (
-    <section className="py-20 px-6 relative overflow-hidden">
+    <section
+      className="py-24 px-6 relative overflow-hidden"
+      style={{ backgroundImage: `url(${IMAGES.bgAerialForest})`, backgroundSize: "cover", backgroundPosition: "center" }}
+    >
+      <div className="absolute inset-0 bg-dark-card/92" />
       <div className="float-blob w-72 h-72 bg-gold/10 -top-10 -left-20" />
-      <div className="float-blob w-56 h-56 bg-primary/8 bottom-0 right-10" />
+      <div className="float-blob w-56 h-56 bg-forest/10 bottom-0 right-10" />
       <motion.div
         variants={container}
         initial="hidden"
@@ -62,11 +66,11 @@ export default function StatsCounter() {
             variants={item}
             className="text-center"
           >
-            <div className="text-primary mb-3 flex justify-center">
+            <div className="text-gold mb-3 flex justify-center">
               <Icon name={stat.icon} size={28} />
             </div>
             <AnimatedNumber value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
-            <p className="text-text-muted text-sm font-medium mt-2 uppercase tracking-wider">
+            <p className="text-white/50 text-sm font-medium mt-2 uppercase tracking-wider">
               {stat.label}
             </p>
           </motion.div>
