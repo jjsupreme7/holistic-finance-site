@@ -1,4 +1,4 @@
-export const SITE_NAME = "Holistic Health and Finance";
+export const SITE_NAME = "Holistic Financials";
 export const SITE_TAGLINE = "Placing Family First in Finance";
 
 export const CONTACT = {
