@@ -1,35 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" fill="none">
-  <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2d6a4f"/>
-      <stop offset="100%" stop-color="#2c5aa0"/>
-    </linearGradient>
-    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#e8a838"/>
-      <stop offset="100%" stop-color="#d4922a"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" fill="none">
+  <!-- HF Monogram in a clean square -->
+  <rect x="5" y="10" width="80" height="80" rx="8" fill="#2c5aa0"/>
+  <text x="45" y="68" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="-1">HF</text>
+  <rect x="5" y="78" width="80" height="4" rx="2" fill="#e8a838"/>
 
-  <!-- Circle icon -->
-  <circle cx="55" cy="60" r="50" fill="url(#bgGrad)"/>
-
-  <!-- Leaf shape -->
-  <path d="M55 18 C35 35, 27 60, 55 95 C83 60, 75 35, 55 18Z"
-        fill="url(#leafGrad)" opacity="0.9"/>
-
-  <!-- Center vein -->
-  <path d="M55 28 L55 82" stroke="white" stroke-width="2" stroke-linecap="round"/>
-
-  <!-- Growth bars -->
-  <rect x="40" y="65" width="7" height="15" rx="2" fill="white" opacity="0.9"/>
-  <rect x="49" y="57" width="7" height="23" rx="2" fill="white" opacity="0.9"/>
-  <rect x="58" y="49" width="7" height="31" rx="2" fill="white" opacity="0.9"/>
-  <rect x="67" y="54" width="7" height="26" rx="2" fill="white"/>
-
-  <!-- Arrow -->
-  <path d="M50 37 L55 28 L60 37" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-
-  <!-- Text: Holistic Financials -->
-  <text x="120" y="52" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="bold" fill="white" letter-spacing="0.5">Holistic</text>
-  <text x="120" y="90" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="bold" fill="#e8a838" letter-spacing="0.5">Financials</text>
+  <!-- Brand text -->
+  <text x="105" y="48" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="white" letter-spacing="1">HOLISTIC</text>
+  <text x="105" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="32" fill="#e8a838" letter-spacing="3">FINANCIALS</text>
 </svg>
