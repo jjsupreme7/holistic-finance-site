@@ -16,7 +16,8 @@ export const SOCIAL = {
 };
 
 export const IMAGES = {
-  logo: "https://i0.wp.com/myholisticfinance.com/wp-content/uploads/2025/12/logo.png?fit=1536%2C1024&ssl=1",
+  logoOld: "https://i0.wp.com/myholisticfinance.com/wp-content/uploads/2025/12/logo.png?fit=1536%2C1024&ssl=1",
+  logo: "/logo.svg",
   hero: "/hero-mountains.jpg",
   aboutPreview: "https://images.unsplash.com/photo-1709216461598-018ae6307dc0?w=1080&auto=format&fit=crop&q=80",
   annaPhoto:

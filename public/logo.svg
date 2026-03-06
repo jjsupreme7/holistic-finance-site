@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Circular background with gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d6a4f"/>
+      <stop offset="100%" stop-color="#2c5aa0"/>
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8a838"/>
+      <stop offset="100%" stop-color="#d4922a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Circle background -->
+  <circle cx="100" cy="100" r="95" fill="url(#bgGrad)"/>
+
+  <!-- Leaf shape (health/holistic) doubling as upward growth -->
+  <path d="M100 35 C60 65, 45 110, 100 165 C155 110, 140 65, 100 35Z"
+        fill="url(#leafGrad)" opacity="0.9"/>
+
+  <!-- Center vein of leaf / upward arrow motif -->
+  <path d="M100 55 L100 145" stroke="white" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Growth bars inside leaf -->
+  <rect x="72" y="115" width="12" height="25" rx="3" fill="white" opacity="0.9"/>
+  <rect x="88" y="100" width="12" height="40" rx="3" fill="white" opacity="0.9"/>
+  <rect x="104" y="85" width="12" height="55" rx="3" fill="white" opacity="0.9"/>
+  <rect x="120" y="95" width="12" height="45" rx="3" fill="white"/>
+
+  <!-- Small upward arrow at top -->
+  <path d="M92 65 L100 50 L108 65" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

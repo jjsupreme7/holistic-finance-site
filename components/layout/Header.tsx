@@ -30,9 +30,9 @@ export default function Header() {
           <Image
             src={IMAGES.logo}
             alt={SITE_NAME}
-            width={96}
-            height={64}
-            className="rounded-xl relative drop-shadow-lg"
+            width={48}
+            height={48}
+            className="relative drop-shadow-lg"
           />
           <span className="font-heading font-bold text-xl hidden sm:inline text-white">
             {SITE_NAME}
