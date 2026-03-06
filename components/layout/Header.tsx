@@ -30,13 +30,10 @@ export default function Header() {
           <Image
             src={IMAGES.logo}
             alt={SITE_NAME}
-            width={48}
-            height={48}
+            width={240}
+            height={56}
             className="relative drop-shadow-lg"
           />
-          <span className="font-heading font-bold text-xl hidden sm:inline text-white">
-            {SITE_NAME}
-          </span>
         </Link>
 
         <button
