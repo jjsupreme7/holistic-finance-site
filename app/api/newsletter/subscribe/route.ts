@@ -6,7 +6,15 @@ import { EMAIL_CONFIG } from "@/lib/constants";
 
 export async function POST(req: Request) {
   try {
-    const { email, firstName } = await req.json();
+    const { email, firstName, website } = await req.json();
+
+    // Honeypot spam check
+    if (website) {
+      return NextResponse.json(
+        { message: "Welcome! Check your inbox for a confirmation email." },
+        { status: 201 }
+      );
+    }
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(

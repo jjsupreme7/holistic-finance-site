@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -16,7 +17,7 @@ export default function NewsletterForm() {
       const res = await fetch("/api/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, website: honeypot }),
       });
 
       const data = await res.json();
@@ -59,6 +60,10 @@ export default function NewsletterForm() {
         disabled={status === "loading"}
         className="w-full px-4 py-3 border border-border bg-background/5 text-foreground placeholder:text-text-muted focus:outline-none focus:border-accent transition-colors text-sm disabled:opacity-60"
       />
+      <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
+        <label htmlFor="nl-website">Website</label>
+        <input type="text" id="nl-website" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} autoComplete="off" tabIndex={-1} />
+      </div>
       <button
         type="submit"
         disabled={status === "loading"}

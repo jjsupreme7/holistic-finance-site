@@ -9,7 +9,12 @@ import { EMAIL_CONFIG, CONTACT } from "@/lib/constants";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { firstName, lastName, email, phone, service, message } = body;
+    const { firstName, lastName, email, phone, service, message, website } = body;
+
+    // Honeypot spam check
+    if (website) {
+      return NextResponse.json({ success: true }, { status: 200 });
+    }
 
     // Validate required fields
     if (!firstName || !lastName || !email) {

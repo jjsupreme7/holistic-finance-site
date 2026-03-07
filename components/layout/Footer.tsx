@@ -7,6 +7,7 @@ import { SITE_NAME, CONTACT, SOCIAL } from "@/lib/constants";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -18,7 +19,7 @@ export default function Footer() {
       const res = await fetch("/api/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, website: honeypot }),
       });
 
       const data = await res.json();
@@ -120,7 +121,10 @@ export default function Footer() {
               {message}
             </motion.p>
           ) : (
-            <form onSubmit={handleSubmit} className="flex gap-0">
+            <form onSubmit={handleSubmit} className="flex gap-0 relative">
+              <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
+                <input type="text" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} autoComplete="off" tabIndex={-1} />
+              </div>
               <input
                 type="email"
                 required

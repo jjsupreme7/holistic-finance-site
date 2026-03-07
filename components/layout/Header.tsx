@@ -6,6 +6,9 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS, IMAGES, SITE_NAME } from "@/lib/constants";
 
+const logoWhite = IMAGES.logo;
+const logoDark = IMAGES.logoDark;
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -41,11 +44,12 @@ export default function Header() {
       <div className="container-site flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 no-underline">
           <Image
-            src={IMAGES.logo}
+            src={scrolled ? logoDark : logoWhite}
             alt={SITE_NAME}
             width={200}
             height={48}
             className="relative"
+            priority
           />
         </Link>
 

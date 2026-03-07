@@ -26,6 +26,7 @@ export default function ContactPage() {
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value || undefined,
       service: (form.elements.namedItem("service") as HTMLSelectElement).value || undefined,
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value || undefined,
+      website: (form.elements.namedItem("website") as HTMLInputElement).value || undefined,
     };
 
     try {
@@ -167,6 +168,11 @@ export default function ContactPage() {
                         placeholder="Tell us about your financial planning needs..."
                         className={`${inputClass} resize-y`}
                       />
+                    </div>
+
+                    <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
+                      <label htmlFor="website">Website</label>
+                      <input type="text" id="website" name="website" autoComplete="off" tabIndex={-1} />
                     </div>
 
                     {status === "error" && (
