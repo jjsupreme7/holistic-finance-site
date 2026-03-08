@@ -4,27 +4,36 @@ import { createToken, setAuthCookie } from "@/lib/admin/auth";
 
 export async function POST(req: Request) {
   try {
-    const { password } = await req.json();
+    const { email, password } = await req.json();
 
-    if (!password) {
+    if (!email || !password) {
       return NextResponse.json(
-        { error: "Password is required." },
+        { error: "Email and password are required." },
         { status: 400 }
       );
     }
 
+    const adminEmail = process.env.ADMIN_EMAIL;
     const hash = process.env.ADMIN_PASSWORD_HASH;
-    if (!hash) {
+
+    if (!adminEmail || !hash) {
       return NextResponse.json(
         { error: "Admin auth not configured." },
         { status: 500 }
       );
     }
 
+    if (email.toLowerCase() !== adminEmail.toLowerCase()) {
+      return NextResponse.json(
+        { error: "Invalid email or password." },
+        { status: 401 }
+      );
+    }
+
     const valid = await bcrypt.compare(password, hash);
     if (!valid) {
       return NextResponse.json(
-        { error: "Invalid password." },
+        { error: "Invalid email or password." },
         { status: 401 }
       );
     }

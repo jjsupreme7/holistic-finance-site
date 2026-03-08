@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { SITE_NAME } from "@/lib/constants";
 
 export default function AdminLoginPage() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
@@ -37,6 +38,9 @@ export default function AdminLoginPage() {
     }
   };
 
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm mb-4";
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8faff] px-6">
       <div className="w-full max-w-sm">
@@ -50,6 +54,18 @@ export default function AdminLoginPage() {
           className="bg-white rounded-2xl shadow-lg p-8 border border-border-light"
         >
           <label className="block text-sm font-semibold text-dark mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            className={inputClass}
+          />
+
+          <label className="block text-sm font-semibold text-dark mb-2">
             Password
           </label>
           <input
@@ -57,8 +73,8 @@ export default function AdminLoginPage() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter admin password"
-            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm mb-4"
+            placeholder="Enter your password"
+            className={inputClass}
           />
 
           {error && (
