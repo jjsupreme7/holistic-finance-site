@@ -32,7 +32,7 @@ export const IMAGES = {
     "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&auto=format&fit=crop&q=80",
   heroCourses: "/courses-hero.png",
   heroEvents:
-    "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=1920&auto=format&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1920&auto=format&fit=crop&q=80",
   heroShop:
     "https://images.unsplash.com/photo-1500534623283-312aade85981?w=1920&auto=format&fit=crop&q=80",
   heroContact:
