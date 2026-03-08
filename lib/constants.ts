@@ -58,6 +58,7 @@ export const EMBEDS = {
 export const NAV_LINKS = [
   { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
+  { label: "Blog", href: "/blog" },
   { label: "Courses", href: "/courses" },
   { label: "Shop", href: "/shop" },
   { label: "Events", href: "/events" },
