@@ -7,6 +7,8 @@ interface Stats {
   activeSubscribers: number;
   totalSubscribers: number;
   totalCampaigns: number;
+  totalPosts: number;
+  publishedPosts: number;
   lastCampaign: { subject: string; sent_at: string; recipient_count: number } | null;
 }
 
@@ -17,22 +19,27 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function load() {
       try {
-        const [subRes, campRes] = await Promise.all([
+        const [subRes, campRes, blogRes] = await Promise.all([
           fetch("/api/admin/subscribers"),
           fetch("/api/admin/campaigns"),
+          fetch("/api/admin/blog"),
         ]);
 
         const { subscribers } = await subRes.json();
         const { campaigns } = await campRes.json();
+        const { posts } = await blogRes.json();
 
         const active = subscribers?.filter((s: { status: string }) => s.status === "active") || [];
         const sentCampaigns = campaigns?.filter((c: { status: string }) => c.status === "sent") || [];
         const lastSent = sentCampaigns.length > 0 ? sentCampaigns[0] : null;
+        const published = posts?.filter((p: { status: string }) => p.status === "published") || [];
 
         setStats({
           activeSubscribers: active.length,
           totalSubscribers: subscribers?.length || 0,
           totalCampaigns: campaigns?.length || 0,
+          totalPosts: posts?.length || 0,
+          publishedPosts: published.length,
           lastCampaign: lastSent,
         });
       } catch (err) {
@@ -57,7 +64,7 @@ export default function AdminDashboard() {
     <div>
       <h1 className="text-2xl font-bold text-dark mb-6">Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-xl p-6 border border-border-light">
           <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
             Active Subscribers
@@ -67,6 +74,18 @@ export default function AdminDashboard() {
           </p>
           <p className="text-text-muted text-xs mt-1">
             of {stats?.totalSubscribers || 0} total
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl p-6 border border-border-light">
+          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+            Blog Posts
+          </p>
+          <p className="text-3xl font-bold text-primary">
+            {stats?.publishedPosts || 0}
+          </p>
+          <p className="text-text-muted text-xs mt-1">
+            {stats?.totalPosts || 0} total ({(stats?.totalPosts || 0) - (stats?.publishedPosts || 0)} drafts)
           </p>
         </div>
 
@@ -99,7 +118,13 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
+        <Link
+          href="/admin/blog/new"
+          className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-2.5 rounded-lg no-underline text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
+        >
+          Write Blog Post
+        </Link>
         <Link
           href="/admin/campaigns/new"
           className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-2.5 rounded-lg no-underline text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
@@ -111,6 +136,12 @@ export default function AdminDashboard() {
           className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
         >
           View Subscribers
+        </Link>
+        <Link
+          href="/admin/blog"
+          className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
+        >
+          Manage Blog
         </Link>
       </div>
     </div>
