@@ -46,7 +46,7 @@ export default function Header() {
           <Image
             src={scrolled ? logoDark : logoWhite}
             alt={SITE_NAME}
-            width={200}
+            width={300}
             height={48}
             className="relative"
             priority
