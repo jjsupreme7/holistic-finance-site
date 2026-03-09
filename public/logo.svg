@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 100" fill="none">
   <!-- HF Monogram in a clean square -->
   <rect x="5" y="10" width="80" height="80" rx="8" fill="#2c5aa0"/>
   <text x="45" y="68" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="-1">HF</text>
   <rect x="5" y="78" width="80" height="4" rx="2" fill="#e8a838"/>
 
   <!-- Brand text -->
-  <text x="105" y="48" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="white" letter-spacing="1">HOLISTIC</text>
-  <text x="105" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="32" fill="#e8a838" letter-spacing="3">FINANCIALS</text>
+  <text x="105" y="48" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="bold" fill="white" letter-spacing="1">HOLISTIC HEALTH &amp;</text>
+  <text x="105" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="26" fill="#e8a838" letter-spacing="2">FINANCIAL SERVICES</text>
 </svg>
