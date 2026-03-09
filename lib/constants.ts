@@ -30,7 +30,7 @@ export const IMAGES = {
     "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=1920&auto=format&fit=crop&q=80",
   heroServices:
     "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&auto=format&fit=crop&q=80",
-  heroCourses: "/courses-hero.png",
+  heroCourses: "/courses-hero.webp",
   heroEvents:
     "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1920&auto=format&fit=crop&q=80",
   heroShop:

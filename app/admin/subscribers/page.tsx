@@ -29,7 +29,28 @@ export default function SubscribersPage() {
       ? subscribers
       : subscribers.filter((s) => s.status === filter);
 
+  const [deleting, setDeleting] = useState<string | null>(null);
+
   const activeCount = subscribers.filter((s) => s.status === "active").length;
+
+  const handleDelete = async (id: string, email: string) => {
+    if (!confirm(`Are you sure you want to delete ${email}?`)) return;
+    setDeleting(id);
+    try {
+      const res = await fetch("/api/admin/subscribers", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        setSubscribers((prev) => prev.filter((s) => s.id !== id));
+      }
+    } catch (err) {
+      console.error("Delete failed:", err);
+    } finally {
+      setDeleting(null);
+    }
+  };
 
   const exportCSV = () => {
     const rows = [
@@ -109,12 +130,15 @@ export default function SubscribersPage() {
               <th className="text-left px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
                 Subscribed
               </th>
+              <th className="text-right px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-text-muted">
+                <td colSpan={5} className="px-4 py-8 text-center text-text-muted">
                   No subscribers found.
                 </td>
               </tr>
@@ -136,6 +160,15 @@ export default function SubscribersPage() {
                   </td>
                   <td className="px-4 py-3 text-text-muted">
                     {new Date(s.subscribed_at).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => handleDelete(s.id, s.email)}
+                      disabled={deleting === s.id}
+                      className="text-red-500 hover:text-red-700 text-xs font-semibold cursor-pointer border-none bg-transparent transition-colors disabled:opacity-50"
+                    >
+                      {deleting === s.id ? "Deleting…" : "Delete"}
+                    </button>
                   </td>
                 </tr>
               ))

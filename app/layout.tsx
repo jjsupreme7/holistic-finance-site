@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import PageTracker from "@/components/PageTracker";
 import LayoutShell from "@/components/layout/LayoutShell";
 import "./globals.css";
 
@@ -40,11 +42,50 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Holistic Health & Financial Services",
+  description:
+    "Personalized financial planning, insurance, and retirement services for families in University Place, WA.",
+  url: "https://myholisticfinance.com",
+  telephone: "+1-253-666-8663",
+  email: "Holistic.Health.Finance@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "7017 27th St W, Suite #6",
+    addressLocality: "University Place",
+    addressRegion: "WA",
+    postalCode: "98466",
+    addressCountry: "US",
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "08:00",
+      closes: "18:00",
+    },
+  ],
+  priceRange: "$$",
+  image: "https://myholisticfinance.com/logo.svg",
+};
+
+const jsonLdString = JSON.stringify(jsonLd);
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdString }}
+        />
+      </head>
       <body className={`${inter.variable} font-body antialiased`}>
         <LayoutShell>{children}</LayoutShell>
+        <PageTracker />
+        <Analytics />
       </body>
     </html>
   );

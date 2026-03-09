@@ -39,6 +39,8 @@ export default function PageHero({ title, tagline, backgroundImage }: PageHeroPr
     <section
       className="relative pt-40 pb-20 text-white bg-cover bg-center overflow-hidden"
       style={{ backgroundImage: `url(${backgroundImage ?? IMAGES.hero})` }}
+      role="img"
+      aria-label={`${title} page hero background`}
     >
       <div className="absolute inset-0 bg-foreground/50" />
 

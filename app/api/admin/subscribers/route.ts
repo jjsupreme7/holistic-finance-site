@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase/server";
 
 export async function GET() {
@@ -15,6 +15,30 @@ export async function GET() {
     console.error("Fetch subscribers error:", error);
     return NextResponse.json(
       { error: "Failed to fetch subscribers." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id } = await req.json();
+    if (!id) {
+      return NextResponse.json({ error: "Missing subscriber id." }, { status: 400 });
+    }
+
+    const { error } = await getSupabase()
+      .from("subscribers")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Delete subscriber error:", error);
+    return NextResponse.json(
+      { error: "Failed to delete subscriber." },
       { status: 500 }
     );
   }

@@ -6,7 +6,7 @@ import { IMAGES } from "@/lib/constants";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-end text-white overflow-hidden">
+    <section className="relative min-h-screen flex items-end text-white overflow-hidden" role="img" aria-label="Pacific Northwest mountain landscape with lake">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${IMAGES.heroHome})` }}

@@ -10,6 +10,7 @@ interface Stats {
   totalPosts: number;
   publishedPosts: number;
   lastCampaign: { subject: string; sent_at: string; recipient_count: number } | null;
+  pageViews7d: number;
 }
 
 export default function AdminDashboard() {
@@ -19,15 +20,17 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function load() {
       try {
-        const [subRes, campRes, blogRes] = await Promise.all([
+        const [subRes, campRes, blogRes, analyticsRes] = await Promise.all([
           fetch("/api/admin/subscribers"),
           fetch("/api/admin/campaigns"),
           fetch("/api/admin/blog"),
+          fetch("/api/admin/analytics?range=7"),
         ]);
 
         const { subscribers } = await subRes.json();
         const { campaigns } = await campRes.json();
         const { posts } = await blogRes.json();
+        const analyticsData = await analyticsRes.json();
 
         const active = subscribers?.filter((s: { status: string }) => s.status === "active") || [];
         const sentCampaigns = campaigns?.filter((c: { status: string }) => c.status === "sent") || [];
@@ -41,6 +44,7 @@ export default function AdminDashboard() {
           totalPosts: posts?.length || 0,
           publishedPosts: published.length,
           lastCampaign: lastSent,
+          pageViews7d: analyticsData?.totalViews || 0,
         });
       } catch (err) {
         console.error("Dashboard load error:", err);
@@ -64,7 +68,7 @@ export default function AdminDashboard() {
     <div>
       <h1 className="text-2xl font-bold text-dark mb-6">Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         <div className="bg-white rounded-xl p-6 border border-border-light">
           <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
             Active Subscribers
@@ -97,6 +101,18 @@ export default function AdminDashboard() {
             {stats?.totalCampaigns || 0}
           </p>
         </div>
+
+        <Link href="/admin/analytics" className="bg-white rounded-xl p-6 border border-border-light no-underline block hover:border-primary/30 transition-colors">
+          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+            Page Views (7d)
+          </p>
+          <p className="text-3xl font-bold text-primary">
+            {stats?.pageViews7d || 0}
+          </p>
+          <p className="text-text-muted text-xs mt-1">
+            View full analytics &rarr;
+          </p>
+        </Link>
 
         <div className="bg-white rounded-xl p-6 border border-border-light">
           <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
