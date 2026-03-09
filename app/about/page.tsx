@@ -16,6 +16,8 @@ const credentialsList = [
   { top: "11+ Years", bottom: "Experience" },
   { top: "Licensed", bottom: "Health & Life" },
   { top: "CPMA", bottom: "Certified" },
+  { top: "M.S.", bottom: "Professional Accounting" },
+  { top: "CPA", bottom: "Candidate" },
 ];
 
 export default function AboutPage() {
