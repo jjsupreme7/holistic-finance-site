@@ -4,7 +4,7 @@ export const SITE_TAGLINE = "Placing Family First in Finance";
 export const CONTACT = {
   phone: "(253) 666-8663",
   phoneTel: "tel:+12536668663",
-  email: "anna@holistichealthandfinance.com",
+  email: "Holistic.Health.Finance@gmail.com",
   address: "7017 27th St W, Suite #6, University Place, WA 98466",
   hours: "Monday - Friday: 8:00 AM - 6:00 PM",
   weekendHours: "Saturday - Sunday: By appointment",
@@ -265,7 +265,7 @@ export const RESOURCES = [
 export const EMAIL_CONFIG = {
   fromName: "Holistic Health and Finance",
   fromEmail: "newsletter@myholisticfinance.com",
-  replyTo: "anna@holistichealthandfinance.com",
+  replyTo: "Holistic.Health.Finance@gmail.com",
 };
 
 // Google Calendar Appointment Scheduling URL
