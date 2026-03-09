@@ -7,6 +7,7 @@ import { SITE_NAME } from "@/lib/constants";
 const navItems = [
   { label: "Dashboard", href: "/admin" },
   { label: "Analytics", href: "/admin/analytics" },
+  { label: "Submissions", href: "/admin/submissions" },
   { label: "Blog", href: "/admin/blog" },
   { label: "Subscribers", href: "/admin/subscribers" },
   { label: "Campaigns", href: "/admin/campaigns" },

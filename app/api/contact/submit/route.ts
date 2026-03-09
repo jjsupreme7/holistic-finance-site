@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getSupabase } from "@/lib/supabase/server";
 import { getResend } from "@/lib/email/resend";
 import {
   contactNotificationEmail,
@@ -39,6 +40,16 @@ export async function POST(req: Request) {
       service: service || undefined,
       message: message?.trim() || undefined,
     };
+
+    // Save to database
+    await getSupabase().from("contact_submissions").insert({
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      email: formData.email,
+      phone: formData.phone || null,
+      service: formData.service || null,
+      message: formData.message || null,
+    });
 
     const resend = getResend();
 

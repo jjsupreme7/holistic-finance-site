@@ -11,6 +11,8 @@ interface Stats {
   publishedPosts: number;
   lastCampaign: { subject: string; sent_at: string; recipient_count: number } | null;
   pageViews7d: number;
+  newSubmissions: number;
+  totalSubmissions: number;
 }
 
 export default function AdminDashboard() {
@@ -20,17 +22,21 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function load() {
       try {
-        const [subRes, campRes, blogRes, analyticsRes] = await Promise.all([
+        const [subRes, campRes, blogRes, analyticsRes, submissionsRes] = await Promise.all([
           fetch("/api/admin/subscribers"),
           fetch("/api/admin/campaigns"),
           fetch("/api/admin/blog"),
           fetch("/api/admin/analytics?range=7").catch(() => null),
+          fetch("/api/admin/submissions").catch(() => null),
         ]);
 
         const { subscribers } = await subRes.json();
         const { campaigns } = await campRes.json();
         const { posts } = await blogRes.json();
         const analyticsData = analyticsRes?.ok ? await analyticsRes.json() : null;
+        const submissionsData = submissionsRes?.ok ? await submissionsRes.json() : null;
+        const allSubmissions = submissionsData?.submissions || [];
+        const newSubs = allSubmissions.filter((s: { status: string }) => s.status === "new");
 
         const active = subscribers?.filter((s: { status: string }) => s.status === "active") || [];
         const sentCampaigns = campaigns?.filter((c: { status: string }) => c.status === "sent") || [];
@@ -45,6 +51,8 @@ export default function AdminDashboard() {
           publishedPosts: published.length,
           lastCampaign: lastSent,
           pageViews7d: analyticsData?.totalViews || 0,
+          newSubmissions: newSubs.length,
+          totalSubmissions: allSubmissions.length,
         });
       } catch (err) {
         console.error("Dashboard load error:", err);
@@ -68,7 +76,19 @@ export default function AdminDashboard() {
     <div>
       <h1 className="text-2xl font-bold text-dark mb-6">Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <Link href="/admin/submissions" className="bg-white rounded-xl p-6 border border-border-light no-underline block hover:border-primary/30 transition-colors">
+          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+            Contact Submissions
+          </p>
+          <p className="text-3xl font-bold text-primary">
+            {stats?.newSubmissions || 0} <span className="text-lg font-normal text-text-muted">new</span>
+          </p>
+          <p className="text-text-muted text-xs mt-1">
+            {stats?.totalSubmissions || 0} total &rarr;
+          </p>
+        </Link>
+
         <div className="bg-white rounded-xl p-6 border border-border-light">
           <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
             Active Subscribers
