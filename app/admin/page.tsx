@@ -24,13 +24,13 @@ export default function AdminDashboard() {
           fetch("/api/admin/subscribers"),
           fetch("/api/admin/campaigns"),
           fetch("/api/admin/blog"),
-          fetch("/api/admin/analytics?range=7"),
+          fetch("/api/admin/analytics?range=7").catch(() => null),
         ]);
 
         const { subscribers } = await subRes.json();
         const { campaigns } = await campRes.json();
         const { posts } = await blogRes.json();
-        const analyticsData = await analyticsRes.json();
+        const analyticsData = analyticsRes?.ok ? await analyticsRes.json() : null;
 
         const active = subscribers?.filter((s: { status: string }) => s.status === "active") || [];
         const sentCampaigns = campaigns?.filter((c: { status: string }) => c.status === "sent") || [];

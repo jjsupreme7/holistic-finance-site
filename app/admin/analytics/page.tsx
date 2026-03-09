@@ -17,8 +17,13 @@ export default function AnalyticsPage() {
   useEffect(() => {
     setLoading(true);
     fetch(`/api/admin/analytics?range=${range}`)
-      .then((res) => res.json())
-      .then(setData)
+      .then((res) => {
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        return res.json();
+      })
+      .then((json) => {
+        if (json.viewsByDay) setData(json);
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [range]);
