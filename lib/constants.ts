@@ -63,7 +63,7 @@ export const NAV_LINKS = [
   { label: "Courses", href: "/courses" },
   { label: "Events", href: "/events" },
   { label: "Updates", href: "/newsletter" },
-  { label: "Contact", href: "/contact" },
+  { label: "Questions", href: "/contact" },
 ];
 
 export const PILLARS = [

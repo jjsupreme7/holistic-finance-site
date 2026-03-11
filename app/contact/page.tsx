@@ -5,7 +5,8 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import Icon from "@/components/ui/Icon";
 import CTABanner from "@/components/sections/CTABanner";
-import { CONTACT, SERVICE_OPTIONS, EMBEDS, IMAGES } from "@/lib/constants";
+import Button from "@/components/ui/Button";
+import { BOOKING_URL, CONTACT, SERVICE_OPTIONS, EMBEDS, IMAGES } from "@/lib/constants";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -53,18 +54,27 @@ export default function ContactPage() {
 
   return (
     <>
-      <PageHero title="Contact Us" tagline="Start your journey to financial freedom today" backgroundImage={IMAGES.heroContact} />
+      <PageHero
+        title="Questions & Custom Requests"
+        tagline="Use this page for general questions, event inquiries, or help when you are not ready to book directly"
+        backgroundImage={IMAGES.heroContact}
+      />
 
       <section className="py-20 px-6">
         <div className="container-site">
           <FadeIn>
             <div className="text-center mb-12">
-              <p className="text-text-secondary max-w-2xl mx-auto mb-3">
-                Your information is kept confidential. Fill out the form below and we&apos;ll be
-                in touch within one business day.
+              <p className="text-text-secondary max-w-3xl mx-auto mb-4">
+                Use this form for general questions, event details, custom scheduling requests, or
+                anything that needs a reply before booking. If you already know you want a
+                consultation, use the direct scheduling link instead.
               </p>
+              <div className="flex flex-wrap items-center justify-center gap-3 mb-3">
+                <Button href={BOOKING_URL} external>Book a Consultation</Button>
+                <Button href="#question-form" variant="outline">Ask a Question Instead</Button>
+              </div>
               <span className="inline-block text-sm text-success font-medium">
-                You&apos;ll receive a confirmation within 24 hours of reaching out.
+                We&apos;ll reply within one business day.
               </span>
             </div>
           </FadeIn>
@@ -82,7 +92,17 @@ export default function ContactPage() {
                   </p>
                 </div>
               ) : (
-                <div className="border border-border p-8 md:p-10">
+                <div id="question-form" className="border border-border p-8 md:p-10">
+                  <div className="mb-8">
+                    <span className="inline-block label text-accent mb-3">General Questions</span>
+                    <h2 className="text-2xl font-extralight text-foreground mb-3">
+                      Send a message instead of booking.
+                    </h2>
+                    <p className="text-text-secondary leading-relaxed">
+                      This is the best option if you want help choosing a service, need a custom
+                      time, have an event question, or prefer to talk before scheduling.
+                    </p>
+                  </div>
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
@@ -165,9 +185,9 @@ export default function ContactPage() {
                         id="message"
                         name="message"
                         rows={5}
-                        placeholder="Tell us about your financial planning needs..."
-                        className={`${inputClass} resize-y`}
-                      />
+                          placeholder="Tell us what you need help with..."
+                          className={`${inputClass} resize-y`}
+                        />
                     </div>
 
                     <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
