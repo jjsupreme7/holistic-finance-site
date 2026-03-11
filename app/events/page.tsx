@@ -36,16 +36,16 @@ export default function EventsPage() {
             <div className="border border-border p-8 md:p-10 mb-10">
               <h3 className="text-xl font-extralight text-foreground mb-4">How It Works</h3>
               <p className="text-text-secondary mb-5">
-                Select a service, choose a time that works for you, and we&apos;ll confirm your
-                appointment.
+                Choose an available time, share your details, and reserve your consultation through
+                Anna&apos;s Calendly booking page.
               </p>
               <ol className="space-y-3 text-foreground mb-8">
                 {[
-                  "Choose your service (e.g., Consultation)",
-                  "Select Zoom or In-Person meeting",
-                  "Pick a date and time",
-                  "Provide your contact details",
-                  "Receive confirmation via email within 24 hours",
+                  "Open the consultation booking page",
+                  "Choose a date and time that works for you",
+                  "Enter your contact details and any notes",
+                  "Confirm your appointment",
+                  "Receive confirmation and reminders from Calendly",
                 ].map((step, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="flex-shrink-0 w-7 h-7 bg-foreground text-background text-sm font-medium flex items-center justify-center mt-0.5">
@@ -57,13 +57,13 @@ export default function EventsPage() {
               </ol>
               <div className="flex flex-wrap gap-3 mb-8">
                 <span className="text-text-secondary text-sm font-medium border border-border px-5 py-2">
-                  Zoom Meeting
+                  30-minute consultation
                 </span>
                 <span className="text-text-secondary text-sm font-medium border border-border px-5 py-2">
-                  In-Person at Office
+                  Online scheduling with Calendly
                 </span>
               </div>
-              <Button href={BOOKING_URL} external>Book Now &mdash; Starting at $59</Button>
+              <Button href={BOOKING_URL} external>Book on Calendly</Button>
             </div>
           </FadeIn>
         </div>

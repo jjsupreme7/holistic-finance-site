@@ -284,10 +284,8 @@ export const EMAIL_CONFIG = {
   replyTo: "Holistic.Health.Finance@gmail.com",
 };
 
-// Google Calendar Appointment Scheduling URL
-// Update this once Anna creates the schedule at calendar.google.com
-export const BOOKING_URL =
-  "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0aFT-dPbtf8VLPfrwMBwdBEU91FiVBNgH6Km_3NklPClBQb6MsxVtVdxr44-nJMqpWdZn_5bpL?gv=true";
+// Calendly booking URL
+export const BOOKING_URL = "https://calendly.com/holistic-health-finance/30min";
 
 export const COURSES = [
   {
