@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { BOOKING_URL } from "@/lib/constants";
 
 export default function StickyCTA() {
   const [visible, setVisible] = useState(false);
@@ -36,12 +36,14 @@ export default function StickyCTA() {
               <p className="text-background font-medium text-sm">Ready to start?</p>
               <p className="text-background/50 text-xs">First consultation from $59</p>
             </div>
-            <Link
-              href="/contact"
+            <a
+              href={BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-accent text-foreground font-medium py-2.5 px-6 text-sm no-underline hover:bg-accent-dark transition-colors whitespace-nowrap"
             >
               Book a Consultation
-            </Link>
+            </a>
           </div>
         </motion.div>
       )}

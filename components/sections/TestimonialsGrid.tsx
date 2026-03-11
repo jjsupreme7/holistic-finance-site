@@ -19,9 +19,12 @@ export default function TestimonialsGrid() {
                 <p className="text-xl md:text-2xl font-light text-foreground leading-relaxed mb-6">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <span className="label text-text-muted">
+                <span className="label text-text-muted block">
                   {t.author}
                 </span>
+                {"role" in t && t.role && (
+                  <span className="text-sm text-text-secondary">{t.role}</span>
+                )}
               </div>
             </FadeIn>
           ))}

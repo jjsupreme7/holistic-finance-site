@@ -10,6 +10,7 @@ interface CTABannerProps {
   text: string;
   buttonText: string;
   buttonHref?: string;
+  buttonExternal?: boolean;
 }
 
 export default function CTABanner({
@@ -17,6 +18,7 @@ export default function CTABanner({
   text,
   buttonText,
   buttonHref = "/contact",
+  buttonExternal = false,
 }: CTABannerProps) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
@@ -58,7 +60,7 @@ export default function CTABanner({
           <div>
             <h2 className="heading-lg font-extralight text-background mb-5">{title}</h2>
             <p className="text-lg text-background/60 mb-10 max-w-xl leading-relaxed">{text}</p>
-            <Button href={buttonHref} variant="primary">{buttonText}</Button>
+            <Button href={buttonHref} variant="primary" external={buttonExternal}>{buttonText}</Button>
           </div>
           <div>
             <span className="label text-background/50 block mb-4">Stay Informed</span>

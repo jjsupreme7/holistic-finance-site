@@ -36,10 +36,32 @@ export default function ShopPage() {
   return (
     <>
       <PageHero
-        title="Shop"
-        tagline="Merchandise and wellness products to support your journey"
+        title="Shop Preview"
+        tagline="A preview of future merchandise while Stripe checkout is still being finalized"
         backgroundImage={IMAGES.heroShop}
       />
+
+      <section className="py-12 px-6 border-b border-border bg-muted">
+        <FadeIn className="container-site">
+          <div className="max-w-[900px] mx-auto text-center border border-border bg-background p-8 md:p-10">
+            <span className="inline-block label text-accent mb-4">Storefront Preview</span>
+            <h2 className="text-3xl font-extralight text-foreground mb-4">Checkout Is Not Live Yet</h2>
+            <p className="text-text-secondary leading-relaxed mb-6">
+              The shop is currently a preview collection while Stripe checkout and shipping are
+              still being finalized. Browse the product direction below and join the waitlist for
+              launch updates.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
+                Stripe checkout coming soon
+              </span>
+              <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
+                Early-access list open
+              </span>
+            </div>
+          </div>
+        </FadeIn>
+      </section>
 
       {featured && (
         <section className="py-16 px-6">
@@ -65,7 +87,7 @@ export default function ShopPage() {
                 </div>
                 <div className="p-10 md:p-12 flex flex-col justify-center">
                   <span className="label text-accent mb-4 block">
-                    Best Seller
+                    Preview Item
                   </span>
                   <h2 className="text-3xl font-extralight text-foreground mb-2">{featured.title}</h2>
                   <p className="text-3xl font-extralight text-accent mb-4">{featured.price}</p>
@@ -115,7 +137,7 @@ export default function ShopPage() {
                     className="bg-accent text-foreground font-medium py-3.5 px-6 text-sm no-underline text-center hover:bg-accent-dark transition-colors inline-flex items-center justify-center gap-2"
                   >
                     <Icon name="bell" size={16} />
-                    Notify Me When Available
+                    Join the Waitlist
                   </Link>
                 </div>
               </div>
@@ -127,7 +149,7 @@ export default function ShopPage() {
       <section className="py-16 px-6 bg-muted">
         <div className="container-site">
           <FadeIn className="text-center mb-10">
-            <h2 className="heading-lg font-extralight text-foreground mb-6">All Products</h2>
+            <h2 className="heading-lg font-extralight text-foreground mb-6">Preview Collection</h2>
             <div className="flex flex-wrap justify-center gap-2">
               {categories.map((cat) => (
                 <button
@@ -234,7 +256,7 @@ export default function ShopPage() {
                       className="w-full bg-foreground text-background font-medium py-3 px-6 text-sm no-underline transition-colors hover:bg-foreground/80 inline-flex items-center justify-center gap-2"
                     >
                       <Icon name="bell" size={14} />
-                      Notify Me When Available
+                      Join the Waitlist
                     </Link>
                   </div>
                 </motion.div>
@@ -269,6 +291,7 @@ export default function ShopPage() {
         title="Have Product Ideas?"
         text="We'd love to hear what merchandise you'd like to see. Drop us a message!"
         buttonText="Contact Us"
+        buttonHref="/contact"
       />
     </>
   );

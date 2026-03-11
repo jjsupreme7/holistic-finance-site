@@ -35,6 +35,7 @@ export const IMAGES = {
   heroCourses: "/courses-hero.webp",
   heroEvents:
     "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1920&auto=format&fit=crop&q=80",
+  eventYoungEntrepreneurs: "/events-kids-rummage-sale.jpg",
   heroShop:
     "https://images.unsplash.com/photo-1500534623283-312aade85981?w=1920&auto=format&fit=crop&q=80",
   heroContact:
@@ -62,7 +63,6 @@ export const NAV_LINKS = [
   { label: "Services", href: "/services" },
   { label: "Blog", href: "/blog" },
   { label: "Courses", href: "/courses" },
-  { label: "Shop", href: "/shop" },
   { label: "Events", href: "/events" },
   { label: "Newsletter", href: "/newsletter" },
   { label: "Contact", href: "/contact" },
@@ -117,10 +117,10 @@ export const HOMEPAGE_SERVICES = [
   },
   {
     icon: "financial-services",
-    title: "Financial Services",
-    href: "/services#financial-services",
+    title: "Tax Preparation & Planning",
+    href: "/services#tax-preparation-planning",
     description:
-      "From investment management and tax planning to risk assessment, ensuring your overall financial health is optimized.",
+      "Tax-aware planning and personal filing support that help families stay organized, proactive, and prepared through the year.",
   },
   {
     icon: "family-planning",
@@ -168,6 +168,13 @@ export const SERVICES_DETAIL = [
       "We provide expert education planning services, helping families prepare for future education costs. We assess financial goals and recommend tax-advantaged savings plans, like 529 accounts, to maximize growth.",
   },
   {
+    icon: "financial-services",
+    title: "Tax Preparation & Planning",
+    price: "Custom Quote",
+    description:
+      "From annual return preparation to tax-aware planning conversations, we help individuals and families organize documents, understand tax impact, and prepare with more confidence.",
+  },
+  {
     icon: "family-planning",
     title: "Family Planning",
     price: "$79/session",
@@ -209,16 +216,19 @@ export const TESTIMONIALS = [
     quote:
       "Anna's financial wisdom helped me to realize the real value of time. I'm thankful to her and hope families will start to invest in their future as I have.",
     author: "Chris W.",
+    role: "Retirement Planning Client",
   },
   {
     quote:
       "Truly a professional through and through. Anna's financial strategies catered to my personal lifestyle and proposed a well-thought methodology for improvement. This has been a truly eye opening experience!",
     author: "Susanne F.",
+    role: "Family Financial Planning Client",
   },
   {
     quote:
       "I should have done this years ago. Holistic Health & Financial Services has shown me that time really is money and we need to do everything we can to give life back to ourselves and our future generations.",
     author: "Satisfied Client",
+    role: "University Place Client",
   },
 ];
 
@@ -248,6 +258,7 @@ export const SERVICE_OPTIONS = [
   "Retirement Planning",
   "Education Planning",
   "Mortgage Planning",
+  "Tax Preparation & Planning",
   "Family Planning",
   "Insurance Planning",
   "Life Insurance Quotes",

@@ -3,11 +3,13 @@
 import FadeIn from "@/components/motion/FadeIn";
 
 const credentials = [
-  "Transamerica Partner",
+  "M.S. Professional Accounting",
+  "CPA Candidate",
+  "Tax Preparer",
   "CPMA Certified",
-  "HIPAA Compliant",
   "11+ Years Experience",
   "Licensed Agent",
+  "HIPAA Compliant",
 ];
 
 export default function TrustLogos() {

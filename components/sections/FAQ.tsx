@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     q: "What services do you specialize in?",
-    a: "We specialize in retirement planning, education planning, mortgage planning, family financial planning, insurance (health & life), and estate planning. We take a holistic approach that considers your entire financial picture.",
+    a: "We specialize in retirement planning, education planning, mortgage planning, tax preparation and planning, family financial planning, insurance (health & life), and estate planning. We take a holistic approach that considers your entire financial picture.",
   },
   {
     q: "Do I need to prepare anything before my appointment?",
@@ -28,6 +28,10 @@ const faqs = [
   {
     q: "Can you help with health insurance enrollment?",
     a: "Absolutely. As a licensed health and life insurance agent, Anna can help you navigate marketplace plans, employer benefits, and find the right coverage for your family at no cost for the quote.",
+  },
+  {
+    q: "Do you offer tax preparation support?",
+    a: "Yes. Tax preparation and tax-aware planning are part of the service mix, especially for individuals and families who want better year-round organization and clearer filing support.",
   },
 ];
 

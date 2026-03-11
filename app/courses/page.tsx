@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import Icon from "@/components/ui/Icon";
 import CTABanner from "@/components/sections/CTABanner";
-import { COURSES, IMAGES, TRAINING_SERIES_GROUPS } from "@/lib/constants";
+import { BOOKING_URL, COURSES, IMAGES, TRAINING_SERIES_GROUPS } from "@/lib/constants";
 
 const container = {
   hidden: {},
@@ -18,6 +18,10 @@ const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
+
+function titleToId(title: string) {
+  return title.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
 
 export default function CoursesPage() {
   const freeCourses = COURSES.filter((c) => c.type === "free");
@@ -69,10 +73,24 @@ export default function CoursesPage() {
             subtitle="The full training series Anna requested is now structured on-site as real course content instead of a screenshot."
           />
 
+          <FadeIn className="mb-8">
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+              {TRAINING_SERIES_GROUPS.map((group) => (
+                <a
+                  key={group.title}
+                  href={`#${titleToId(group.title)}`}
+                  className="text-sm font-medium border border-border px-4 py-2 no-underline text-foreground hover:bg-background transition-colors"
+                >
+                  {group.eyebrow}
+                </a>
+              ))}
+            </div>
+          </FadeIn>
+
           <div className="space-y-10">
             {TRAINING_SERIES_GROUPS.map((group) => (
               <FadeIn key={group.title}>
-                <div className="border border-border bg-background">
+                <div id={titleToId(group.title)} className="border border-border bg-background scroll-mt-28">
                   <div className="p-8 md:p-10 border-b border-border flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                     <div className="max-w-3xl">
                       <span className="label text-accent block mb-3">{group.eyebrow}</span>
@@ -139,7 +157,7 @@ export default function CoursesPage() {
                   <span className="text-xs text-foreground font-medium border border-border px-3 py-1">{course.date}</span>
                 </div>
                 <p className="text-text-secondary leading-relaxed mb-6">{course.description}</p>
-                <Button href="/contact" className="text-sm">
+                <Button href={BOOKING_URL} external className="text-sm">
                   Register Free
                 </Button>
               </motion.div>
@@ -183,7 +201,7 @@ export default function CoursesPage() {
                   <span className="text-xs text-foreground font-medium border border-border px-3 py-1">{course.date}</span>
                 </div>
                 <p className="text-text-secondary leading-relaxed mb-6">{course.description}</p>
-                <Button href="/contact" className="text-sm">
+                <Button href={BOOKING_URL} external className="text-sm">
                   Enroll Now
                 </Button>
               </motion.div>

@@ -6,7 +6,7 @@ import Image from "next/image";
 import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
-import { IMAGES } from "@/lib/constants";
+import { BOOKING_URL, IMAGES } from "@/lib/constants";
 
 interface BlogPost {
   id: string;
@@ -185,6 +185,8 @@ export default function BlogPage() {
         title="Want Personalized Financial Advice?"
         text="Our articles provide general insights, but nothing beats a one-on-one consultation."
         buttonText="Book a Consultation"
+        buttonHref={BOOKING_URL}
+        buttonExternal
       />
     </>
   );

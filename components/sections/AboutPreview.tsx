@@ -12,11 +12,11 @@ export default function AboutPreview() {
         <FadeIn direction="left" className="lg:col-span-7">
           <div className="overflow-hidden">
             <Image
-              src={IMAGES.aboutPreview}
-              alt="Financial planning consultation"
+              src={IMAGES.annaPhoto}
+              alt="Anna Huang"
               width={700}
               height={500}
-              className="w-full h-auto img-grayscale object-cover"
+              className="w-full h-auto object-cover"
             />
           </div>
         </FadeIn>
@@ -30,6 +30,16 @@ export default function AboutPreview() {
             {SITE_NAME} provides individuals and families with the knowledge and
             tools necessary to invest in their financial future.
           </p>
+          <div className="flex flex-wrap gap-3 mb-8">
+            {["11+ Years Experience", "M.S. Professional Accounting", "CPA Candidate", "Tax Preparer"].map((item) => (
+              <span
+                key={item}
+                className="text-xs text-text-secondary border border-border px-3 py-2"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
           <Link
             href="/about"
             className="inline-flex items-center gap-2 text-foreground font-medium no-underline group text-sm uppercase tracking-[0.15em]"

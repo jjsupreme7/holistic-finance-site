@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
@@ -81,45 +82,57 @@ export default function EventsPage() {
             {COMMUNITY_EVENTS.map((event) => (
               <FadeIn key={event.title}>
                 <div className="border border-border bg-background overflow-hidden">
-                  <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.95fr] gap-px bg-border">
-                    <div className="bg-background p-8 md:p-10">
-                      <span className="label text-accent block mb-4">March Event</span>
-                      <h3 className="text-3xl font-extralight text-foreground mb-4">{event.title}</h3>
-                      <p className="text-text-secondary leading-relaxed text-lg mb-6">{event.summary}</p>
-                      <div className="flex flex-wrap gap-3 mb-8">
-                        <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
-                          {event.date}
-                        </span>
-                        <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
-                          {event.time}
-                        </span>
-                        {event.highlights.map((highlight) => (
-                          <span
-                            key={highlight}
-                            className="text-sm font-medium border border-border px-4 py-2 text-text-secondary"
-                          >
-                            {highlight}
-                          </span>
-                        ))}
-                      </div>
-                      <Button href="/contact">Ask About Future Events</Button>
+                  <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-px bg-border">
+                    <div className="bg-background p-6 md:p-8 flex items-center justify-center">
+                      <Image
+                        src={IMAGES.eventYoungEntrepreneurs}
+                        alt="Kids Rummage Sale and Young Entrepreneurs Market flyer"
+                        width={700}
+                        height={1050}
+                        className="w-full max-w-[440px] h-auto border border-border"
+                      />
                     </div>
 
-                    <div className="bg-muted p-8 md:p-10">
-                      <div className="space-y-6">
-                        <div>
-                          <div className="label text-text-muted mb-2">Location</div>
-                          <p className="text-foreground leading-relaxed">{event.location}</p>
+                    <div className="bg-background">
+                      <div className="p-8 md:p-10 border-b border-border">
+                        <span className="label text-accent block mb-4">March Event</span>
+                        <h3 className="text-3xl font-extralight text-foreground mb-4">{event.title}</h3>
+                        <p className="text-text-secondary leading-relaxed text-lg mb-6">{event.summary}</p>
+                        <div className="flex flex-wrap gap-3 mb-8">
+                          <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
+                            {event.date}
+                          </span>
+                          <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
+                            {event.time}
+                          </span>
+                          {event.highlights.map((highlight) => (
+                            <span
+                              key={highlight}
+                              className="text-sm font-medium border border-border px-4 py-2 text-text-secondary"
+                            >
+                              {highlight}
+                            </span>
+                          ))}
                         </div>
-                        <div>
-                          <div className="label text-text-muted mb-2">Hosted By</div>
-                          <p className="text-foreground leading-relaxed">{event.sponsor}</p>
+                        <Button href="/contact">Ask About Future Events</Button>
+                      </div>
+
+                      <div className="bg-muted p-8 md:p-10">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          <div>
+                            <div className="label text-text-muted mb-2">Location</div>
+                            <p className="text-foreground leading-relaxed">{event.location}</p>
+                          </div>
+                          <div>
+                            <div className="label text-text-muted mb-2">Hosted By</div>
+                            <p className="text-foreground leading-relaxed">{event.sponsor}</p>
+                          </div>
+                          <div>
+                            <div className="label text-text-muted mb-2">Contact</div>
+                            <p className="text-foreground leading-relaxed">{event.contactLabel}</p>
+                          </div>
                         </div>
-                        <div>
-                          <div className="label text-text-muted mb-2">Contact</div>
-                          <p className="text-foreground leading-relaxed">{event.contactLabel}</p>
-                        </div>
-                        <p className="text-text-secondary text-sm leading-relaxed">
+                        <p className="text-text-secondary text-sm leading-relaxed mt-6">
                           This event is positioned as a family-friendly, youth-focused community
                           market and learning experience. Reach out if you&apos;d like to hear about
                           future event participation or sponsorship opportunities.

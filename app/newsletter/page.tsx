@@ -3,7 +3,7 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import NewsletterForm from "@/components/sections/NewsletterForm";
-import { RESOURCES, IMAGES, SITE_NAME } from "@/lib/constants";
+import { BOOKING_URL, RESOURCES, IMAGES, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Newsletter & Resources",
@@ -82,6 +82,8 @@ export default function NewsletterPage() {
         title="Want Personalized Advice?"
         text="Our newsletter is great for general insights, but nothing beats a one-on-one consultation."
         buttonText="Book a Consultation"
+        buttonHref={BOOKING_URL}
+        buttonExternal
       />
     </>
   );

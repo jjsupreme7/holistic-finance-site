@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
-import { IMAGES, SITE_NAME } from "@/lib/constants";
+import { BOOKING_URL, IMAGES, SITE_NAME } from "@/lib/constants";
 
 export default function HeroSection() {
   return (
@@ -50,7 +50,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.45 }}
           >
-            <Button href="/contact">
+            <Button href={BOOKING_URL} external>
               Book Your Consultation &mdash; $59
             </Button>
           </motion.div>

@@ -10,7 +10,7 @@ import PricingTable from "@/components/sections/PricingTable";
 import TestimonialsGrid from "@/components/sections/TestimonialsGrid";
 import FAQ from "@/components/sections/FAQ";
 import CTABanner from "@/components/sections/CTABanner";
-import { SERVICES_DETAIL, IMAGES } from "@/lib/constants";
+import { BOOKING_URL, SERVICES_DETAIL, IMAGES } from "@/lib/constants";
 
 const container = {
   hidden: {},
@@ -47,7 +47,17 @@ export default function ServicesPage() {
               child&apos;s education, or seeking to grow your wealth, we are here to guide you every
               step of the way.
             </p>
-            <Button href="/contact">Book Your Consultation &mdash; $59</Button>
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              {["Retirement", "Insurance", "Tax Preparation", "Family Planning"].map((item) => (
+                <span
+                  key={item}
+                  className="text-text-secondary text-sm font-medium border border-border px-5 py-2"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+            <Button href={BOOKING_URL} external>Book Your Consultation &mdash; $59</Button>
             <p className="mt-5 text-sm text-success font-medium">
               You&apos;ll receive a confirmation within 24 hours of booking.
             </p>
@@ -74,7 +84,7 @@ export default function ServicesPage() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-50px" }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border"
           >
             {SERVICES_DETAIL.map((service) => (
               <motion.div
@@ -99,7 +109,7 @@ export default function ServicesPage() {
                 <p className="text-text-secondary text-sm leading-relaxed mb-5">
                   {service.description}
                 </p>
-                <Button href="/contact" variant="outline" className="text-xs w-full text-center">
+                <Button href={BOOKING_URL} external variant="outline" className="text-xs w-full text-center">
                   Get Started
                 </Button>
               </motion.div>
@@ -115,6 +125,8 @@ export default function ServicesPage() {
         title="Ready to Get Started?"
         text="Book your first consultation for just $59 and take the first step toward financial freedom."
         buttonText="Book a Consultation"
+        buttonHref={BOOKING_URL}
+        buttonExternal
       />
     </>
   );

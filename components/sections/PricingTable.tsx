@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
+import { BOOKING_URL } from "@/lib/constants";
 
 const plans = [
   {
@@ -17,6 +18,8 @@ const plans = [
       "Email follow-up summary",
     ],
     cta: "Book a Session",
+    href: BOOKING_URL,
+    external: true,
     popular: false,
   },
   {
@@ -33,6 +36,8 @@ const plans = [
       "Savings of $38 vs. single sessions",
     ],
     cta: "Get Started",
+    href: BOOKING_URL,
+    external: true,
     popular: true,
   },
   {
@@ -48,6 +53,8 @@ const plans = [
       "Zoom or phone call",
     ],
     cta: "Request a Quote",
+    href: "/contact",
+    external: false,
     popular: false,
   },
 ];
@@ -106,7 +113,8 @@ export default function PricingTable() {
                 ))}
               </ul>
               <Button
-                href="/contact"
+                href={plan.href}
+                external={plan.external}
                 variant={plan.popular ? "primary" : "outline"}
                 className="w-full text-center text-sm"
               >

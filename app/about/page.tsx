@@ -4,7 +4,7 @@ import PageHero from "@/components/ui/PageHero";
 import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
-import { IMAGES } from "@/lib/constants";
+import { BOOKING_URL, IMAGES } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "About Anna Huang",
@@ -83,7 +83,7 @@ export default function AboutPage() {
                 </div>
               ))}
 
-              <Button href="/contact">Book a Consultation</Button>
+              <Button href={BOOKING_URL} external>Book a Consultation</Button>
             </div>
           </FadeIn>
         </div>
@@ -93,6 +93,8 @@ export default function AboutPage() {
         title="Ready to Start Your Financial Journey?"
         text="Your first consultation starts at just $59."
         buttonText="Book a Consultation"
+        buttonHref={BOOKING_URL}
+        buttonExternal
       />
     </>
   );

@@ -1,7 +1,8 @@
-import { SITE_NAME, CONTACT } from "@/lib/constants";
+import { BOOKING_URL, SITE_NAME, CONTACT } from "@/lib/constants";
 
 const BRAND_COLOR = "#2c5aa0";
 const GOLD_COLOR = "#e8a838";
+const BOOKING_LINK = BOOKING_URL.replace(/&/g, "&amp;");
 
 function baseLayout(content: string, unsubscribeUrl: string) {
   return `<!DOCTYPE html>
@@ -78,7 +79,7 @@ export function welcomeEmail(unsubscribeUrl: string) {
     </p>
     <p style="color:#334155;line-height:1.7;font-size:15px;">
       In the meantime, if you have any questions, feel free to reply to this email or
-      <a href="https://myholisticfinance.com/contact" style="color:${BRAND_COLOR};font-weight:600;">book a consultation</a>.
+      <a href="${BOOKING_LINK}" style="color:${BRAND_COLOR};font-weight:600;">book a consultation</a>.
     </p>
     <p style="color:#334155;line-height:1.7;font-size:15px;">
       Warm regards,<br/>
@@ -156,7 +157,7 @@ export function contactConfirmationEmail(data: ContactFormData) {
     ${data.service ? `<p style="color:#334155;line-height:1.7;font-size:15px;">You expressed interest in <strong>${escapeHtml(data.service)}</strong> &mdash; we look forward to helping you!</p>` : ""}
     <p style="color:#334155;line-height:1.7;font-size:15px;">
       In the meantime, feel free to call us at <strong>${CONTACT.phone}</strong> or
-      <a href="https://myholisticfinance.com/events" style="color:${BRAND_COLOR};font-weight:600;">book an appointment online</a>.
+      <a href="${BOOKING_LINK}" style="color:${BRAND_COLOR};font-weight:600;">book an appointment online</a>.
     </p>
     <p style="color:#334155;line-height:1.7;font-size:15px;">
       Warm regards,<br/>

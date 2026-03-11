@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
+import { BOOKING_URL } from "@/lib/constants";
 
 interface BlogPost {
   id: string;
@@ -189,6 +190,8 @@ export default function BlogPostPage() {
         title="Ready to Take the Next Step?"
         text="Get personalized financial advice tailored to your family's needs."
         buttonText="Book a Consultation"
+        buttonHref={BOOKING_URL}
+        buttonExternal
       />
     </>
   );
