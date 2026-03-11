@@ -5,7 +5,27 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
-import { BOOKING_URL, COMMUNITY_EVENTS, EMBEDS, IMAGES, SITE_NAME } from "@/lib/constants";
+import { BOOKING_URL, COMMUNITY_EVENTS, IMAGES, SITE_NAME } from "@/lib/constants";
+
+const calendlySteps = [
+  "Open Anna's Calendly page",
+  "Choose a time that works for you",
+  "Share your contact details and notes",
+  "Confirm your appointment",
+  "Receive confirmation and reminders from Calendly",
+];
+
+const bookingBenefits = [
+  "Live availability without back-and-forth emails",
+  "30-minute consultation booking",
+  "Automatic confirmation and reminder emails",
+];
+
+const bookingPrep = [
+  "Your main questions or goals",
+  "Any deadline or decision you are facing",
+  "The best way for Anna to follow up",
+];
 
 export const metadata: Metadata = {
   title: "Events & Appointments",
@@ -40,13 +60,7 @@ export default function EventsPage() {
                 Anna&apos;s Calendly booking page.
               </p>
               <ol className="space-y-3 text-foreground mb-8">
-                {[
-                  "Open the consultation booking page",
-                  "Choose a date and time that works for you",
-                  "Enter your contact details and any notes",
-                  "Confirm your appointment",
-                  "Receive confirmation and reminders from Calendly",
-                ].map((step, i) => (
+                {calendlySteps.map((step, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="flex-shrink-0 w-7 h-7 bg-foreground text-background text-sm font-medium flex items-center justify-center mt-0.5">
                       {i + 1}
@@ -63,7 +77,10 @@ export default function EventsPage() {
                   Online scheduling with Calendly
                 </span>
               </div>
-              <Button href={BOOKING_URL} external>Book on Calendly</Button>
+              <div className="flex flex-wrap gap-3 items-center">
+                <Button href={BOOKING_URL} external>Book on Calendly</Button>
+                <Button href="/contact" variant="outline">Need a Custom Time?</Button>
+              </div>
             </div>
           </FadeIn>
         </div>
@@ -149,24 +166,74 @@ export default function EventsPage() {
 
       <section className="bg-muted py-20 px-6">
         <div className="max-w-[1200px] mx-auto">
-          <SectionHeader label="Schedule" title="Calendar" align="center" />
-          <FadeIn>
-            <p className="text-center text-text-secondary mb-2">
-              View upcoming events and availability below.
-            </p>
-            <p className="text-center text-text-muted text-sm mb-10">
-              Events are color-coded by type. Check back regularly for new workshops, classes, and community events.
-            </p>
-            <div className="border border-border overflow-hidden bg-background">
-              <iframe
-                src={EMBEDS.googleCalendar}
-                style={{ border: 0 }}
-                width="100%"
-                height="600"
-                title="Google Calendar"
-              />
-            </div>
-          </FadeIn>
+          <SectionHeader
+            label="Book Online"
+            title="Reserve Your Consultation"
+            subtitle="Calendly is now the primary booking flow, so you can see live availability and confirm your appointment in one place."
+            align="center"
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6">
+            <FadeIn>
+              <div className="border border-border bg-background p-8 md:p-10 h-full">
+                <span className="label text-accent block mb-4">Calendly Booking</span>
+                <h3 className="text-3xl font-extralight text-foreground mb-4">
+                  A cleaner consultation flow than the old calendar embed.
+                </h3>
+                <p className="text-text-secondary leading-relaxed mb-8">
+                  Open the booking page, pick an open time, and reserve your spot directly through
+                  Anna&apos;s live availability. Final scheduling details and reminders are handled
+                  inside Calendly.
+                </p>
+
+                <div className="space-y-4 mb-8">
+                  {bookingBenefits.map((item) => (
+                    <div
+                      key={item}
+                      className="border border-border px-5 py-4 text-foreground bg-muted"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  <Button href={BOOKING_URL} external>Open Booking Page</Button>
+                  <Button href="/contact" variant="outline">Ask a Question First</Button>
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+              <div className="space-y-6 h-full">
+                <div className="border border-border bg-background p-8">
+                  <span className="label text-accent block mb-4">Before You Book</span>
+                  <h3 className="text-2xl font-extralight text-foreground mb-4">
+                    Helpful details to have ready
+                  </h3>
+                  <div className="space-y-3">
+                    {bookingPrep.map((item) => (
+                      <div key={item} className="border border-border px-4 py-3 text-text-secondary">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border border-border bg-foreground text-background p-8">
+                  <span className="label text-background/70 block mb-4">Need Flexibility?</span>
+                  <h3 className="text-2xl font-extralight mb-4">
+                    Reach out if you do not see the right opening.
+                  </h3>
+                  <p className="text-background/80 leading-relaxed mb-6">
+                    If the current 30-minute Calendly option is not the right fit, use the contact
+                    page and we can help route your request.
+                  </p>
+                  <Button href="/contact" variant="dark">Contact Us</Button>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
