@@ -65,6 +65,7 @@ export const NAV_LINKS = [
   { label: "Shop", href: "/shop" },
   { label: "Events", href: "/events" },
   { label: "Newsletter", href: "/newsletter" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const PILLARS = [

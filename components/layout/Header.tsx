@@ -48,7 +48,7 @@ export default function Header() {
             alt={SITE_NAME}
             width={300}
             height={48}
-            className="relative"
+            className="relative w-[220px] md:w-[250px] lg:w-[300px] h-auto"
             priority
           />
         </Link>
@@ -107,7 +107,7 @@ export default function Header() {
           <Link
             href="/contact"
             onClick={() => setMenuOpen(false)}
-            className="bg-accent text-foreground text-xs uppercase tracking-[0.15em] font-medium px-6 py-2.5 no-underline transition-colors hover:bg-accent-dark ml-2"
+            className="bg-accent text-foreground text-xs uppercase tracking-[0.15em] font-medium px-4 lg:px-6 py-2.5 no-underline transition-colors hover:bg-accent-dark ml-2"
           >
             Book a Consultation
           </Link>

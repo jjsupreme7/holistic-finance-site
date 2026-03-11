@@ -74,7 +74,7 @@ export default function CTABanner({
                 {message}
               </motion.p>
             ) : (
-              <form onSubmit={handleSubmit} className="flex gap-0 relative">
+              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 sm:gap-0 relative">
                 <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
                   <input type="text" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} autoComplete="off" tabIndex={-1} />
                 </div>
@@ -85,12 +85,12 @@ export default function CTABanner({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={status === "loading"}
-                  className="flex-1 px-4 py-3 bg-background/5 border border-background/15 text-background placeholder:text-background/30 text-sm focus:outline-none focus:border-accent transition-colors disabled:opacity-60"
+                  className="min-w-0 flex-1 px-4 py-3 bg-background/5 border border-background/15 text-background placeholder:text-background/30 text-sm focus:outline-none focus:border-accent transition-colors disabled:opacity-60"
                 />
                 <button
                   type="submit"
                   disabled={status === "loading"}
-                  className="bg-accent text-foreground font-medium px-6 py-3 text-sm cursor-pointer border-none transition-colors hover:bg-accent-dark disabled:opacity-60 whitespace-nowrap"
+                  className="w-full sm:w-auto bg-accent text-foreground font-medium px-6 py-3 text-sm cursor-pointer border-none transition-colors hover:bg-accent-dark disabled:opacity-60 whitespace-nowrap"
                 >
                   {status === "loading" ? "..." : "Subscribe"}
                 </button>

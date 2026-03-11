@@ -10,6 +10,12 @@ export default function Footer() {
   const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const socialLinks = [
+    { label: "Facebook", href: SOCIAL.facebook },
+    { label: "Instagram", href: SOCIAL.instagram },
+  ].filter((social) => {
+    return !["https://facebook.com", "https://instagram.com"].includes(social.href);
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +51,7 @@ export default function Footer() {
         <div>
           <h4 className="text-lg font-extralight mb-4">{SITE_NAME}</h4>
           <p className="text-sm text-background/50 leading-relaxed">
-            Holistic Health &amp; Finance provides insurance and financial planning services.
+            {SITE_NAME} provides insurance and financial planning services.
             Mortgage, tax preparation, investment advisory, and legal services are provided
             through appropriately licensed professionals and strategic partners.
           </p>
@@ -90,23 +96,22 @@ export default function Footer() {
               </a>
             </li>
             <li className="text-background/50 text-xs">{CONTACT.address}</li>
-            <li className="flex gap-3 pt-2">
-              {[
-                { label: "Facebook", href: SOCIAL.facebook },
-                { label: "Instagram", href: SOCIAL.instagram },
-              ].map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Visit us on ${s.label}`}
-                  className="text-background/50 text-xs no-underline hover:text-accent transition-colors border border-background/15 px-3 py-1"
-                >
-                  {s.label}
-                </a>
-              ))}
-            </li>
+            {socialLinks.length > 0 && (
+              <li className="flex gap-3 pt-2 flex-wrap">
+                {socialLinks.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit us on ${s.label}`}
+                    className="text-background/50 text-xs no-underline hover:text-accent transition-colors border border-background/15 px-3 py-1"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </li>
+            )}
           </ul>
         </div>
 
@@ -124,7 +129,7 @@ export default function Footer() {
               {message}
             </motion.p>
           ) : (
-            <form onSubmit={handleSubmit} className="flex gap-0 relative">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 sm:gap-0 relative">
               <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
                 <input type="text" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} autoComplete="off" tabIndex={-1} />
               </div>
@@ -135,12 +140,12 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={status === "loading"}
-                className="flex-1 px-4 py-2.5 bg-background/5 border border-background/15 text-background placeholder:text-background/30 text-sm focus:outline-none focus:border-accent transition-colors disabled:opacity-60"
+                className="min-w-0 flex-1 px-4 py-2.5 bg-background/5 border border-background/15 text-background placeholder:text-background/30 text-sm focus:outline-none focus:border-accent transition-colors disabled:opacity-60"
               />
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="bg-accent text-foreground font-medium px-5 py-2.5 text-sm cursor-pointer border-none transition-colors hover:bg-accent-dark disabled:opacity-60 whitespace-nowrap"
+                className="w-full sm:w-auto bg-accent text-foreground font-medium px-5 py-2.5 text-sm cursor-pointer border-none transition-colors hover:bg-accent-dark disabled:opacity-60 whitespace-nowrap"
               >
                 {status === "loading" ? "..." : "Subscribe"}
               </button>
