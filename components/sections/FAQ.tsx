@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     q: "How much does a session cost?",
-    a: "Your first consultation starts at $59. Regular sessions range from $79\u2013$99 depending on the service. Life insurance and health insurance quotes are always free.",
+    a: "Pricing depends on the service you need. Initial consultations may start at $59, regular planning sessions generally range from $79\u2013$99, and life or health insurance quotes are always free.",
   },
   {
     q: "What services do you specialize in?",

@@ -50,9 +50,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.45 }}
           >
-            <Button href={BOOKING_URL} external>
-              Book Your Consultation &mdash; $59
-            </Button>
+            <Button href={BOOKING_URL} external>Book a Consultation</Button>
           </motion.div>
         </div>
       </div>

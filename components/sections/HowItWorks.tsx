@@ -10,7 +10,7 @@ const steps = [
     icon: CalendarCheck,
     title: "Book",
     description:
-      "Schedule your first consultation for just $59. Meet in person at our University Place office or via Zoom.",
+      "Choose a time on Calendly and schedule your consultation. Meet in person at our University Place office or request a virtual session.",
   },
   {
     step: "02",

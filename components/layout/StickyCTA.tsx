@@ -34,7 +34,7 @@ export default function StickyCTA() {
           <div className="max-w-[600px] mx-auto bg-foreground px-5 py-3 flex items-center justify-between gap-4">
             <div className="hidden sm:block">
               <p className="text-background font-medium text-sm">Ready to start?</p>
-              <p className="text-background/50 text-xs">First consultation from $59</p>
+              <p className="text-background/50 text-xs">Schedule directly on Calendly</p>
             </div>
             <a
               href={BOOKING_URL}

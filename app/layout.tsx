@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: `%s - ${SITE_NAME}`,
   },
   description:
-    `${SITE_NAME} offers personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA. Book your $59 first consultation today.`,
+    `${SITE_NAME} offers personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA. Book a consultation today.`,
   metadataBase: new URL("https://myholisticfinance.com"),
   icons: {
     icon: "/favicon.svg",

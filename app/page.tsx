@@ -22,8 +22,8 @@ export default function HomePage() {
       <FAQ />
       <CTABanner
         title="Ready to Take Control of Your Financial Future?"
-        text="Your first consultation starts at just $59. Let us help you build a plan for your family."
-        buttonText="Book Your Consultation &mdash; $59"
+        text="Schedule a consultation and let us help you build a plan for your family."
+        buttonText="Book a Consultation"
         buttonHref={BOOKING_URL}
         buttonExternal
       />

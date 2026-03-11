@@ -39,13 +39,12 @@ export default function ServicesPage() {
         <FadeIn className="max-w-[800px] mx-auto text-center">
           <div className="border border-border p-10 md:p-14">
             <p className="heading-lg font-extralight text-foreground mb-5">
-              First Consultation Starts At $59
+              Start with a Consultation
             </p>
             <p className="text-text-secondary leading-relaxed mb-8 text-lg">
-              Unlock your financial potential with personalized planning services designed to fit
-              your unique needs. Whether you&apos;re planning for retirement, saving for your
-              child&apos;s education, or seeking to grow your wealth, we are here to guide you every
-              step of the way.
+              Schedule time with Anna to talk through your goals, questions, and the services that
+              fit your situation best. Pricing varies by service, and the options below give you a
+              clearer picture of what is available.
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {["Retirement", "Insurance", "Tax Preparation", "Family Planning"].map((item) => (
@@ -57,9 +56,9 @@ export default function ServicesPage() {
                 </span>
               ))}
             </div>
-            <Button href={BOOKING_URL} external>Book Your Consultation &mdash; $59</Button>
+            <Button href={BOOKING_URL} external>Book a Consultation</Button>
             <p className="mt-5 text-sm text-success font-medium">
-              You&apos;ll receive a confirmation within 24 hours of booking.
+              You&apos;ll receive confirmation and reminders through Calendly.
             </p>
           </div>
         </FadeIn>
@@ -123,7 +122,7 @@ export default function ServicesPage() {
 
       <CTABanner
         title="Ready to Get Started?"
-        text="Book your first consultation for just $59 and take the first step toward financial freedom."
+        text="Schedule a consultation and take the first step toward a clearer financial plan."
         buttonText="Book a Consultation"
         buttonHref={BOOKING_URL}
         buttonExternal

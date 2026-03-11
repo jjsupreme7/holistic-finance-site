@@ -91,7 +91,7 @@ export default function AboutPage() {
 
       <CTABanner
         title="Ready to Start Your Financial Journey?"
-        text="Your first consultation starts at just $59."
+        text="Schedule a consultation to talk through your goals and next steps."
         buttonText="Book a Consultation"
         buttonHref={BOOKING_URL}
         buttonExternal
