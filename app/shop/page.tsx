@@ -8,9 +8,8 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import Icon from "@/components/ui/Icon";
 import CTABanner from "@/components/sections/CTABanner";
-import { PRODUCTS, IMAGES } from "@/lib/constants";
-
-const categories = ["All", "Apparel", "Wellness", "Drinkware", "Accessories"];
+import CheckoutButton from "@/components/shop/CheckoutButton";
+import { PRODUCTS, PRODUCT_CATEGORIES, IMAGES } from "@/lib/constants";
 
 const container = {
   hidden: {},
@@ -23,6 +22,7 @@ const item = {
 };
 
 export default function ShopPage() {
+  const checkoutEnabled = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_ENABLED === "true";
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
 
@@ -36,27 +36,35 @@ export default function ShopPage() {
   return (
     <>
       <PageHero
-        title="Shop Preview"
-        tagline="A preview of future merchandise while Stripe checkout is still being finalized"
+        title={checkoutEnabled ? "Shop" : "Shop Preview"}
+        tagline={
+          checkoutEnabled
+            ? "Secure Stripe checkout is ready for merchandise orders"
+            : "A preview of future merchandise while Stripe checkout is still being finalized"
+        }
         backgroundImage={IMAGES.heroShop}
       />
 
       <section className="py-12 px-6 border-b border-border bg-muted">
         <FadeIn className="container-site">
           <div className="max-w-[900px] mx-auto text-center border border-border bg-background p-8 md:p-10">
-            <span className="inline-block label text-accent mb-4">Storefront Preview</span>
-            <h2 className="text-3xl font-extralight text-foreground mb-4">Checkout Is Not Live Yet</h2>
+            <span className="inline-block label text-accent mb-4">
+              {checkoutEnabled ? "Storefront Live" : "Storefront Preview"}
+            </span>
+            <h2 className="text-3xl font-extralight text-foreground mb-4">
+              {checkoutEnabled ? "Secure Checkout Is Ready" : "Checkout Is Not Live Yet"}
+            </h2>
             <p className="text-text-secondary leading-relaxed mb-6">
-              The shop is currently a preview collection while Stripe checkout and shipping are
-              still being finalized. Browse the product direction below and join the waitlist for
-              launch updates.
+              {checkoutEnabled
+                ? "Browse the current merchandise collection and head into Stripe Checkout when you are ready to order. Shipping rates can be added in the Stripe dashboard as soon as they are finalized."
+                : "The shop is currently a preview collection while Stripe checkout and shipping are still being finalized. Browse the product direction below and join the waitlist for launch updates."}
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
-                Stripe checkout coming soon
+                {checkoutEnabled ? "Stripe Checkout connected" : "Stripe checkout coming soon"}
               </span>
               <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
-                Early-access list open
+                {checkoutEnabled ? "Email updates still available" : "Early-access list open"}
               </span>
             </div>
           </div>
@@ -87,7 +95,7 @@ export default function ShopPage() {
                 </div>
                 <div className="p-10 md:p-12 flex flex-col justify-center">
                   <span className="label text-accent mb-4 block">
-                    Preview Item
+                    {checkoutEnabled ? "Featured Item" : "Preview Item"}
                   </span>
                   <h2 className="text-3xl font-extralight text-foreground mb-2">{featured.title}</h2>
                   <p className="text-3xl font-extralight text-accent mb-4">{featured.price}</p>
@@ -132,13 +140,32 @@ export default function ShopPage() {
                     </div>
                   )}
 
-                  <Link
-                    href="/newsletter"
-                    className="bg-accent text-foreground font-medium py-3.5 px-6 text-sm no-underline text-center hover:bg-accent-dark transition-colors inline-flex items-center justify-center gap-2"
-                  >
-                    <Icon name="bell" size={16} />
-                    Join the Waitlist
-                  </Link>
+                  {checkoutEnabled ? (
+                    <div className="space-y-4">
+                      <CheckoutButton
+                        productSlug={featured.slug}
+                        productTitle={featured.title}
+                        selectedSize={selectedSizes[featured.title]}
+                        requiresSize={Boolean(featured.sizes?.length)}
+                        className="bg-accent text-foreground font-medium py-3.5 px-6 text-sm hover:bg-accent-dark transition-colors w-full sm:w-auto"
+                      />
+                      <Link
+                        href="/newsletter"
+                        className="border border-border text-foreground font-medium py-3.5 px-6 text-sm no-underline text-center hover:bg-muted transition-colors inline-flex items-center justify-center gap-2 w-full sm:w-auto"
+                      >
+                        <Icon name="bell" size={16} />
+                        Email Me Product Updates
+                      </Link>
+                    </div>
+                  ) : (
+                    <Link
+                      href="/newsletter"
+                      className="bg-accent text-foreground font-medium py-3.5 px-6 text-sm no-underline text-center hover:bg-accent-dark transition-colors inline-flex items-center justify-center gap-2"
+                    >
+                      <Icon name="bell" size={16} />
+                      Join the Waitlist
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -149,9 +176,11 @@ export default function ShopPage() {
       <section className="py-16 px-6 bg-muted">
         <div className="container-site">
           <FadeIn className="text-center mb-10">
-            <h2 className="heading-lg font-extralight text-foreground mb-6">Preview Collection</h2>
+            <h2 className="heading-lg font-extralight text-foreground mb-6">
+              {checkoutEnabled ? "Collection" : "Preview Collection"}
+            </h2>
             <div className="flex flex-wrap justify-center gap-2">
-              {categories.map((cat) => (
+              {PRODUCT_CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
@@ -178,7 +207,7 @@ export default function ShopPage() {
             >
               {filtered.map((product) => (
                 <motion.div
-                  key={product.title}
+                  key={product.slug}
                   variants={item}
                   className="bg-muted overflow-hidden group"
                 >
@@ -251,13 +280,32 @@ export default function ShopPage() {
                       </div>
                     )}
 
-                    <Link
-                      href="/newsletter"
-                      className="w-full bg-foreground text-background font-medium py-3 px-6 text-sm no-underline transition-colors hover:bg-foreground/80 inline-flex items-center justify-center gap-2"
-                    >
-                      <Icon name="bell" size={14} />
-                      Join the Waitlist
-                    </Link>
+                    {checkoutEnabled ? (
+                      <div className="space-y-3">
+                        <CheckoutButton
+                          productSlug={product.slug}
+                          productTitle={product.title}
+                          selectedSize={selectedSizes[product.title]}
+                          requiresSize={Boolean(product.sizes?.length)}
+                          className="w-full bg-foreground text-background font-medium py-3 px-6 text-sm transition-colors hover:bg-foreground/80"
+                        />
+                        <Link
+                          href="/newsletter"
+                          className="w-full border border-border text-foreground font-medium py-3 px-6 text-sm no-underline transition-colors hover:bg-background inline-flex items-center justify-center gap-2"
+                        >
+                          <Icon name="bell" size={14} />
+                          Launch Alerts
+                        </Link>
+                      </div>
+                    ) : (
+                      <Link
+                        href="/newsletter"
+                        className="w-full bg-foreground text-background font-medium py-3 px-6 text-sm no-underline transition-colors hover:bg-foreground/80 inline-flex items-center justify-center gap-2"
+                      >
+                        <Icon name="bell" size={14} />
+                        Join the Waitlist
+                      </Link>
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -270,17 +318,18 @@ export default function ShopPage() {
                 <Icon name="bell" size={32} />
               </div>
               <h3 className="text-2xl font-extralight text-foreground mb-3">
-                Get Notified When We Launch
+                {checkoutEnabled ? "Stay In The Loop" : "Get Notified When We Launch"}
               </h3>
               <p className="text-text-secondary mb-8 max-w-md mx-auto">
-                Be the first to shop our collection. Subscribe to our newsletter and get an
-                exclusive early-bird discount.
+                {checkoutEnabled
+                  ? "Subscribe for future product drops, workshop announcements, and special offers."
+                  : "Be the first to shop our collection. Subscribe to our newsletter and get an exclusive early-bird discount."}
               </p>
               <a
                 href="/newsletter"
                 className="inline-block bg-accent text-foreground font-medium py-3.5 px-10 no-underline hover:bg-accent-dark transition-colors text-sm uppercase tracking-[0.15em]"
               >
-                Subscribe for Early Access
+                {checkoutEnabled ? "Subscribe for Product Updates" : "Subscribe for Early Access"}
               </a>
             </div>
           </FadeIn>

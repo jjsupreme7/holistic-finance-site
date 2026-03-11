@@ -583,11 +583,41 @@ export const COMMUNITY_EVENTS = [
   },
 ];
 
-export const PRODUCTS = [
+export type ProductCategory = "Apparel" | "Wellness" | "Drinkware" | "Accessories";
+
+export interface Product {
+  slug: string;
+  icon: IconName;
+  title: string;
+  price: string;
+  priceInCents: number;
+  description: string;
+  category: ProductCategory;
+  colors?: string[];
+  sizes?: string[];
+  gradient: [string, string];
+  featured?: boolean;
+  tagline: string;
+  brandText?: string;
+  image: string;
+  stripePriceEnv: string;
+}
+
+export const PRODUCT_CATEGORIES: Array<"All" | ProductCategory> = [
+  "All",
+  "Apparel",
+  "Wellness",
+  "Drinkware",
+  "Accessories",
+];
+
+export const PRODUCTS: Product[] = [
   {
+    slug: "family-first-tshirt",
     icon: "tshirt",
     title: "\"Family First\" T-Shirt",
     price: "$28",
+    priceInCents: 2800,
     description: "Soft cotton tee featuring the Holistic Health & Financial Services motto. Available in S\u2013XXL.",
     category: "Apparel",
     colors: ["#1a1a2e", "#2c5aa0", "#ffffff"],
@@ -597,32 +627,41 @@ export const PRODUCTS = [
     tagline: "Family First \u2022 Always",
     brandText: "FAMILY FIRST",
     image: "https://images.unsplash.com/photo-1571455786673-9d9d6c194f90?w=800&auto=format&fit=crop",
+    stripePriceEnv: "STRIPE_PRICE_FAMILY_FIRST_TSHIRT",
   },
   {
+    slug: "financial-freedom-mug",
     icon: "mug",
     title: "Financial Freedom Mug",
     price: "$16",
+    priceInCents: 1600,
     description: "Start your morning with a reminder of your goals. 11oz ceramic mug, dishwasher safe.",
     category: "Drinkware",
     colors: ["#ffffff", "#1a1a2e"],
     gradient: ["#fef3e2", "#fde8c8"],
     tagline: "Invest in Yourself",
     image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&auto=format&fit=crop",
+    stripePriceEnv: "STRIPE_PRICE_FINANCIAL_FREEDOM_MUG",
   },
   {
+    slug: "budget-planner-journal",
     icon: "journal",
     title: "Budget Planner Journal",
     price: "$22",
+    priceInCents: 2200,
     description: "A guided journal with monthly budget templates, savings trackers, and financial goal worksheets.",
     category: "Wellness",
     gradient: ["#e8f5e9", "#d5ecd7"],
     tagline: "Track \u2022 Plan \u2022 Grow",
     image: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=800&auto=format&fit=crop",
+    stripePriceEnv: "STRIPE_PRICE_BUDGET_PLANNER_JOURNAL",
   },
   {
+    slug: "pay-yourself-first-hoodie",
     icon: "hoodie",
     title: "\"Pay Yourself First\" Hoodie",
     price: "$45",
+    priceInCents: 4500,
     description: "Cozy pullover hoodie with embroidered logo. Unisex fit, available in S\u2013XXL.",
     category: "Apparel",
     colors: ["#1a1a2e", "#4a4a6a", "#2c5aa0"],
@@ -632,26 +671,33 @@ export const PRODUCTS = [
     tagline: "Pay Yourself First",
     brandText: "PAY YOURSELF FIRST",
     image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&auto=format&fit=crop",
+    stripePriceEnv: "STRIPE_PRICE_PAY_YOURSELF_FIRST_HOODIE",
   },
   {
+    slug: "financial-wellness-candle",
     icon: "candle",
     title: "Financial Wellness Candle",
     price: "$18",
+    priceInCents: 1800,
     description: "Hand-poured soy candle with a calming lavender scent. Because financial planning should be stress-free.",
     category: "Wellness",
     gradient: ["#f3e8f5", "#ead8f0"],
     tagline: "Stress-Free Finances",
     image: "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=800&auto=format&fit=crop",
+    stripePriceEnv: "STRIPE_PRICE_FINANCIAL_WELLNESS_CANDLE",
   },
   {
+    slug: "hhf-tote-bag",
     icon: "tote",
     title: "HHF Tote Bag",
     price: "$20",
+    priceInCents: 2000,
     description: "Sturdy canvas tote with the Holistic Health & Financial Services logo. Perfect for groceries or books.",
     category: "Accessories",
     colors: ["#f5f0e8", "#1a1a2e"],
     gradient: ["#faf5ee", "#f0e8d8"],
     tagline: "Carry Your Goals",
     image: "https://images.unsplash.com/photo-1597633425046-08f5110420b5?w=800&auto=format&fit=crop",
+    stripePriceEnv: "STRIPE_PRICE_HHF_TOTE_BAG",
   },
 ];
