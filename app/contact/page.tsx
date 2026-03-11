@@ -215,7 +215,14 @@ export default function ContactPage() {
                       {
                         iconName: "email" as const,
                         label: "Email",
-                        content: <a href={`mailto:${CONTACT.email}`} className="text-foreground no-underline hover:text-accent transition-colors break-all text-sm font-medium">{CONTACT.email}</a>,
+                        content: (
+                          <a
+                            href={`mailto:${CONTACT.email}`}
+                            className="text-foreground no-underline hover:text-accent transition-colors break-words text-sm font-medium leading-relaxed"
+                          >
+                            {CONTACT.email}
+                          </a>
+                        ),
                       },
                       {
                         iconName: "office" as const,

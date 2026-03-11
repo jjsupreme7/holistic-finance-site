@@ -82,7 +82,10 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <a href={`mailto:${CONTACT.email}`} className="text-background/60 no-underline hover:text-accent transition-colors break-all text-xs">
+              <a
+                href={`mailto:${CONTACT.email}`}
+                className="text-background/60 no-underline hover:text-accent transition-colors break-words text-sm leading-relaxed"
+              >
                 {CONTACT.email}
               </a>
             </li>
