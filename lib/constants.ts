@@ -1,3 +1,5 @@
+import type { IconName } from "@/lib/icons";
+
 export const SITE_NAME = "Holistic Health & Financial Services";
 export const SITE_TAGLINE = "Placing Family First in Finance";
 
@@ -6,7 +8,7 @@ export const CONTACT = {
   phoneTel: "tel:+12536668663",
   email: "Holistic.Health.Finance@gmail.com",
   address: "7017 27th St W, Suite #6, University Place, WA 98466",
-  hours: "Monday - Friday: 8:00 AM - 6:00 PM",
+  hours: "Monday - Friday: 8:00 AM - 4:00 PM",
   weekendHours: "Saturday - Sunday: By appointment",
 };
 
@@ -90,7 +92,9 @@ export const CREDENTIALS = [
   { icon: "experience", label: "11+ Years Experience", sub: "Healthcare Finance & Insurance" },
   { icon: "licensed", label: "Licensed Agent", sub: "Health & Life Insurance" },
   { icon: "certified", label: "CPMA Certified", sub: "Professional Medical Auditor" },
-  { icon: "family-first", label: "Family-First", sub: "Personalized Planning" },
+  { icon: "education", label: "M.S. Degree", sub: "Professional Accounting" },
+  { icon: "licensed", label: "CPA Candidate", sub: "Advanced Accounting Track" },
+  { icon: "financial-services", label: "Tax Preparer", sub: "Personal Filing Support" },
   { icon: "partner", label: "Transamerica Partner", sub: "Partner Agent" },
   { icon: "hipaa", label: "HIPAA Compliant", sub: "Data Protection" },
 ];
@@ -212,7 +216,7 @@ export const TESTIMONIALS = [
   },
   {
     quote:
-      "I should have done this years ago. Holistic Health and Finance has shown me that time really is money and we need to do everything we can to give life back to ourselves and our future generations.",
+      "I should have done this years ago. Holistic Health & Financial Services has shown me that time really is money and we need to do everything we can to give life back to ourselves and our future generations.",
     author: "Satisfied Client",
   },
 ];
@@ -228,7 +232,7 @@ export const COMING_SOON = [
     icon: "shop",
     title: "Shop",
     description:
-      "Holistic Health and Finance merchandise including t-shirts, mugs, and wellness products to support your journey.",
+      "Holistic Health & Financial Services merchandise including t-shirts, mugs, and wellness products to support your journey.",
   },
 ];
 
@@ -263,7 +267,7 @@ export const RESOURCES = [
 ];
 
 export const EMAIL_CONFIG = {
-  fromName: "Holistic Health and Finance",
+  fromName: SITE_NAME,
   fromEmail: "newsletter@myholisticfinance.com",
   replyTo: "Holistic.Health.Finance@gmail.com",
 };
@@ -340,12 +344,239 @@ export const COURSES = [
   },
 ];
 
+type TrainingModule = {
+  number: number;
+  title: string;
+  description: string;
+};
+
+type TrainingSeriesGroup = {
+  title: string;
+  description: string;
+  eyebrow: string;
+  accent: IconName;
+  modules: TrainingModule[];
+};
+
+export const TRAINING_SERIES_GROUPS: TrainingSeriesGroup[] = [
+  {
+    eyebrow: "Foundations",
+    title: "Personal Finance Foundations",
+    description:
+      "Core learning modules covering investing, retirement, insurance, education savings, taxes, and estate planning.",
+    accent: "finance",
+    modules: [
+      {
+        number: 1,
+        title: "Investment Basics: Stocks, Bonds, Mutual Funds",
+        description:
+          "Build a practical understanding of the major investment vehicles and how they support different time horizons and risk levels.",
+      },
+      {
+        number: 2,
+        title: "Retirement Basic I: Pensions, Social Security",
+        description:
+          "Review the major retirement income pillars and how they fit into a long-term retirement strategy.",
+      },
+      {
+        number: 3,
+        title: "Retirement Basic II: 401(k), 403(b), IRA, Roth IRA, SEP IRA",
+        description:
+          "Compare the most common retirement accounts so you can choose the right structure for your stage of life and employment.",
+      },
+      {
+        number: 4,
+        title: "Retirement Basic III: Annuity - Protect & Grow Your Money",
+        description:
+          "Learn how annuities work, when they may fit into a plan, and how to evaluate protection and growth tradeoffs.",
+      },
+      {
+        number: 5,
+        title: "Insurance Basics",
+        description:
+          "Understand the role of health, life, disability, and property coverage in protecting your household and long-term goals.",
+      },
+      {
+        number: 6,
+        title: "IUL and VUL Basics",
+        description:
+          "Get an introduction to indexed and variable universal life products, including how cash value, risk, and fees interact.",
+      },
+      {
+        number: 7,
+        title: "Education Fund Planning",
+        description:
+          "Compare education savings options including 529 plans, UTMA, UGMA, and GET so families can plan for future school costs with clarity.",
+      },
+      {
+        number: 8,
+        title: "Long Term Care Planning",
+        description:
+          "Explore proactive ways to prepare for future care needs while protecting family assets and reducing financial stress.",
+      },
+      {
+        number: 9,
+        title: "Tax Planning",
+        description:
+          "Review tax-aware strategies that can help households organize income, deductions, timing, and retirement decisions more intentionally.",
+      },
+      {
+        number: 10,
+        title: "Estate Planning",
+        description:
+          "Cover wills, beneficiary coordination, legacy goals, and the planning basics families should address before a crisis happens.",
+      },
+    ],
+  },
+  {
+    eyebrow: "Wealth Building",
+    title: "Real Estate & Asset Growth",
+    description:
+      "Topic-based sessions focused on mortgages, real estate investing, and strategies for building and protecting wealth over time.",
+    accent: "mortgage",
+    modules: [
+      {
+        number: 11,
+        title: "Real Estate Investment",
+        description:
+          "Learn the fundamentals of evaluating real estate opportunities, cash flow, leverage, and long-term portfolio fit.",
+      },
+      {
+        number: 12,
+        title: "Understanding Loan and Mortgage",
+        description:
+          "Break down mortgage terms, loan structures, approval considerations, and the true cost of borrowing.",
+      },
+      {
+        number: 13,
+        title: "Build Wealth and Protect Wealth",
+        description:
+          "Connect growth strategies with risk management so progress is paired with protection, not just accumulation.",
+      },
+    ],
+  },
+  {
+    eyebrow: "Entrepreneurship",
+    title: "Business Growth & Entrepreneurship",
+    description:
+      "Practical business-building training for people exploring entrepreneurship, systems, and sustainable client growth.",
+    accent: "financial-services",
+    modules: [
+      {
+        number: 14,
+        title: "Leveraging Entrepreneurial Platform to Start up a Business",
+        description:
+          "Identify the relationships, tools, and opportunities that can help turn an idea into a launch-ready business model.",
+      },
+      {
+        number: 15,
+        title: "Understanding Business Model and Business System",
+        description:
+          "Clarify how your offer, operations, delivery, and revenue model need to work together to support growth.",
+      },
+      {
+        number: 16,
+        title: "Develop Entrepreneur Mindset and Business Plan",
+        description:
+          "Strengthen business thinking, goal setting, and planning habits that support consistent execution.",
+      },
+      {
+        number: 17,
+        title: "How to EPR, Challenge and Empower People",
+        description:
+          "Learn a people-first leadership framework for equipping, challenging, and empowering others with accountability and trust.",
+      },
+      {
+        number: 18,
+        title: "Building Customer Base",
+        description:
+          "Focus on audience-building, referrals, repeat relationships, and the systems that turn interest into loyal customers.",
+      },
+    ],
+  },
+  {
+    eyebrow: "Leadership",
+    title: "Communication, Execution & Team Leadership",
+    description:
+      "Leadership-oriented modules covering trust, communication, presentation, systems, and culture building.",
+    accent: "family",
+    modules: [
+      {
+        number: 19,
+        title: "Communication Skills",
+        description:
+          "Improve clarity, confidence, and consistency when communicating with clients, collaborators, and teams.",
+      },
+      {
+        number: 20,
+        title: "Connection with People and Build Trust",
+        description:
+          "Develop relationship habits that strengthen credibility, deepen rapport, and create long-term trust.",
+      },
+      {
+        number: 21,
+        title: "Presentation Skills",
+        description:
+          "Practice structuring and delivering presentations that are engaging, persuasive, and easy to follow.",
+      },
+      {
+        number: 22,
+        title: "IQ, EQ, AQ and LQ",
+        description:
+          "Explore the role of intelligence, emotional awareness, adaptability, and leadership quotient in personal and business growth.",
+      },
+      {
+        number: 23,
+        title: "Execution Techniques",
+        description:
+          "Turn ideas into measurable progress with prioritization methods, follow-through systems, and realistic action planning.",
+      },
+      {
+        number: 24,
+        title: "Run Effective Business System",
+        description:
+          "Build operational rhythms and repeatable systems that support efficiency, accountability, and client service.",
+      },
+      {
+        number: 25,
+        title: "Building Frontline Leaders",
+        description:
+          "Equip emerging leaders with the structure, communication habits, and responsibility needed to lead well.",
+      },
+      {
+        number: 26,
+        title: "Cultivating Team Culture",
+        description:
+          "Shape a healthy team environment through aligned values, shared expectations, and intentional leadership.",
+      },
+    ],
+  },
+];
+
+export const COMMUNITY_EVENTS = [
+  {
+    title: "Kids Rummage Sale & Young Entrepreneurs Market",
+    date: "Sunday, March 22, 2026",
+    time: "1:30 PM",
+    location: "7017 27th St W, Suite 6, University Place, WA 98466",
+    summary:
+      "A fun, family-friendly community event where kids can make friends, shop affordable toys, books, and household finds, and experience entrepreneurship firsthand.",
+    highlights: [
+      "Cash only",
+      "Non-profit community event",
+      "Supports hands-on youth entrepreneurship",
+    ],
+    sponsor: "HHF Young Entrepreneur Group",
+    contactLabel: CONTACT.phone,
+  },
+];
+
 export const PRODUCTS = [
   {
     icon: "tshirt",
     title: "\"Family First\" T-Shirt",
     price: "$28",
-    description: "Soft cotton tee featuring the Holistic Health and Finance motto. Available in S\u2013XXL.",
+    description: "Soft cotton tee featuring the Holistic Health & Financial Services motto. Available in S\u2013XXL.",
     category: "Apparel",
     colors: ["#1a1a2e", "#2c5aa0", "#ffffff"],
     sizes: ["S", "M", "L", "XL", "XXL"],
@@ -404,7 +635,7 @@ export const PRODUCTS = [
     icon: "tote",
     title: "HHF Tote Bag",
     price: "$20",
-    description: "Sturdy canvas tote with the Holistic Health and Finance logo. Perfect for groceries or books.",
+    description: "Sturdy canvas tote with the Holistic Health & Financial Services logo. Perfect for groceries or books.",
     category: "Accessories",
     colors: ["#f5f0e8", "#1a1a2e"],
     gradient: ["#faf5ee", "#f0e8d8"],

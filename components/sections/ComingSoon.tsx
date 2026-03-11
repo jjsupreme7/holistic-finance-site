@@ -27,7 +27,7 @@ const cards = [
   {
     icon: "shop" as const,
     title: "Shop",
-    description: "Holistic Health and Finance merchandise including t-shirts, mugs, and wellness products to support your journey.",
+    description: "Holistic Health & Financial Services merchandise including t-shirts, mugs, and wellness products to support your journey.",
     href: "/shop",
     badge: "Coming Soon",
     badgeColor: "bg-gradient-to-r from-gold to-gold-dark text-dark",

@@ -2,8 +2,6 @@ import { SITE_NAME, CONTACT } from "@/lib/constants";
 
 const BRAND_COLOR = "#2c5aa0";
 const GOLD_COLOR = "#e8a838";
-const LOGO_URL =
-  "https://i0.wp.com/myholisticfinance.com/wp-content/uploads/2025/12/logo.png?fit=1536%2C1024&ssl=1";
 
 function baseLayout(content: string, unsubscribeUrl: string) {
   return `<!DOCTYPE html>
@@ -13,7 +11,8 @@ function baseLayout(content: string, unsubscribeUrl: string) {
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
     <!-- Header -->
     <div style="background:${BRAND_COLOR};padding:24px 32px;text-align:center;">
-      <img src="${LOGO_URL}" alt="${SITE_NAME}" style="height:60px;width:auto;" />
+      <p style="margin:0 0 6px;color:${GOLD_COLOR};font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;">HHF</p>
+      <p style="margin:0;color:#ffffff;font-size:20px;font-weight:600;line-height:1.4;">${SITE_NAME}</p>
     </div>
 
     <!-- Content -->
@@ -46,7 +45,8 @@ function transactionalLayout(content: string) {
 <body style="margin:0;padding:0;background:#f8faff;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
   <div style="max-width:600px;margin:0 auto;background:#ffffff;">
     <div style="background:${BRAND_COLOR};padding:24px 32px;text-align:center;">
-      <img src="${LOGO_URL}" alt="${SITE_NAME}" style="height:60px;width:auto;" />
+      <p style="margin:0 0 6px;color:${GOLD_COLOR};font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;">HHF</p>
+      <p style="margin:0;color:#ffffff;font-size:20px;font-weight:600;line-height:1.4;">${SITE_NAME}</p>
     </div>
     <div style="padding:32px;">
       ${content}

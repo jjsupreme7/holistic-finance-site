@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
-import { IMAGES } from "@/lib/constants";
+import { IMAGES, SITE_NAME } from "@/lib/constants";
 
 export default function HeroSection() {
   return (
@@ -19,9 +19,9 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="label text-white/70 mb-6 block"
+            className="label text-white/70 mb-6 block max-w-[20rem] md:max-w-none"
           >
-            Holistic Financial Planning
+            {SITE_NAME}
           </motion.span>
 
           <motion.h1

@@ -4,12 +4,12 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
-import { EMBEDS, IMAGES, BOOKING_URL } from "@/lib/constants";
+import { BOOKING_URL, COMMUNITY_EVENTS, EMBEDS, IMAGES, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Events & Appointments",
   description:
-    "Book your appointment with Holistic Health and Finance. View upcoming events and schedule your consultation.",
+    `Book your appointment with ${SITE_NAME}. View upcoming events and schedule your consultation.`,
 };
 
 export default function EventsPage() {
@@ -65,6 +65,72 @@ export default function EventsPage() {
               <Button href={BOOKING_URL} external>Book Now &mdash; Starting at $59</Button>
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      <section className="py-20 px-6">
+        <div className="max-w-[1200px] mx-auto">
+          <SectionHeader
+            label="Featured Event"
+            title="Community Spotlight"
+            subtitle="Current community programming and family-friendly events hosted in University Place."
+            align="center"
+          />
+
+          <div className="grid grid-cols-1 gap-8">
+            {COMMUNITY_EVENTS.map((event) => (
+              <FadeIn key={event.title}>
+                <div className="border border-border bg-background overflow-hidden">
+                  <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.95fr] gap-px bg-border">
+                    <div className="bg-background p-8 md:p-10">
+                      <span className="label text-accent block mb-4">March Event</span>
+                      <h3 className="text-3xl font-extralight text-foreground mb-4">{event.title}</h3>
+                      <p className="text-text-secondary leading-relaxed text-lg mb-6">{event.summary}</p>
+                      <div className="flex flex-wrap gap-3 mb-8">
+                        <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
+                          {event.date}
+                        </span>
+                        <span className="text-sm font-medium border border-border px-4 py-2 text-foreground">
+                          {event.time}
+                        </span>
+                        {event.highlights.map((highlight) => (
+                          <span
+                            key={highlight}
+                            className="text-sm font-medium border border-border px-4 py-2 text-text-secondary"
+                          >
+                            {highlight}
+                          </span>
+                        ))}
+                      </div>
+                      <Button href="/contact">Ask About Future Events</Button>
+                    </div>
+
+                    <div className="bg-muted p-8 md:p-10">
+                      <div className="space-y-6">
+                        <div>
+                          <div className="label text-text-muted mb-2">Location</div>
+                          <p className="text-foreground leading-relaxed">{event.location}</p>
+                        </div>
+                        <div>
+                          <div className="label text-text-muted mb-2">Hosted By</div>
+                          <p className="text-foreground leading-relaxed">{event.sponsor}</p>
+                        </div>
+                        <div>
+                          <div className="label text-text-muted mb-2">Contact</div>
+                          <p className="text-foreground leading-relaxed">{event.contactLabel}</p>
+                        </div>
+                        <p className="text-text-secondary text-sm leading-relaxed">
+                          This event is positioned as a family-friendly, youth-focused community
+                          market and learning experience. Reach out if you&apos;d like to hear about
+                          future event participation or sponsorship opportunities.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </section>
 

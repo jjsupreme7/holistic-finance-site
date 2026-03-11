@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { IMAGES } from "@/lib/constants";
+import { IMAGES, SITE_NAME } from "@/lib/constants";
 
 interface PageHeroProps {
   title: string;
@@ -52,7 +52,7 @@ export default function PageHero({ title, tagline, backgroundImage }: PageHeroPr
           transition={{ duration: 0.5 }}
           className="label text-white/60 block mb-4"
         >
-          Holistic Financials
+          {SITE_NAME}
         </motion.span>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}

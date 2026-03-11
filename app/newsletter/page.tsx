@@ -3,12 +3,12 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import NewsletterForm from "@/components/sections/NewsletterForm";
-import { RESOURCES, IMAGES } from "@/lib/constants";
+import { RESOURCES, IMAGES, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Newsletter & Resources",
   description:
-    "Subscribe to the Holistic Health and Finance newsletter for expert financial insights, strategies, and the latest updates on financial planning.",
+    `Subscribe to the ${SITE_NAME} newsletter for expert financial insights, strategies, and the latest updates on financial planning.`,
 };
 
 export default function NewsletterPage() {

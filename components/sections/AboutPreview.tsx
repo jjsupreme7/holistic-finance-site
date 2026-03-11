@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import FadeIn from "@/components/motion/FadeIn";
-import { IMAGES } from "@/lib/constants";
+import { IMAGES, SITE_NAME } from "@/lib/constants";
 
 export default function AboutPreview() {
   return (
@@ -27,7 +27,7 @@ export default function AboutPreview() {
             a fulfilling life with a personalized financial plan.&rdquo;
           </p>
           <p className="text-text-secondary leading-relaxed mb-8">
-            Holistic Health and Finance provides individuals and families with the knowledge and
+            {SITE_NAME} provides individuals and families with the knowledge and
             tools necessary to invest in their financial future.
           </p>
           <Link

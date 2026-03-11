@@ -9,7 +9,7 @@ import { IMAGES } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "About Anna Huang",
   description:
-    "Meet Anna Huang - 11+ years of experience in Healthcare Finance and Insurance. Licensed Health and Life Insurance agent and Certified Professional Medical Auditor in University Place, WA.",
+    "Meet Anna Huang - 11+ years of experience in Healthcare Finance and Insurance. Licensed Health and Life Insurance agent, Tax Preparer, CPA candidate, and Certified Professional Medical Auditor in University Place, WA.",
 };
 
 const credentialsList = [
@@ -18,6 +18,7 @@ const credentialsList = [
   { top: "CPMA", bottom: "Certified" },
   { top: "M.S.", bottom: "Professional Accounting" },
   { top: "CPA", bottom: "Candidate" },
+  { top: "Tax", bottom: "Preparer" },
 ];
 
 export default function AboutPage() {
@@ -61,7 +62,7 @@ export default function AboutPage() {
               {[
                 {
                   title: "Experience You Can Trust",
-                  text: "With over 11 years of experience in Healthcare Finance and the Insurance industry, Anna brings a wealth of knowledge to the table. She holds Health and Life Insurance licenses and is also a Certified Professional Medical Auditor. Anna specializes in health and life insurances, benefits packages, and retirement planning.",
+                  text: "With over 11 years of experience in Healthcare Finance and the Insurance industry, Anna brings a wealth of knowledge to the table. She holds Health and Life Insurance licenses, is a Tax Preparer, is pursuing her CPA, and is also a Certified Professional Medical Auditor. Anna specializes in health and life insurances, benefits packages, tax-aware planning, and retirement strategy.",
                 },
                 {
                   title: "A Personal Journey",

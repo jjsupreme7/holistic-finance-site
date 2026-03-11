@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import PageTracker from "@/components/PageTracker";
 import LayoutShell from "@/components/layout/LayoutShell";
+import { SITE_NAME } from "@/lib/constants";
 import "./globals.css";
 
 const inter = Inter({
@@ -13,11 +14,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Holistic Health and Finance - Personalized Financial Planning in University Place, WA",
-    template: "%s - Holistic Health and Finance",
+    default: `${SITE_NAME} - Personalized Financial Planning in University Place, WA`,
+    template: `%s - ${SITE_NAME}`,
   },
   description:
-    "Personalized financial planning, insurance, and retirement services for families in University Place, WA. Over 11 years of experience. Book your $59 first consultation today.",
+    `${SITE_NAME} offers personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA. Book your $59 first consultation today.`,
   metadataBase: new URL("https://myholisticfinance.com"),
   icons: {
     icon: "/favicon.svg",
@@ -25,16 +26,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Holistic Health and Finance",
-    title: "Holistic Health and Finance - Personalized Financial Planning",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} - Personalized Financial Planning`,
     description:
-      "Personalized financial planning, insurance, and retirement services for families in University Place, WA. Over 11 years of experience.",
+      `${SITE_NAME} provides personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA.`,
   },
   twitter: {
     card: "summary",
-    title: "Holistic Health and Finance",
+    title: SITE_NAME,
     description:
-      "Personalized financial planning, insurance, and retirement services for families in University Place, WA.",
+      `${SITE_NAME} provides personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA.`,
   },
   robots: {
     index: true,
@@ -47,7 +48,7 @@ const jsonLd = {
   "@type": "LocalBusiness",
   name: "Holistic Health & Financial Services",
   description:
-    "Personalized financial planning, insurance, and retirement services for families in University Place, WA.",
+    "Personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA.",
   url: "https://myholisticfinance.com",
   telephone: "+1-253-666-8663",
   email: "Holistic.Health.Finance@gmail.com",
@@ -64,7 +65,7 @@ const jsonLd = {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
       opens: "08:00",
-      closes: "18:00",
+      closes: "16:00",
     },
   ],
   priceRange: "$$",

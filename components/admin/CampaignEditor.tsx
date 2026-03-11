@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { SITE_NAME } from "@/lib/constants";
 
 interface CampaignEditorProps {
   initialSubject?: string;
@@ -166,7 +167,7 @@ export default function CampaignEditor({
               }}
             >
               <span style={{ color: "white", fontWeight: "bold", fontSize: "14px" }}>
-                Holistic Health and Finance
+                {SITE_NAME}
               </span>
             </div>
             {/* Body - sanitized with DOMPurify */}
