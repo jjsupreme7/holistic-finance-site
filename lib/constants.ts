@@ -64,7 +64,7 @@ export const NAV_LINKS = [
   { label: "Blog", href: "/blog" },
   { label: "Courses", href: "/courses" },
   { label: "Events", href: "/events" },
-  { label: "Newsletter", href: "/newsletter" },
+  { label: "Updates", href: "/newsletter" },
   { label: "Contact", href: "/contact" },
 ];
 

@@ -64,7 +64,7 @@ export default function Footer() {
               { label: "About", href: "/about" },
               { label: "Services", href: "/services" },
               { label: "Events", href: "/events" },
-              { label: "Newsletter", href: "/newsletter" },
+              { label: "Email Updates", href: "/newsletter" },
               { label: "Contact Us", href: "/contact" },
             ].map((link) => (
               <li key={link.href}>
@@ -116,9 +116,9 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="label text-background/50 mb-5">Newsletter</h4>
+          <h4 className="label text-background/50 mb-5">Email Updates</h4>
           <p className="text-sm text-background/50 mb-4">
-            Financial insights delivered to your inbox.
+            Blog alerts, class announcements, and event updates delivered to your inbox.
           </p>
           {status === "success" ? (
             <motion.p

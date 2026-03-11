@@ -55,12 +55,40 @@ export default function BlogPage() {
     <>
       <PageHero
         title="Blog"
-        tagline="Financial insights and expert advice"
+        tagline="Public articles, guides, and educational content you can read anytime"
         backgroundImage={IMAGES.heroNewsletter}
       />
 
       <section className="py-20 px-6">
         <div className="container-site">
+          <FadeIn>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border mb-12">
+              <div className="bg-background p-8">
+                <span className="label text-text-muted block mb-3">Blog</span>
+                <h2 className="text-2xl font-extralight text-foreground mb-3">Read Full Articles Here</h2>
+                <p className="text-text-secondary leading-relaxed">
+                  The blog is the public library for on-site reading: educational articles,
+                  explainers, and longer-form financial guidance.
+                </p>
+              </div>
+              <div className="bg-muted p-8">
+                <span className="label text-text-muted block mb-3">Email Updates</span>
+                <h2 className="text-2xl font-extralight text-foreground mb-3">Get Alerts in Your Inbox</h2>
+                <p className="text-text-secondary leading-relaxed mb-4">
+                  Subscribe if you want notices about new blog posts, classes, events, and future
+                  product launches without checking the site manually.
+                </p>
+                <Link
+                  href="/newsletter"
+                  className="inline-flex items-center gap-2 text-foreground font-medium no-underline group text-sm uppercase tracking-[0.15em]"
+                >
+                  Go to Email Updates
+                  <span className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+                </Link>
+              </div>
+            </div>
+          </FadeIn>
+
           {loading ? (
             <div className="flex items-center justify-center h-48">
               <div className="w-8 h-8 border-2 border-border border-t-foreground animate-spin" />
@@ -72,8 +100,8 @@ export default function BlogPage() {
                   Coming Soon
                 </h2>
                 <p className="text-text-secondary">
-                  We&apos;re working on new articles. Subscribe to our newsletter to be
-                  notified when we publish.
+                  We&apos;re working on new public articles. Subscribe to email updates if you want
+                  to be notified when they publish.
                 </p>
               </div>
             </FadeIn>
@@ -183,7 +211,7 @@ export default function BlogPage() {
 
       <CTABanner
         title="Want Personalized Financial Advice?"
-        text="Our articles provide general insights, but nothing beats a one-on-one consultation."
+        text="The blog is for general education. If you want advice tailored to your family, book a consultation."
         buttonText="Book a Consultation"
         buttonHref={BOOKING_URL}
         buttonExternal

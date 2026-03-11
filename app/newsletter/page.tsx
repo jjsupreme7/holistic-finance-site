@@ -6,15 +6,19 @@ import NewsletterForm from "@/components/sections/NewsletterForm";
 import { BOOKING_URL, RESOURCES, IMAGES, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Newsletter & Resources",
+  title: "Email Updates & Resources",
   description:
-    `Subscribe to the ${SITE_NAME} newsletter for expert financial insights, strategies, and the latest updates on financial planning.`,
+    `Subscribe for ${SITE_NAME} email updates, including new classes, event announcements, product launch alerts, and helpful financial resources.`,
 };
 
 export default function NewsletterPage() {
   return (
     <>
-      <PageHero title="Newsletter & Resources" tagline="Stay informed. Stay ahead." backgroundImage={IMAGES.heroNewsletter} />
+      <PageHero
+        title="Email Updates & Resources"
+        tagline="Announcements, class launches, event alerts, and helpful financial links"
+        backgroundImage={IMAGES.heroNewsletter}
+      />
 
       <section className="py-20 px-6">
         <div className="container-site grid grid-cols-1 md:grid-cols-[1fr_380px] lg:grid-cols-[1fr_400px] gap-12">
@@ -22,26 +26,56 @@ export default function NewsletterPage() {
             <div className="space-y-7">
               <div>
                 <span className="label text-text-muted block mb-5">
-                  Stay Informed
+                  Inbox Updates
                 </span>
-                <h2 className="heading-lg font-extralight text-foreground mb-6">Why Subscribe?</h2>
+                <h2 className="heading-lg font-extralight text-foreground mb-6">What You&apos;ll Receive</h2>
               </div>
               <p className="text-text-secondary leading-relaxed text-lg">
-                In today&apos;s ever-changing financial landscape, staying informed is more
-                important than ever. Markets shift rapidly, new regulations emerge, and economic
-                trends evolve &mdash; factors that can significantly impact your financial
-                well-being.
+                This page is not meant to replace the blog. The blog is where public articles live.
+                The email list is for people who want highlights and announcements sent directly to
+                their inbox.
               </p>
-              <p className="text-text-secondary leading-relaxed">
-                Subscribing to our financial planning newsletter ensures you stay ahead of these
-                changes with expert insights, actionable strategies, and the latest updates
-                tailored to help you maintain financial literacy and build sustainable wealth.
-              </p>
-              <p className="text-text-secondary leading-relaxed">
-                Empower yourself to make informed decisions, adapt to market dynamics, and secure
-                your financial longevity. Join our community and take control of your financial
-                future.
-              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border border border-border">
+                {[
+                  {
+                    title: "New blog posts",
+                    text: "Get notified when new educational articles are published on the site.",
+                  },
+                  {
+                    title: "Class and event announcements",
+                    text: "Hear first about new course dates, workshops, and community events.",
+                  },
+                  {
+                    title: "Shop launch alerts",
+                    text: "Be notified when merchandise and checkout finally go live.",
+                  },
+                  {
+                    title: "Helpful resources",
+                    text: "Receive occasional links, reminders, and financial planning updates worth saving.",
+                  },
+                ].map((item) => (
+                  <div key={item.title} className="bg-background p-6">
+                    <h3 className="text-lg font-extralight text-foreground mb-2">{item.title}</h3>
+                    <p className="text-text-secondary text-sm leading-relaxed">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border border-border p-6">
+                <span className="label text-text-muted block mb-3">Prefer Reading On-Site?</span>
+                <p className="text-text-secondary leading-relaxed mb-4">
+                  Visit the blog if you want full-length public articles you can browse anytime
+                  without subscribing.
+                </p>
+                <a
+                  href="/blog"
+                  className="inline-flex items-center gap-2 text-foreground font-medium no-underline group text-sm uppercase tracking-[0.15em]"
+                >
+                  Visit the Blog
+                  <span className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+                </a>
+              </div>
 
               <div className="pt-6">
                 <h2 className="heading-lg font-extralight text-foreground mb-6">Resources</h2>
@@ -65,9 +99,10 @@ export default function NewsletterPage() {
 
           <FadeIn direction="right">
             <div className="border border-border p-8 h-fit sticky top-28">
-              <h3 className="text-xl font-extralight text-foreground mb-3">Subscribe to Our Newsletter</h3>
+              <h3 className="text-xl font-extralight text-foreground mb-3">Subscribe for Email Updates</h3>
               <p className="text-text-secondary text-sm mb-6">
-                Stay informed with expert financial insights and updates delivered to your inbox.
+                Get announcements, launch notices, article highlights, and event updates delivered
+                to your inbox.
               </p>
               <NewsletterForm />
               <p className="text-text-muted text-xs text-center mt-4">
@@ -80,7 +115,7 @@ export default function NewsletterPage() {
 
       <CTABanner
         title="Want Personalized Advice?"
-        text="Our newsletter is great for general insights, but nothing beats a one-on-one consultation."
+        text="Email updates keep you informed, but a one-on-one consultation is still the best way to get advice tailored to your family."
         buttonText="Book a Consultation"
         buttonHref={BOOKING_URL}
         buttonExternal
