@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase/server";
+import { isMissingRelationError } from "@/lib/supabase/errors";
 
 export async function GET(req: NextRequest) {
   try {
@@ -22,16 +23,36 @@ export async function GET(req: NextRequest) {
     const rows = views || [];
     const totalViews = rows.length;
 
+    const { data: conversions, error: conversionError } = await supabase
+      .from("conversion_events")
+      .select("path, created_at")
+      .eq("event_type", "booking_click")
+      .gte("created_at", since.toISOString())
+      .order("created_at", { ascending: true });
+
+    if (conversionError && !isMissingRelationError(conversionError)) {
+      throw conversionError;
+    }
+
+    const bookingRows = conversions || [];
+
     // Views per day
     const viewsByDay: Record<string, number> = {};
+    const bookingClicksByDay: Record<string, number> = {};
     for (let i = 0; i < days; i++) {
       const d = new Date();
       d.setDate(d.getDate() - (days - 1 - i));
-      viewsByDay[d.toISOString().split("T")[0]] = 0;
+      const key = d.toISOString().split("T")[0];
+      viewsByDay[key] = 0;
+      bookingClicksByDay[key] = 0;
     }
     for (const v of rows) {
       const day = v.created_at.split("T")[0];
       if (viewsByDay[day] !== undefined) viewsByDay[day]++;
+    }
+    for (const booking of bookingRows) {
+      const day = booking.created_at.split("T")[0];
+      if (bookingClicksByDay[day] !== undefined) bookingClicksByDay[day]++;
     }
 
     // Top pages
@@ -61,11 +82,23 @@ export async function GET(req: NextRequest) {
       .slice(0, 10)
       .map(([source, count]) => ({ source, count }));
 
+    const bookingSourceCounts: Record<string, number> = {};
+    for (const booking of bookingRows) {
+      bookingSourceCounts[booking.path] = (bookingSourceCounts[booking.path] || 0) + 1;
+    }
+    const topBookingSources = Object.entries(bookingSourceCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([path, count]) => ({ path, count }));
+
     return NextResponse.json({
       totalViews,
       viewsByDay,
+      bookingClicksTotal: bookingRows.length,
+      bookingClicksByDay,
       topPages,
       topReferrers,
+      topBookingSources,
     });
   } catch (error) {
     console.error("Analytics error:", error);

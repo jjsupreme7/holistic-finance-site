@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { trackBookingClick } from "@/lib/analytics/tracking";
 import { BOOKING_URL } from "@/lib/constants";
 
 export default function StickyCTA() {
@@ -38,6 +39,7 @@ export default function StickyCTA() {
             </div>
             <a
               href={BOOKING_URL}
+              onClick={() => trackBookingClick("sticky_cta")}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-accent text-foreground font-medium py-2.5 px-6 text-sm no-underline hover:bg-accent-dark transition-colors whitespace-nowrap"

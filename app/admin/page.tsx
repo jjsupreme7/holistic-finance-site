@@ -9,6 +9,7 @@ interface Stats {
   totalCampaigns: number;
   totalPosts: number;
   publishedPosts: number;
+  bookingClicks7d: number;
   lastCampaign: { subject: string; sent_at: string; recipient_count: number } | null;
   pageViews7d: number;
   newSubmissions: number;
@@ -49,6 +50,7 @@ export default function AdminDashboard() {
           totalCampaigns: campaigns?.length || 0,
           totalPosts: posts?.length || 0,
           publishedPosts: published.length,
+          bookingClicks7d: analyticsData?.bookingClicksTotal || 0,
           lastCampaign: lastSent,
           pageViews7d: analyticsData?.totalViews || 0,
           newSubmissions: newSubs.length,
@@ -134,6 +136,18 @@ export default function AdminDashboard() {
           </p>
         </Link>
 
+        <Link href="/admin/analytics" className="bg-white rounded-xl p-6 border border-border-light no-underline block hover:border-primary/30 transition-colors">
+          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+            Booking Clicks (7d)
+          </p>
+          <p className="text-3xl font-bold text-primary">
+            {stats?.bookingClicks7d || 0}
+          </p>
+          <p className="text-text-muted text-xs mt-1">
+            View booking sources &rarr;
+          </p>
+        </Link>
+
         <div className="bg-white rounded-xl p-6 border border-border-light">
           <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
             Last Campaign
@@ -178,6 +192,12 @@ export default function AdminDashboard() {
           className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
         >
           Manage Blog
+        </Link>
+        <Link
+          href="/admin/schedule"
+          className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
+        >
+          Manage Schedule
         </Link>
       </div>
     </div>

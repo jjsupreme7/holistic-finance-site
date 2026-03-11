@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { trackBookingClick } from "@/lib/analytics/tracking";
 import { BOOKING_URL, NAV_LINKS, IMAGES, SITE_NAME } from "@/lib/constants";
 
 const logoWhite = IMAGES.logo;
@@ -106,7 +107,10 @@ export default function Header() {
           })}
           <a
             href={BOOKING_URL}
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              trackBookingClick("header_cta");
+              setMenuOpen(false);
+            }}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-accent text-foreground text-xs uppercase tracking-[0.15em] font-medium px-4 lg:px-6 py-2.5 no-underline transition-colors hover:bg-accent-dark ml-2"

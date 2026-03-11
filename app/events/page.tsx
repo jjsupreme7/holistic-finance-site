@@ -5,7 +5,8 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
-import { BOOKING_URL, COMMUNITY_EVENTS, IMAGES, SITE_NAME } from "@/lib/constants";
+import { BOOKING_URL, IMAGES, SITE_NAME } from "@/lib/constants";
+import { getPublishedEvents } from "@/lib/schedule/server";
 
 const calendlySteps = [
   "Open Anna's Calendly page",
@@ -33,7 +34,11 @@ export const metadata: Metadata = {
     `Book your appointment with ${SITE_NAME}. View upcoming events and schedule your consultation.`,
 };
 
-export default function EventsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function EventsPage() {
+  const events = await getPublishedEvents();
+
   return (
     <>
       <PageHero title="Events & Appointments" tagline="Book your appointment today" backgroundImage={IMAGES.heroEvents} />
@@ -96,7 +101,7 @@ export default function EventsPage() {
           />
 
           <div className="grid grid-cols-1 gap-8">
-            {COMMUNITY_EVENTS.map((event) => (
+            {events.map((event) => (
               <FadeIn key={event.title}>
                 <div className="border border-border bg-background overflow-hidden">
                   <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-px bg-border">

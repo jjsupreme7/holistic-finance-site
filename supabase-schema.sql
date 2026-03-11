@@ -26,3 +26,46 @@ CREATE TABLE campaigns (
 CREATE INDEX idx_subscribers_status ON subscribers(status);
 CREATE INDEX idx_subscribers_email ON subscribers(email);
 CREATE INDEX idx_campaigns_status ON campaigns(status);
+
+-- Conversion tracking for booking clicks and other lead actions
+CREATE TABLE IF NOT EXISTS conversion_events (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  event_type TEXT NOT NULL CHECK (event_type IN ('booking_click')),
+  path TEXT NOT NULL,
+  label TEXT,
+  referrer TEXT,
+  user_agent TEXT,
+  metadata JSONB,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_conversion_events_type_created_at
+  ON conversion_events(event_type, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_conversion_events_path
+  ON conversion_events(path);
+
+-- Editable public schedule data for courses and events
+CREATE TABLE IF NOT EXISTS schedule_items (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  kind TEXT NOT NULL CHECK (kind IN ('course', 'event')),
+  status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('draft', 'published')),
+  title TEXT NOT NULL,
+  icon TEXT,
+  schedule_type TEXT CHECK (schedule_type IN ('free', 'paid')),
+  price_label TEXT,
+  duration TEXT,
+  format TEXT,
+  date_label TEXT NOT NULL,
+  time_label TEXT,
+  description TEXT NOT NULL,
+  location TEXT,
+  highlights TEXT[],
+  sponsor TEXT,
+  contact_label TEXT,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_schedule_items_kind_status_sort
+  ON schedule_items(kind, status, sort_order);
