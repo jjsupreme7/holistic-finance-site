@@ -49,8 +49,10 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.45 }}
+            className="flex flex-wrap gap-3"
           >
             <Button href={BOOKING_URL} external>Book a Consultation</Button>
+            <Button href="/start-here" variant="dark">Start Here</Button>
           </motion.div>
         </div>
       </div>

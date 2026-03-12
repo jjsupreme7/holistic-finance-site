@@ -1,5 +1,4 @@
 import HeroSection from "@/components/sections/HeroSection";
-import TrustLogos from "@/components/sections/TrustLogos";
 import ServicesGrid from "@/components/sections/ServicesGrid";
 import AboutPreview from "@/components/sections/AboutPreview";
 import StatsCounter from "@/components/sections/StatsCounter";
@@ -13,7 +12,6 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <TrustLogos />
       <ServicesGrid />
       <HowItWorks />
       <AboutPreview />

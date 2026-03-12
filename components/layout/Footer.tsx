@@ -61,6 +61,7 @@ export default function Footer() {
           <h4 className="label text-background/50 mb-5">Company</h4>
           <ul className="list-none space-y-3 text-sm">
             {[
+              { label: "Start Here", href: "/start-here" },
               { label: "About", href: "/about" },
               { label: "Services", href: "/services" },
               { label: "Events", href: "/events" },
