@@ -69,3 +69,20 @@ CREATE TABLE IF NOT EXISTS schedule_items (
 
 CREATE INDEX IF NOT EXISTS idx_schedule_items_kind_status_sort
   ON schedule_items(kind, status, sort_order);
+
+-- Editable 26-module training series groups and module cards
+CREATE TABLE IF NOT EXISTS training_module_groups (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  status TEXT NOT NULL DEFAULT 'published' CHECK (status IN ('draft', 'published')),
+  eyebrow TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  accent TEXT NOT NULL DEFAULT 'finance',
+  modules JSONB NOT NULL DEFAULT '[]'::jsonb,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_training_module_groups_status_sort
+  ON training_module_groups(status, sort_order);

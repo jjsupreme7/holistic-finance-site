@@ -7,8 +7,9 @@ import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import Icon from "@/components/ui/Icon";
 import CTABanner from "@/components/sections/CTABanner";
-import { BOOKING_URL, IMAGES, TRAINING_SERIES_GROUPS } from "@/lib/constants";
+import { BOOKING_URL, IMAGES } from "@/lib/constants";
 import type { CourseScheduleItem } from "@/lib/schedule";
+import type { TrainingSeriesGroup } from "@/lib/training-series";
 
 const container = {
   hidden: {},
@@ -24,10 +25,19 @@ function titleToId(title: string) {
   return title.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-export default function CoursesPageContent({ courses }: { courses: CourseScheduleItem[] }) {
+export default function CoursesPageContent({
+  courses,
+  trainingSeriesGroups,
+}: {
+  courses: CourseScheduleItem[];
+  trainingSeriesGroups: TrainingSeriesGroup[];
+}) {
   const freeCourses = courses.filter((course) => course.type === "free");
   const paidCourses = courses.filter((course) => course.type === "paid");
-  const trainingSeriesCount = TRAINING_SERIES_GROUPS.reduce((total, group) => total + group.modules.length, 0);
+  const trainingSeriesCount = trainingSeriesGroups.reduce(
+    (total, group) => total + group.modules.length,
+    0
+  );
 
   return (
     <>
@@ -76,7 +86,7 @@ export default function CoursesPageContent({ courses }: { courses: CourseSchedul
 
           <FadeIn className="mb-8">
             <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-              {TRAINING_SERIES_GROUPS.map((group) => (
+              {trainingSeriesGroups.map((group) => (
                 <a
                   key={group.title}
                   href={`#${titleToId(group.title)}`}
@@ -89,7 +99,7 @@ export default function CoursesPageContent({ courses }: { courses: CourseSchedul
           </FadeIn>
 
           <div className="space-y-10">
-            {TRAINING_SERIES_GROUPS.map((group) => (
+            {trainingSeriesGroups.map((group) => (
               <FadeIn key={group.title}>
                 <div id={titleToId(group.title)} className="border border-border bg-background scroll-mt-28">
                   <div className="p-8 md:p-10 border-b border-border flex flex-col md:flex-row md:items-start md:justify-between gap-6">

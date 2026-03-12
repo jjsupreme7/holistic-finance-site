@@ -3,39 +3,31 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import ScheduleEditor from "@/components/admin/ScheduleEditor";
+import TrainingSeriesGroupEditor from "@/components/admin/TrainingSeriesGroupEditor";
+import type { TrainingSeriesModule } from "@/lib/training-series";
 
-interface ScheduleItem {
+interface TrainingSeriesGroupItem {
   id: string;
-  kind: "course" | "event";
   status: "draft" | "published";
+  eyebrow: string;
   title: string;
-  icon: string | null;
-  schedule_type: string | null;
-  price_label: string | null;
-  duration: string | null;
-  format: string | null;
-  date_label: string;
-  time_label: string | null;
   description: string;
-  location: string | null;
-  highlights: string[] | null;
-  sponsor: string | null;
-  contact_label: string | null;
+  accent: string | null;
+  modules: TrainingSeriesModule[] | null;
   sort_order: number;
 }
 
-export default function EditScheduleItemPage() {
+export default function EditTrainingModulesPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  const [item, setItem] = useState<ScheduleItem | null>(null);
+  const [item, setItem] = useState<TrainingSeriesGroupItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/admin/schedule/${id}`)
+    fetch(`/api/admin/training-modules/${id}`)
       .then((res) => res.json())
       .then((data) => setItem(data.item || null))
       .catch(console.error)
@@ -45,7 +37,7 @@ export default function EditScheduleItemPage() {
   async function handleSave(data: Record<string, unknown>) {
     setSaving(true);
     try {
-      const res = await fetch(`/api/admin/schedule/${id}`, {
+      const res = await fetch(`/api/admin/training-modules/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -53,32 +45,32 @@ export default function EditScheduleItemPage() {
 
       const json = await res.json();
       if (!res.ok) {
-        alert(json.error || "Failed to update schedule item.");
+        alert(json.error || "Failed to update training group.");
         return;
       }
 
       setItem(json.item);
-      alert("Schedule item saved.");
+      alert("Training group saved.");
     } catch {
-      alert("Failed to update schedule item.");
+      alert("Failed to update training group.");
     } finally {
       setSaving(false);
     }
   }
 
   async function handleDelete() {
-    if (!confirm("Delete this schedule item?")) return;
+    if (!confirm("Delete this training group?")) return;
 
     setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/schedule/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/training-modules/${id}`, { method: "DELETE" });
       if (!res.ok) {
         throw new Error();
       }
 
-      router.push("/admin/schedule");
+      router.push("/admin/training-modules");
     } catch {
-      alert("Failed to delete schedule item.");
+      alert("Failed to delete training group.");
     } finally {
       setDeleting(false);
     }
@@ -95,7 +87,7 @@ export default function EditScheduleItemPage() {
   if (!item) {
     return (
       <div className="bg-white rounded-xl border border-border-light p-12 text-center">
-        <p className="text-text-muted">Schedule item not found.</p>
+        <p className="text-text-muted">Training group not found.</p>
       </div>
     );
   }
@@ -105,12 +97,12 @@ export default function EditScheduleItemPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <Link
-            href="/admin/schedule"
+            href="/admin/training-modules"
             className="text-primary font-semibold no-underline hover:underline text-sm inline-flex items-center gap-2 mb-2"
           >
-            &larr; Back to Schedule
+            &larr; Back to Training Modules
           </Link>
-          <h1 className="text-2xl font-bold text-dark">Edit Schedule Item</h1>
+          <h1 className="text-2xl font-bold text-dark">Edit Training Group</h1>
         </div>
         <button
           onClick={handleDelete}
@@ -121,26 +113,17 @@ export default function EditScheduleItemPage() {
         </button>
       </div>
 
-      <ScheduleEditor
+      <TrainingSeriesGroupEditor
         onSave={handleSave}
         saving={saving}
         initialData={{
-          kind: item.kind,
           status: item.status,
+          eyebrow: item.eyebrow,
           title: item.title,
-          icon: item.icon,
-          scheduleType: item.schedule_type,
-          priceLabel: item.price_label,
-          duration: item.duration,
-          format: item.format,
-          dateLabel: item.date_label,
-          timeLabel: item.time_label,
           description: item.description,
-          location: item.location,
-          sponsor: item.sponsor,
-          contactLabel: item.contact_label,
-          highlights: item.highlights,
+          accent: item.accent,
           sortOrder: item.sort_order,
+          modules: item.modules,
         }}
       />
     </div>

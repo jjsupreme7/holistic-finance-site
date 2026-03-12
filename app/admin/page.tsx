@@ -199,6 +199,12 @@ export default function AdminDashboard() {
         >
           Manage Schedule
         </Link>
+        <Link
+          href="/admin/training-modules"
+          className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
+        >
+          Manage Training Modules
+        </Link>
       </div>
     </div>
   );

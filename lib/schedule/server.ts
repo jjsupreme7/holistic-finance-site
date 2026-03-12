@@ -15,7 +15,8 @@ async function fetchPublishedRows(kind: "course" | "event") {
   noStore();
 
   try {
-    const { data, error } = await getSupabase()
+    const supabase = getSupabase();
+    const { data, error } = await supabase
       .from("schedule_items")
       .select("*")
       .eq("kind", kind)
@@ -31,7 +32,19 @@ async function fetchPublishedRows(kind: "course" | "event") {
       throw error;
     }
 
-    return (data || []) as ScheduleItemRow[];
+    const rows = (data || []) as ScheduleItemRow[];
+    if (rows.length === 0) {
+      const { count, error: countError } = await supabase
+        .from("schedule_items")
+        .select("id", { count: "exact", head: true })
+        .eq("kind", kind);
+
+      if (!countError && (count || 0) > 0) {
+        return [];
+      }
+    }
+
+    return rows;
   } catch (error) {
     console.error(`Failed to load ${kind} schedule items:`, error);
     return [];
