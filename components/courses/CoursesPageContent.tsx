@@ -25,6 +25,22 @@ function titleToId(title: string) {
   return title.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
+function buildCourseInquiryHref(
+  course: CourseScheduleItem,
+  intent: "register" | "enroll"
+) {
+  const params = new URLSearchParams({
+    service: "Courses & Classes",
+    course: course.title,
+    message:
+      intent === "register"
+        ? `Hi, I'd like to register for "${course.title}" on ${course.date}. Please send me the next steps.`
+        : `Hi, I'm interested in enrolling in "${course.title}" on ${course.date}. Please send me the next steps.`,
+  });
+
+  return `/contact?${params.toString()}#question-form`;
+}
+
 export default function CoursesPageContent({
   courses,
   trainingSeriesGroups,
@@ -168,8 +184,8 @@ export default function CoursesPageContent({
                   <span className="text-xs text-foreground font-medium border border-border px-3 py-1">{course.date}</span>
                 </div>
                 <p className="text-text-secondary leading-relaxed mb-6">{course.description}</p>
-                <Button href={BOOKING_URL} external className="text-sm">
-                  Register Free
+                <Button href={buildCourseInquiryHref(course, "register")} className="text-sm">
+                  Request Free Spot
                 </Button>
               </motion.div>
             ))}
@@ -212,8 +228,8 @@ export default function CoursesPageContent({
                   <span className="text-xs text-foreground font-medium border border-border px-3 py-1">{course.date}</span>
                 </div>
                 <p className="text-text-secondary leading-relaxed mb-6">{course.description}</p>
-                <Button href={BOOKING_URL} external className="text-sm">
-                  Enroll Now
+                <Button href={buildCourseInquiryHref(course, "enroll")} className="text-sm">
+                  Ask About Enrollment
                 </Button>
               </motion.div>
             ))}

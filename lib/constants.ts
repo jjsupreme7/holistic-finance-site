@@ -253,6 +253,7 @@ export const STATS = [
 ];
 
 export const SERVICE_OPTIONS = [
+  "Courses & Classes",
   "Retirement Planning",
   "Education Planning",
   "Mortgage Planning",

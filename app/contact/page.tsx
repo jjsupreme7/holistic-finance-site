@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import Icon from "@/components/ui/Icon";
@@ -13,6 +13,27 @@ type Status = "idle" | "loading" | "success" | "error";
 export default function ContactPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [coursePrefill, setCoursePrefill] = useState("");
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    setCoursePrefill(searchParams.get("course") || "");
+
+    const form = formRef.current;
+    if (!form) return;
+
+    const serviceField = form.elements.namedItem("service") as HTMLSelectElement | null;
+    const messageField = form.elements.namedItem("message") as HTMLTextAreaElement | null;
+
+    if (serviceField) {
+      serviceField.value = searchParams.get("service") || "";
+    }
+
+    if (messageField) {
+      messageField.value = searchParams.get("message") || "";
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -96,14 +117,15 @@ export default function ContactPage() {
                   <div className="mb-8">
                     <span className="inline-block label text-accent mb-3">General Questions</span>
                     <h2 className="text-2xl font-extralight text-foreground mb-3">
-                      Send a message instead of booking.
+                      {coursePrefill ? `Ask about ${coursePrefill}.` : "Send a message instead of booking."}
                     </h2>
                     <p className="text-text-secondary leading-relaxed">
-                      This is the best option if you want help choosing a service, need a custom
-                      time, have an event question, or prefer to talk before scheduling.
+                      {coursePrefill
+                        ? "Use this form to request a class spot or ask course questions. We’ll follow up with the next steps instead of sending you to the consultation calendar."
+                        : "This is the best option if you want help choosing a service, need a custom time, have an event question, or prefer to talk before scheduling."}
                     </p>
                   </div>
-                  <form onSubmit={handleSubmit} className="space-y-5">
+                  <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label htmlFor="firstName" className="block text-sm font-medium text-foreground mb-2">
@@ -185,9 +207,9 @@ export default function ContactPage() {
                         id="message"
                         name="message"
                         rows={5}
-                          placeholder="Tell us what you need help with..."
-                          className={`${inputClass} resize-y`}
-                        />
+                        placeholder="Tell us what you need help with..."
+                        className={`${inputClass} resize-y`}
+                      />
                     </div>
 
                     <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
