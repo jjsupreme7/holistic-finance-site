@@ -23,8 +23,19 @@ async function isAuthenticated(req: NextRequest): Promise<boolean> {
   }
 }
 
+function isLocalPreview(req: NextRequest): boolean {
+  if (process.env.NODE_ENV === "production") return false;
+
+  const hostname = req.nextUrl.hostname;
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+}
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  if (isLocalPreview(req)) {
+    return NextResponse.next();
+  }
 
   // Skip login page and login API
   if (pathname === "/admin/login" || pathname === "/api/admin/login") {

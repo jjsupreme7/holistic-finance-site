@@ -119,7 +119,7 @@ export default function CampaignDetailPage({
             disabled={sending}
             className="bg-gradient-to-r from-gold to-gold-dark text-dark font-bold px-6 py-2.5 rounded-lg text-sm cursor-pointer border-none hover:shadow-lg hover:shadow-gold/25 transition-all disabled:opacity-60"
           >
-            {sending ? "Sending..." : "Send to All Subscribers"}
+            {sending ? "Sending Campaign..." : "Send Campaign to Subscribers"}
           </button>
         )}
       </div>

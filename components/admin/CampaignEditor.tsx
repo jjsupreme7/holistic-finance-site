@@ -26,6 +26,12 @@ export default function CampaignEditor({
   const [sendingTest, setSendingTest] = useState(false);
   const [testMessage, setTestMessage] = useState("");
   const [purify, setPurify] = useState<typeof import("dompurify").default | null>(null);
+  const hasInitialContent = Boolean(initialSubject || initialBodyHtml || initialPreviewText);
+  const saveLabel = saving
+    ? "Saving Email Draft..."
+    : hasInitialContent
+      ? "Update Email Draft"
+      : "Save Email Draft";
 
   useEffect(() => {
     import("dompurify").then((mod) => setPurify(() => mod.default));
@@ -115,27 +121,33 @@ export default function CampaignEditor({
         </div>
 
         {!readOnly && (
-          <div className="flex gap-3 items-center">
-            <button
-              type="submit"
-              disabled={saving}
-              className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-2.5 rounded-lg text-sm cursor-pointer border-none hover:shadow-lg hover:shadow-primary/25 transition-all disabled:opacity-60"
-            >
-              {saving ? "Saving..." : "Save Draft"}
-            </button>
+          <div className="space-y-3">
+            <div className="flex gap-3 items-center flex-wrap">
+              <button
+                type="submit"
+                disabled={saving}
+                className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-2.5 rounded-lg text-sm cursor-pointer border-none hover:shadow-lg hover:shadow-primary/25 transition-all disabled:opacity-60"
+              >
+                {saveLabel}
+              </button>
 
-            <button
-              type="button"
-              onClick={handleSendTest}
-              disabled={sendingTest}
-              className="bg-white text-primary font-semibold px-5 py-2.5 rounded-lg text-sm border border-border-light hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-60"
-            >
-              {sendingTest ? "Sending..." : "Send Test Email"}
-            </button>
+              <button
+                type="button"
+                onClick={handleSendTest}
+                disabled={sendingTest}
+                className="bg-white text-primary font-semibold px-5 py-2.5 rounded-lg text-sm border border-border-light hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-60"
+              >
+                {sendingTest ? "Sending..." : "Send Test Email"}
+              </button>
 
-            {testMessage && (
-              <span className="text-sm text-text-muted">{testMessage}</span>
-            )}
+              {testMessage && (
+                <span className="text-sm text-text-muted">{testMessage}</span>
+              )}
+            </div>
+            <p className="text-text-muted text-sm">
+              Saving a draft does not email anyone. Campaigns only go out after you click the send
+              button on the campaign page.
+            </p>
           </div>
         )}
       </form>

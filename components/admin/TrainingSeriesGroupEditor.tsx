@@ -18,6 +18,7 @@ interface TrainingSeriesGroupEditorProps {
     modules: Array<{
       title: string;
       description: string;
+      videoUrl?: string;
     }>;
   }) => void;
   saving: boolean;
@@ -33,7 +34,7 @@ interface TrainingSeriesGroupEditorProps {
 }
 
 function createEmptyModule() {
-  return { title: "", description: "" };
+  return { title: "", description: "", videoUrl: "" };
 }
 
 export default function TrainingSeriesGroupEditor({
@@ -51,13 +52,33 @@ export default function TrainingSeriesGroupEditor({
     initialData?.modules?.map((module) => ({
       title: module.title,
       description: module.description,
+      videoUrl: module.videoUrl || "",
     })) || [createEmptyModule()]
   );
+  const isEditing = !!initialData;
+
+  const submitLabel = saving
+    ? status === "published"
+      ? "Publishing Training Group..."
+      : "Saving Draft..."
+    : !isEditing
+      ? status === "published"
+        ? "Publish Training Group"
+        : "Save Training Group Draft"
+      : status === "published" && initialData?.status !== "published"
+        ? "Publish Training Group"
+        : status === "draft"
+          ? "Save Training Group Draft"
+          : "Update Training Group";
 
   const inputClass =
     "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
 
-  function updateModule(index: number, field: "title" | "description", value: string) {
+  function updateModule(
+    index: number,
+    field: "title" | "description" | "videoUrl",
+    value: string
+  ) {
     setModules((prev) =>
       prev.map((module, moduleIndex) =>
         moduleIndex === index ? { ...module, [field]: value } : module
@@ -141,6 +162,11 @@ export default function TrainingSeriesGroupEditor({
               <option value="published">Published</option>
               <option value="draft">Draft</option>
             </select>
+            <p className="text-text-muted text-xs mt-2">
+              {status === "published"
+                ? "Published training groups appear on the public training modules page."
+                : "Draft training groups stay hidden until you publish them."}
+            </p>
           </div>
 
           <div>
@@ -291,6 +317,19 @@ export default function TrainingSeriesGroupEditor({
                     required
                   />
                 </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-dark mb-1.5">
+                    Video URL <span className="text-text-muted font-normal">(optional)</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={module.videoUrl}
+                    onChange={(e) => updateModule(index, "videoUrl", e.target.value)}
+                    placeholder="https://vimeo.com/... or https://youtube.com/..."
+                    className={inputClass}
+                  />
+                </div>
               </div>
             </div>
           ))}
@@ -303,7 +342,7 @@ export default function TrainingSeriesGroupEditor({
           disabled={saving}
           className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-3 rounded-lg text-sm hover:shadow-lg hover:shadow-primary/25 transition-all cursor-pointer disabled:opacity-50 border-none"
         >
-          {saving ? "Saving..." : "Save Training Group"}
+          {submitLabel}
         </button>
       </div>
     </form>

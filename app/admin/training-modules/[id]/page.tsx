@@ -103,13 +103,16 @@ export default function EditTrainingModulesPage() {
             &larr; Back to Training Modules
           </Link>
           <h1 className="text-2xl font-bold text-dark">Edit Training Group</h1>
+          <p className="text-text-muted text-sm mt-1">
+            Published groups are live on the website. Draft groups stay private.
+          </p>
         </div>
         <button
           onClick={handleDelete}
           disabled={deleting}
           className="bg-white text-red-600 font-semibold px-5 py-2.5 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
         >
-          {deleting ? "Deleting..." : "Delete"}
+          {deleting ? "Deleting..." : "Delete Group"}
         </button>
       </div>
 

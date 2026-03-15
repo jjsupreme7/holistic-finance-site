@@ -69,6 +69,22 @@ export default function ScheduleEditor({
     initialData?.highlights?.join("\n") || ""
   );
   const [sortOrder, setSortOrder] = useState(initialData?.sortOrder || 0);
+  const isEditing = !!initialData;
+
+  const kindLabel = kind === "course" ? "Course" : "Event";
+  const submitLabel = saving
+    ? status === "published"
+      ? `Publishing ${kindLabel}...`
+      : "Saving Draft..."
+    : !isEditing
+      ? status === "published"
+        ? `Publish ${kindLabel}`
+        : `Save ${kindLabel} Draft`
+      : status === "published" && initialData?.status !== "published"
+        ? `Publish ${kindLabel}`
+        : status === "draft"
+          ? `Save ${kindLabel} Draft`
+          : `Update ${kindLabel}`;
 
   const inputClass =
     "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
@@ -137,6 +153,11 @@ export default function ScheduleEditor({
               <option value="published">Published</option>
               <option value="draft">Draft</option>
             </select>
+            <p className="text-text-muted text-xs mt-2">
+              {status === "published"
+                ? `${kindLabel}s with published status appear on the public website.`
+                : `${kindLabel} drafts stay hidden until you publish them.`}
+            </p>
           </div>
 
           <div>
@@ -351,7 +372,7 @@ export default function ScheduleEditor({
           disabled={saving}
           className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-8 py-2.5 rounded-lg text-sm hover:shadow-lg hover:shadow-primary/25 transition-all cursor-pointer border-none disabled:opacity-50"
         >
-          {saving ? "Saving..." : "Save Item"}
+          {submitLabel}
         </button>
       </div>
     </form>

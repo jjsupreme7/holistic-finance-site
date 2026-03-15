@@ -110,14 +110,17 @@ export default function EditScheduleItemPage() {
           >
             &larr; Back to Schedule
           </Link>
-          <h1 className="text-2xl font-bold text-dark">Edit Schedule Item</h1>
+          <h1 className="text-2xl font-bold text-dark">Edit Course or Event</h1>
+          <p className="text-text-muted text-sm mt-1">
+            Published items are live on the website. Draft items stay private.
+          </p>
         </div>
         <button
           onClick={handleDelete}
           disabled={deleting}
           className="bg-white text-red-600 font-semibold px-5 py-2.5 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
         >
-          {deleting ? "Deleting..." : "Delete"}
+          {deleting ? "Deleting..." : "Delete Item"}
         </button>
       </div>
 

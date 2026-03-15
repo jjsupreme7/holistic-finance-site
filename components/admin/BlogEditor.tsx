@@ -12,6 +12,7 @@ interface BlogEditorProps {
     status: string;
   }) => void;
   saving: boolean;
+  defaultStatus?: "draft" | "published";
   initialData?: {
     title: string;
     slug: string;
@@ -31,14 +32,34 @@ function toSlug(text: string) {
     .replace(/^-|-$/g, "");
 }
 
-export default function BlogEditor({ onSave, saving, initialData }: BlogEditorProps) {
+export default function BlogEditor({
+  onSave,
+  saving,
+  defaultStatus = "draft",
+  initialData,
+}: BlogEditorProps) {
   const [title, setTitle] = useState(initialData?.title || "");
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [excerpt, setExcerpt] = useState(initialData?.excerpt || "");
   const [content, setContent] = useState(initialData?.content || "");
   const [coverImage, setCoverImage] = useState(initialData?.coverImage || "");
-  const [status, setStatus] = useState(initialData?.status || "draft");
+  const [status, setStatus] = useState(initialData?.status || defaultStatus);
   const [slugEdited, setSlugEdited] = useState(!!initialData?.slug);
+  const isEditing = !!initialData;
+
+  const submitLabel = saving
+    ? status === "published"
+      ? "Publishing..."
+      : "Saving..."
+    : !isEditing
+      ? status === "published"
+        ? "Publish Post"
+        : "Save Draft"
+      : status === "published" && initialData?.status !== "published"
+        ? "Publish Post"
+        : status === "draft"
+          ? "Save Draft"
+          : "Update Post";
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
@@ -159,33 +180,40 @@ export default function BlogEditor({ onSave, saving, initialData }: BlogEditorPr
       </div>
 
       <div className="bg-white rounded-xl border border-border-light p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <label className="block text-sm font-semibold text-dark">Status</label>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => setStatus("draft")}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border transition-all ${
-                  status === "draft"
-                    ? "bg-yellow-100 text-yellow-700 border-yellow-200"
-                    : "bg-white text-text-muted border-border-light hover:bg-yellow-50"
-                }`}
-              >
-                Draft
-              </button>
-              <button
-                type="button"
-                onClick={() => setStatus("published")}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border transition-all ${
-                  status === "published"
-                    ? "bg-success-bg text-success border-green-200"
-                    : "bg-white text-text-muted border-border-light hover:bg-green-50"
-                }`}
-              >
-                Published
-              </button>
+        <div className="flex items-center justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-4">
+              <label className="block text-sm font-semibold text-dark">Status</label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setStatus("draft")}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border transition-all ${
+                    status === "draft"
+                      ? "bg-yellow-100 text-yellow-700 border-yellow-200"
+                      : "bg-white text-text-muted border-border-light hover:bg-yellow-50"
+                  }`}
+                >
+                  Draft
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStatus("published")}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border transition-all ${
+                    status === "published"
+                      ? "bg-success-bg text-success border-green-200"
+                      : "bg-white text-text-muted border-border-light hover:bg-green-50"
+                  }`}
+                >
+                  Published
+                </button>
+              </div>
             </div>
+            <p className="text-text-muted text-xs mt-2">
+              {status === "published"
+                ? "This post will appear on the public /blog page after you save."
+                : "Draft posts stay hidden from the public /blog page until you publish them."}
+            </p>
           </div>
 
           <button
@@ -193,7 +221,7 @@ export default function BlogEditor({ onSave, saving, initialData }: BlogEditorPr
             disabled={saving}
             className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-8 py-2.5 rounded-lg text-sm hover:shadow-lg hover:shadow-primary/25 transition-all cursor-pointer border-none disabled:opacity-50"
           >
-            {saving ? "Saving..." : "Save Post"}
+            {submitLabel}
           </button>
         </div>
       </div>

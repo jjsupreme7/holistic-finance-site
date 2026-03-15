@@ -70,7 +70,8 @@ export default function AdminSchedulePage() {
         <div>
           <h1 className="text-2xl font-bold text-dark">Schedule</h1>
           <p className="text-text-muted text-sm mt-0.5">
-            Update upcoming courses and community events without changing code.
+            Update upcoming courses and community events without changing code. Published items go
+            live on the website, while drafts stay hidden.
           </p>
         </div>
         <div className="flex gap-3">
@@ -85,7 +86,7 @@ export default function AdminSchedulePage() {
             href="/admin/schedule/new"
             className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-5 py-2.5 rounded-lg no-underline text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
           >
-            New Item
+            Add Course or Event
           </Link>
         </div>
       </div>

@@ -357,6 +357,7 @@ type TrainingModule = {
   number: number;
   title: string;
   description: string;
+  videoUrl?: string;
 };
 
 type TrainingSeriesGroup = {

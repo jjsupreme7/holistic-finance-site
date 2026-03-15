@@ -98,7 +98,7 @@ export default function EditBlogPostPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-dark">Edit Post</h1>
+        <h1 className="text-2xl font-bold text-dark">Edit Blog Post</h1>
         <div className="flex gap-3">
           {post.status === "published" && (
             <a
@@ -107,7 +107,7 @@ export default function EditBlogPostPage() {
               rel="noopener noreferrer"
               className="bg-white text-primary font-semibold px-5 py-2.5 rounded-lg border border-border-light no-underline text-sm hover:bg-primary/5 transition-all"
             >
-              View Post
+              View Live Post
             </a>
           )}
           <button
@@ -115,7 +115,7 @@ export default function EditBlogPostPage() {
             disabled={deleting}
             className="bg-white text-red-600 font-semibold px-5 py-2.5 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
           >
-            {deleting ? "Deleting..." : "Delete"}
+            {deleting ? "Deleting..." : "Delete Post"}
           </button>
         </div>
       </div>

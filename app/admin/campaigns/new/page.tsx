@@ -35,7 +35,11 @@ export default function NewCampaignPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-dark mb-6">New Campaign</h1>
+      <h1 className="text-2xl font-bold text-dark mb-2">Create Email Campaign</h1>
+      <p className="text-text-muted text-sm mb-6">
+        Save your campaign as a draft first. It will not email subscribers until you send it from
+        the campaign page.
+      </p>
       <CampaignEditor onSave={handleSave} saving={saving} />
     </div>
   );

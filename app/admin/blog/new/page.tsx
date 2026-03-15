@@ -42,7 +42,7 @@ export default function NewBlogPostPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-dark mb-6">New Blog Post</h1>
-      <BlogEditor onSave={handleSave} saving={saving} />
+      <BlogEditor onSave={handleSave} saving={saving} defaultStatus="published" />
     </div>
   );
 }

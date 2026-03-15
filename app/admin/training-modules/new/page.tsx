@@ -42,7 +42,10 @@ export default function NewTrainingModulesPage() {
           >
             &larr; Back to Training Modules
           </Link>
-          <h1 className="text-2xl font-bold text-dark">New Training Group</h1>
+          <h1 className="text-2xl font-bold text-dark">Add Training Group</h1>
+          <p className="text-text-muted text-sm mt-1">
+            Publish the group to make it appear on the public training modules page.
+          </p>
         </div>
       </div>
 

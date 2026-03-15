@@ -42,12 +42,18 @@ export default function CampaignsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-dark">Campaigns</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-dark">Campaigns</h1>
+          <p className="text-text-muted text-sm mt-0.5">
+            Save email drafts here. Nothing is sent to subscribers until you explicitly send the
+            campaign.
+          </p>
+        </div>
         <Link
           href="/admin/campaigns/new"
           className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-5 py-2.5 rounded-lg no-underline text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
         >
-          New Campaign
+          Create Email Campaign
         </Link>
       </div>
 
@@ -58,7 +64,7 @@ export default function CampaignsPage() {
             href="/admin/campaigns/new"
             className="text-primary font-semibold no-underline hover:underline text-sm"
           >
-            Create your first campaign
+            Create your first email campaign
           </Link>
         </div>
       ) : (

@@ -42,7 +42,10 @@ export default function NewScheduleItemPage() {
           >
             &larr; Back to Schedule
           </Link>
-          <h1 className="text-2xl font-bold text-dark">New Schedule Item</h1>
+          <h1 className="text-2xl font-bold text-dark">Add Course or Event</h1>
+          <p className="text-text-muted text-sm mt-1">
+            Choose published to make it visible on the website now, or save it as a draft.
+          </p>
         </div>
       </div>
       <ScheduleEditor onSave={handleSave} saving={saving} />

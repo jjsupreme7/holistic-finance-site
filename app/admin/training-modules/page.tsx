@@ -70,7 +70,8 @@ export default function AdminTrainingModulesPage() {
         <div>
           <h1 className="text-2xl font-bold text-dark">Training Modules</h1>
           <p className="text-text-muted text-sm mt-0.5">
-            Manage the 26-module training curriculum separately from scheduled classes.
+            Manage the 26-module training curriculum separately from scheduled classes. Published
+            groups appear on the website, while drafts stay hidden.
           </p>
         </div>
         <div className="flex gap-3">
@@ -85,7 +86,7 @@ export default function AdminTrainingModulesPage() {
             href="/admin/training-modules/new"
             className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-5 py-2.5 rounded-lg no-underline text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
           >
-            New Group
+            Add Training Group
           </Link>
         </div>
       </div>

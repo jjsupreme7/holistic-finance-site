@@ -173,13 +173,13 @@ export default function AdminDashboard() {
           href="/admin/blog/new"
           className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-2.5 rounded-lg no-underline text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
         >
-          Write Blog Post
+          Create Blog Post
         </Link>
         <Link
           href="/admin/campaigns/new"
           className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-2.5 rounded-lg no-underline text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
         >
-          New Campaign
+          Create Email Campaign
         </Link>
         <Link
           href="/admin/subscribers"
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
           href="/admin/blog"
           className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
         >
-          Manage Blog
+          Manage Blog Posts
         </Link>
         <Link
           href="/admin/schedule"

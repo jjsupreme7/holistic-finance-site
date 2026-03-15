@@ -7,6 +7,7 @@ export interface TrainingSeriesModule {
   number: number;
   title: string;
   description: string;
+  videoUrl?: string;
 }
 
 export interface TrainingSeriesGroup {
@@ -31,6 +32,7 @@ export interface TrainingSeriesGroupRow {
     number?: number | null;
     title?: string | null;
     description?: string | null;
+    videoUrl?: string | null;
   }> | null;
   sort_order: number;
   created_at?: string;
@@ -47,7 +49,17 @@ export interface TrainingSeriesFormData {
   modules: Array<{
     title: string;
     description: string;
+    videoUrl?: string;
   }>;
+}
+
+function isValidVideoUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
 function normalizeIconName(icon: string | null | undefined): IconName {
@@ -71,6 +83,7 @@ export const DEFAULT_TRAINING_SERIES_GROUPS: TrainingSeriesGroup[] = TRAINING_SE
       number: moduleIndex + 1,
       title: module.title,
       description: module.description,
+      videoUrl: module.videoUrl,
     })),
     sortOrder: index,
   })
@@ -82,6 +95,7 @@ export function mapTrainingSeriesRowToGroup(row: TrainingSeriesGroupRow): Traini
       number: Number.isFinite(module.number) ? Number(module.number) : index + 1,
       title: module.title?.trim() || "",
       description: module.description?.trim() || "",
+      videoUrl: module.videoUrl?.trim() || undefined,
     }))
     .filter((module) => module.title && module.description)
     .sort((a, b) => a.number - b.number);
@@ -113,6 +127,7 @@ export function buildDefaultTrainingSeriesRows() {
       number: index + 1,
       title: module.title,
       description: module.description,
+      videoUrl: module.videoUrl,
     })),
     sort_order: group.sortOrder,
   }));
@@ -147,6 +162,14 @@ export function validateTrainingSeriesForm(data: TrainingSeriesFormData) {
     return "Each module needs both a title and description.";
   }
 
+  const invalidVideoModule = modules.find(
+    (module) => module.videoUrl?.trim() && !isValidVideoUrl(module.videoUrl.trim())
+  );
+
+  if (invalidVideoModule) {
+    return "Video links must be valid http or https URLs.";
+  }
+
   return null;
 }
 
@@ -155,12 +178,14 @@ export function buildTrainingSeriesUpsertRow(data: TrainingSeriesFormData) {
     .map((module) => ({
       title: module.title.trim(),
       description: module.description.trim(),
+      videoUrl: module.videoUrl?.trim() || undefined,
     }))
     .filter((module) => module.title && module.description)
     .map((module, index) => ({
       number: index + 1,
       title: module.title,
       description: module.description,
+      videoUrl: module.videoUrl,
     }));
 
   return {
