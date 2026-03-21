@@ -51,20 +51,26 @@ function BarChart({ milestones }: { milestones: { age: number; balance: number; 
 
   return (
     <div className="mt-8">
-      <div className="flex items-end gap-2 h-48">
+      <div className="space-y-2">
         {milestones.map((m) => {
-          const heightPct = max > 0 ? (m.balance / max) * 100 : 0;
+          const widthPct = max > 0 ? Math.max(2, (m.balance / max) * 100) : 0;
+          const contribPct = m.balance > 0 ? (m.contributed / m.balance) * 100 : 0;
           return (
-            <div key={m.age} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[10px] text-text-muted">{formatCurrency(m.balance)}</span>
-              <div className="w-full relative" style={{ height: `${heightPct}%`, minHeight: "4px" }}>
-                <div className="absolute inset-0 bg-accent/30" />
+            <div key={m.age} className="flex items-center gap-3">
+              <span className="text-[11px] text-text-muted w-7 text-right shrink-0">{m.age}</span>
+              <div className="flex-1 relative h-5" title={formatCurrency(m.balance)}>
                 <div
-                  className="absolute bottom-0 left-0 right-0 bg-accent"
-                  style={{ height: `${max > 0 ? (m.contributed / m.balance) * 100 : 0}%` }}
+                  className="absolute inset-y-0 left-0 bg-accent/30"
+                  style={{ width: `${widthPct}%` }}
+                />
+                <div
+                  className="absolute inset-y-0 left-0 bg-accent"
+                  style={{ width: `${widthPct * (contribPct / 100)}%` }}
                 />
               </div>
-              <span className="text-[10px] text-text-muted">{m.age}</span>
+              <span className="text-[11px] text-text-muted w-20 text-right shrink-0">
+                {formatCurrency(m.balance)}
+              </span>
             </div>
           );
         })}
