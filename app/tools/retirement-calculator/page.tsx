@@ -5,15 +5,9 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import Button from "@/components/ui/Button";
 import CTABanner from "@/components/sections/CTABanner";
+import InputField from "@/components/calculators/InputField";
+import { formatCurrency } from "@/lib/format";
 import { IMAGES, BOOKING_URL } from "@/lib/constants";
-
-function formatCurrency(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(n);
-}
 
 function calcRetirement(
   currentAge: number,
@@ -60,14 +54,13 @@ function BarChart({ milestones }: { milestones: { age: number; balance: number; 
       <div className="flex items-end gap-2 h-48">
         {milestones.map((m) => {
           const heightPct = max > 0 ? (m.balance / max) * 100 : 0;
-          const contribPct = max > 0 ? (m.contributed / max) * 100 : 0;
           return (
             <div key={m.age} className="flex-1 flex flex-col items-center gap-1">
               <span className="text-[10px] text-text-muted">{formatCurrency(m.balance)}</span>
               <div className="w-full relative" style={{ height: `${heightPct}%`, minHeight: "4px" }}>
-                <div className="absolute inset-0 bg-accent/30 rounded-t" />
+                <div className="absolute inset-0 bg-accent/30" />
                 <div
-                  className="absolute bottom-0 left-0 right-0 bg-accent rounded-t"
+                  className="absolute bottom-0 left-0 right-0 bg-accent"
                   style={{ height: `${max > 0 ? (m.contributed / m.balance) * 100 : 0}%` }}
                 />
               </div>
@@ -83,45 +76,6 @@ function BarChart({ milestones }: { milestones: { age: number; balance: number; 
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 bg-accent/30 inline-block" /> Growth
         </span>
-      </div>
-    </div>
-  );
-}
-
-function InputField({
-  label,
-  value,
-  onChange,
-  prefix,
-  suffix,
-  min,
-  max,
-  step,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  prefix?: string;
-  suffix?: string;
-  min?: number;
-  max?: number;
-  step?: number;
-}) {
-  return (
-    <div>
-      <label className="block text-sm text-text-secondary mb-2">{label}</label>
-      <div className="flex items-center border border-border focus-within:border-accent transition-colors">
-        {prefix && <span className="pl-4 text-text-muted text-sm">{prefix}</span>}
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          min={min}
-          max={max}
-          step={step}
-          className="w-full px-4 py-3 bg-transparent text-foreground outline-none text-sm [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        />
-        {suffix && <span className="pr-4 text-text-muted text-sm">{suffix}</span>}
       </div>
     </div>
   );

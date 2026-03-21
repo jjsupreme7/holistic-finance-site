@@ -5,15 +5,9 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import Button from "@/components/ui/Button";
 import CTABanner from "@/components/sections/CTABanner";
+import InputField from "@/components/calculators/InputField";
+import { formatCurrency } from "@/lib/format";
 import { IMAGES, BOOKING_URL } from "@/lib/constants";
-
-function formatCurrency(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(n);
-}
 
 function calcInsurance(
   annualIncome: number,
@@ -32,55 +26,13 @@ function calcInsurance(
   return { incomeReplacement, totalNeeds, totalResources, gap };
 }
 
-function InputField({
-  label,
-  value,
-  onChange,
-  prefix,
-  suffix,
-  min,
-  max,
-  step,
-  hint,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  prefix?: string;
-  suffix?: string;
-  min?: number;
-  max?: number;
-  step?: number;
-  hint?: string;
-}) {
-  return (
-    <div>
-      <label className="block text-sm text-text-secondary mb-1">{label}</label>
-      {hint && <p className="text-xs text-text-muted mb-2">{hint}</p>}
-      <div className="flex items-center border border-border focus-within:border-accent transition-colors">
-        {prefix && <span className="pl-4 text-text-muted text-sm">{prefix}</span>}
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          min={min}
-          max={max}
-          step={step}
-          className="w-full px-4 py-3 bg-transparent text-foreground outline-none text-sm [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        />
-        {suffix && <span className="pr-4 text-text-muted text-sm">{suffix}</span>}
-      </div>
-    </div>
-  );
-}
-
 function BreakdownBar({ items }: { items: { label: string; value: number; color: string }[] }) {
   const total = items.reduce((s, i) => s + i.value, 0);
   if (total === 0) return null;
 
   return (
     <div className="mt-6">
-      <div className="flex h-6 rounded overflow-hidden mb-3">
+      <div className="flex h-6 overflow-hidden mb-3">
         {items.map((item) => {
           const pct = (item.value / total) * 100;
           if (pct < 1) return null;
@@ -97,7 +49,7 @@ function BreakdownBar({ items }: { items: { label: string; value: number; color:
       <div className="flex flex-wrap gap-4">
         {items.map((item) => (
           <span key={item.label} className="flex items-center gap-1.5 text-xs text-text-secondary">
-            <span className={`w-2.5 h-2.5 rounded-sm inline-block ${item.color}`} />
+            <span className={`w-2.5 h-2.5 inline-block ${item.color}`} />
             {item.label}
           </span>
         ))}

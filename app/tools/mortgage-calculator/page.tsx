@@ -5,15 +5,9 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import Button from "@/components/ui/Button";
 import CTABanner from "@/components/sections/CTABanner";
+import InputField from "@/components/calculators/InputField";
+import { formatCurrency } from "@/lib/format";
 import { IMAGES, BOOKING_URL } from "@/lib/constants";
-
-function formatCurrency(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(n);
-}
 
 function calcMortgage(
   annualIncome: number,
@@ -31,69 +25,41 @@ function calcMortgage(
   const maxFromDebt = maxTotalDebt - monthlyDebts;
   const maxMonthly = Math.min(maxHousing, maxFromDebt);
 
-  // Subtract taxes + insurance to get pure P&I budget
-  const monthlyTaxInsurance = insuranceAnnual / 12;
-  const piMax = maxMonthly - monthlyTaxInsurance;
+  if (maxMonthly <= 0) return { maxHome: 0, monthlyPayment: 0, piPayment: 0, taxInsurance: 0, loanAmount: 0 };
 
-  if (piMax <= 0) return { maxHome: 0, monthlyPayment: 0, piPayment: 0, taxInsurance: monthlyTaxInsurance, loanAmount: 0 };
-
-  // Solve for loan amount from P&I payment
+  // Iteratively solve: P&I + property tax + insurance must fit within maxMonthly
+  // Start by estimating home price without property tax, then refine
   const r = interestRate / 100 / 12;
   const n = loanTermYears * 12;
-  const loanAmount = r > 0 ? piMax * ((1 - Math.pow(1 + r, -n)) / r) : piMax * n;
+  const monthlyInsurance = insuranceAnnual / 12;
 
-  const maxHome = loanAmount + downPayment;
+  // Payment factor: monthly P&I per dollar of loan
+  const paymentFactor = r > 0 ? r / (1 - Math.pow(1 + r, -n)) : 1 / n;
 
-  // Recalc property tax per month based on max home
-  const monthlyPropTax = (maxHome * (propertyTaxRate / 100)) / 12;
-  const totalMonthly = piMax + monthlyPropTax + monthlyTaxInsurance;
+  // Monthly property tax per dollar of home value = (propertyTaxRate / 100) / 12
+  // Home = loan + downPayment, so loan = home - downPayment
+  // maxMonthly = paymentFactor * loan + (home * propertyTaxRate/100/12) + monthlyInsurance
+  // maxMonthly - monthlyInsurance = paymentFactor * (home - downPayment) + home * propTaxMonthly
+  // budget = paymentFactor * home - paymentFactor * downPayment + propTaxMonthly * home
+  // budget + paymentFactor * downPayment = home * (paymentFactor + propTaxMonthly)
+  const propTaxMonthly = propertyTaxRate / 100 / 12;
+  const budget = maxMonthly - monthlyInsurance;
+
+  if (budget <= 0) return { maxHome: 0, monthlyPayment: 0, piPayment: 0, taxInsurance: monthlyInsurance, loanAmount: 0 };
+
+  const maxHome = (budget + paymentFactor * downPayment) / (paymentFactor + propTaxMonthly);
+  const loanAmount = Math.max(0, maxHome - downPayment);
+  const piPayment = paymentFactor * loanAmount;
+  const monthlyPropTax = (maxHome * propTaxMonthly);
+  const totalMonthly = piPayment + monthlyPropTax + monthlyInsurance;
 
   return {
     maxHome,
     monthlyPayment: totalMonthly,
-    piPayment: piMax,
-    taxInsurance: monthlyPropTax + monthlyTaxInsurance,
+    piPayment,
+    taxInsurance: monthlyPropTax + monthlyInsurance,
     loanAmount,
   };
-}
-
-function InputField({
-  label,
-  value,
-  onChange,
-  prefix,
-  suffix,
-  min,
-  max,
-  step,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  prefix?: string;
-  suffix?: string;
-  min?: number;
-  max?: number;
-  step?: number;
-}) {
-  return (
-    <div>
-      <label className="block text-sm text-text-secondary mb-2">{label}</label>
-      <div className="flex items-center border border-border focus-within:border-accent transition-colors">
-        {prefix && <span className="pl-4 text-text-muted text-sm">{prefix}</span>}
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          min={min}
-          max={max}
-          step={step}
-          className="w-full px-4 py-3 bg-transparent text-foreground outline-none text-sm [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        />
-        {suffix && <span className="pr-4 text-text-muted text-sm">{suffix}</span>}
-      </div>
-    </div>
-  );
 }
 
 function ResultRow({ label, value, accent }: { label: string; value: string; accent?: boolean }) {

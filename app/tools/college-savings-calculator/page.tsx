@@ -5,15 +5,9 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import Button from "@/components/ui/Button";
 import CTABanner from "@/components/sections/CTABanner";
+import InputField from "@/components/calculators/InputField";
+import { formatCurrency } from "@/lib/format";
 import { IMAGES, BOOKING_URL } from "@/lib/constants";
-
-function formatCurrency(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(n);
-}
 
 const SCHOOL_COSTS: Record<string, { label: string; annual: number }> = {
   "in-state-public": { label: "In-State Public", annual: 23000 },
@@ -55,48 +49,6 @@ function calcCollegeSavings(
     : n > 0 ? gap / n : 0;
 
   return { totalCost, futureValue: fvSavings, monthlyNeeded, gap, yearsUntil };
-}
-
-function InputField({
-  label,
-  value,
-  onChange,
-  prefix,
-  suffix,
-  min,
-  max,
-  step,
-  hint,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  prefix?: string;
-  suffix?: string;
-  min?: number;
-  max?: number;
-  step?: number;
-  hint?: string;
-}) {
-  return (
-    <div>
-      <label className="block text-sm text-text-secondary mb-1">{label}</label>
-      {hint && <p className="text-xs text-text-muted mb-2">{hint}</p>}
-      <div className="flex items-center border border-border focus-within:border-accent transition-colors">
-        {prefix && <span className="pl-4 text-text-muted text-sm">{prefix}</span>}
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          min={min}
-          max={max}
-          step={step}
-          className="w-full px-4 py-3 bg-transparent text-foreground outline-none text-sm [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        />
-        {suffix && <span className="pr-4 text-text-muted text-sm">{suffix}</span>}
-      </div>
-    </div>
-  );
 }
 
 export default function CollegeSavingsCalculator() {
@@ -186,7 +138,7 @@ export default function CollegeSavingsCalculator() {
                 </div>
 
                 <div className="bg-muted p-5 mb-8">
-                  <p className="text-xs text-text-muted mb-1">💡 Did you know?</p>
+                  <p className="text-xs text-text-muted mb-1">Did you know?</p>
                   <p className="text-sm text-text-secondary leading-relaxed">
                     529 college savings plans offer tax-free growth and tax-free withdrawals for
                     qualified education expenses. Washington State offers the GET (Guaranteed
