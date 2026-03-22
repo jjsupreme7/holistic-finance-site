@@ -73,11 +73,11 @@ const START_PATHS: Array<{
   },
 ];
 
-const COMMON_REASONS = [
-  "I need help preparing for taxes or getting my paperwork organized.",
-  "I want to understand retirement, insurance, or budgeting without feeling overwhelmed.",
-  "I am a first-time homebuyer and want guidance before making a big move.",
-  "I want classes, community education, and future learning resources for my family.",
+const COMMON_REASONS: Array<{ icon: IconName; text: string }> = [
+  { icon: "licensed", text: "I need help preparing for taxes or getting my paperwork organized." },
+  { icon: "retirement", text: "I want to understand retirement, insurance, or budgeting without feeling overwhelmed." },
+  { icon: "mortgage", text: "I am a first-time homebuyer and want guidance before making a big move." },
+  { icon: "education", text: "I want classes, community education, and future learning resources for my family." },
 ];
 
 const WHAT_HAPPENS_NEXT = [
@@ -178,11 +178,11 @@ export default function StartHerePage() {
               <span className="label text-success block mb-4">Common Reasons People Come Here</span>
               <div className="space-y-4">
                 {COMMON_REASONS.map((reason) => (
-                  <div key={reason} className="flex items-start gap-4">
+                  <div key={reason.text} className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-muted flex items-center justify-center text-text-muted flex-shrink-0">
-                      <Icon name="financial-services" size={18} />
+                      <Icon name={reason.icon} size={18} />
                     </div>
-                    <p className="text-text-secondary leading-relaxed">{reason}</p>
+                    <p className="text-text-secondary leading-relaxed">{reason.text}</p>
                   </div>
                 ))}
               </div>
