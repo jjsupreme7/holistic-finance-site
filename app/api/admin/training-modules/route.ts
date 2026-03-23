@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import {
   buildTrainingSeriesUpsertRow,
   validateTrainingSeriesForm,
@@ -7,7 +8,12 @@ import {
 import { isMissingRelationError } from "@/lib/supabase/errors";
 import { getSupabase } from "@/lib/supabase/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { data, error } = await getSupabase()
       .from("training_module_groups")
@@ -31,6 +37,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const body = (await req.json()) as TrainingSeriesFormData;
     const validationError = validateTrainingSeriesForm(body);

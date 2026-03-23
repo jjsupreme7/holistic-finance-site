@@ -76,7 +76,14 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-dark mb-6">Dashboard</h1>
+      <div className="mb-6 space-y-2">
+        <h1 className="text-2xl font-bold text-dark">Dashboard</h1>
+        <p className="max-w-3xl text-sm leading-6 text-text-muted">
+          Use <strong>Courses &amp; Events</strong> for anything with a date on the calendar. Use
+          <strong> Curriculum</strong> for evergreen training groups that stay available outside the
+          live schedule.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <Link href="/admin/submissions" className="bg-white rounded-xl p-6 border border-border-light no-underline block hover:border-primary/30 transition-colors">
@@ -197,13 +204,13 @@ export default function AdminDashboard() {
           href="/admin/schedule"
           className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
         >
-          Manage Schedule
+          Manage Courses & Events
         </Link>
         <Link
           href="/admin/training-modules"
           className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
         >
-          Manage Training Modules
+          Manage Curriculum
         </Link>
       </div>
     </div>

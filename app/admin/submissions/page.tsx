@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import AdminNotice from "@/components/admin/AdminNotice";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
 
 interface Submission {
   id: string;
@@ -14,58 +16,132 @@ interface Submission {
   created_at: string;
 }
 
+interface Notice {
+  tone: "success" | "error";
+  message: string;
+}
+
 export default function SubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "new" | "reviewed">("all");
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState<"newest" | "oldest" | "name">("newest");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [reviewing, setReviewing] = useState<string | null>(null);
+  const [notice, setNotice] = useState<Notice | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Submission | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/submissions")
-      .then((res) => res.json())
-      .then((data) => setSubmissions(data.submissions || []))
-      .catch(console.error)
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to load submissions.");
+        setSubmissions(data.submissions || []);
+      })
+      .catch((error) => {
+        console.error(error);
+        setNotice({ tone: "error", message: "Could not load submissions." });
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  const filtered =
-    filter === "all"
-      ? submissions
-      : submissions.filter((s) => s.status === filter);
-
   const newCount = submissions.filter((s) => s.status === "new").length;
+  const filtered = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    const matchesFilter =
+      filter === "all"
+        ? submissions
+        : submissions.filter((submission) => submission.status === filter);
+
+    const matchesQuery = query
+      ? matchesFilter.filter((submission) => {
+          const fullName = `${submission.first_name} ${submission.last_name}`.toLowerCase();
+          return (
+            fullName.includes(query) ||
+            submission.email.toLowerCase().includes(query) ||
+            (submission.phone || "").toLowerCase().includes(query) ||
+            (submission.service || "").toLowerCase().includes(query) ||
+            (submission.message || "").toLowerCase().includes(query)
+          );
+        })
+      : matchesFilter;
+
+    return [...matchesQuery].sort((left, right) => {
+      if (sortBy === "name") {
+        return `${left.first_name} ${left.last_name}`.localeCompare(
+          `${right.first_name} ${right.last_name}`
+        );
+      }
+
+      const leftTime = new Date(left.created_at).getTime();
+      const rightTime = new Date(right.created_at).getTime();
+
+      return sortBy === "oldest" ? leftTime - rightTime : rightTime - leftTime;
+    });
+  }, [filter, search, sortBy, submissions]);
 
   const markReviewed = async (id: string) => {
-    const res = await fetch("/api/admin/submissions", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status: "reviewed" }),
-    });
-    if (res.ok) {
+    setReviewing(id);
+    setNotice(null);
+
+    try {
+      const res = await fetch("/api/admin/submissions", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status: "reviewed" }),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to update submission.");
+      }
+
       setSubmissions((prev) =>
         prev.map((s) => (s.id === id ? { ...s, status: "reviewed" } : s))
       );
+      setNotice({ tone: "success", message: "Submission marked as reviewed." });
+    } catch (error) {
+      console.error(error);
+      setNotice({
+        tone: "error",
+        message: error instanceof Error ? error.message : "Failed to update submission.",
+      });
+    } finally {
+      setReviewing(null);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this submission?")) return;
     setDeleting(id);
+    setNotice(null);
     try {
       const res = await fetch("/api/admin/submissions", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
       });
-      if (res.ok) {
-        setSubmissions((prev) => prev.filter((s) => s.id !== id));
-        if (expanded === id) setExpanded(null);
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to delete submission.");
       }
+
+      setSubmissions((prev) => prev.filter((s) => s.id !== id));
+      if (expanded === id) setExpanded(null);
+      setNotice({ tone: "success", message: "Submission deleted." });
     } catch (err) {
       console.error("Delete failed:", err);
+      setNotice({
+        tone: "error",
+        message: err instanceof Error ? err.message : "Failed to delete submission.",
+      });
     } finally {
       setDeleting(null);
+      setPendingDelete(null);
     }
   };
 
@@ -79,7 +155,7 @@ export default function SubmissionsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-dark">Contact Submissions</h1>
           <p className="text-text-muted text-sm mt-0.5">
@@ -88,20 +164,61 @@ export default function SubmissionsPage() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-4">
-        {(["all", "new", "reviewed"] as const).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border-none transition-colors ${
-              filter === f
-                ? "bg-primary text-white"
-                : "bg-white text-text-light border border-border-light hover:bg-primary/5"
-            }`}
-          >
-            {f}{f === "new" && newCount > 0 ? ` (${newCount})` : ""}
-          </button>
-        ))}
+      {notice && (
+        <div className="mb-4">
+          <AdminNotice
+            tone={notice.tone}
+            message={notice.message}
+            onDismiss={() => setNotice(null)}
+          />
+        </div>
+      )}
+
+      <div className="bg-white rounded-2xl border border-border-light p-4 mb-4">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
+          <div className="flex-1">
+            <label className="block text-sm font-semibold text-dark mb-2">Search submissions</label>
+            <input
+              type="text"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search by name, email, phone, service, or message"
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+            />
+          </div>
+
+          <div className="w-full lg:w-52">
+            <label className="block text-sm font-semibold text-dark mb-2">Sort by</label>
+            <select
+              value={sortBy}
+              onChange={(event) =>
+                setSortBy(event.target.value as "newest" | "oldest" | "name")
+              }
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+            >
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="name">Name A-Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 mt-4">
+          {(["all", "new", "reviewed"] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border-none transition-colors ${
+                filter === f
+                  ? "bg-primary text-white"
+                  : "bg-white text-text-light border border-border-light hover:bg-primary/5"
+              }`}
+            >
+              {f}
+              {f === "new" && newCount > 0 ? ` (${newCount})` : ""}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="bg-white rounded-xl border border-border-light overflow-hidden">
@@ -121,7 +238,6 @@ export default function SubmissionsPage() {
                   className="flex items-center gap-4 px-4 py-3 hover:bg-[#f8faff] transition-colors cursor-pointer"
                   onClick={() => {
                     setExpanded(expanded === s.id ? null : s.id);
-                    if (s.status === "new") markReviewed(s.id);
                   }}
                 >
                   <div
@@ -202,6 +318,18 @@ export default function SubmissionsPage() {
                       </div>
                     )}
                     <div className="flex gap-2 pt-2">
+                      {s.status === "new" && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            markReviewed(s.id);
+                          }}
+                          disabled={reviewing === s.id}
+                          className="bg-white text-primary font-semibold px-4 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-50"
+                        >
+                          {reviewing === s.id ? "Updating…" : "Mark Reviewed"}
+                        </button>
+                      )}
                       <a
                         href={`mailto:${s.email}?subject=Re: Your inquiry about ${s.service || "our services"}`}
                         className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-4 py-1.5 rounded-lg no-underline text-xs hover:shadow-lg hover:shadow-primary/25 transition-all"
@@ -211,12 +339,12 @@ export default function SubmissionsPage() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleDelete(s.id);
+                          setPendingDelete(s);
                         }}
                         disabled={deleting === s.id}
                         className="text-red-500 hover:text-red-700 text-xs font-semibold cursor-pointer border-none bg-transparent transition-colors disabled:opacity-50"
                       >
-                        {deleting === s.id ? "Deleting…" : "Delete"}
+                        {deleting === s.id ? "Deleting…" : "Delete Submission"}
                       </button>
                     </div>
                   </div>
@@ -226,6 +354,20 @@ export default function SubmissionsPage() {
           </div>
         )}
       </div>
+      <ConfirmDialog
+        open={Boolean(pendingDelete)}
+        title="Delete this submission?"
+        description={
+          pendingDelete
+            ? `This will permanently remove the submission from ${pendingDelete.first_name} ${pendingDelete.last_name}.`
+            : ""
+        }
+        confirmLabel="Delete submission"
+        tone="danger"
+        loading={pendingDelete ? deleting === pendingDelete.id : false}
+        onConfirm={() => (pendingDelete ? handleDelete(pendingDelete.id) : undefined)}
+        onCancel={() => setPendingDelete(null)}
+      />
     </div>
   );
 }

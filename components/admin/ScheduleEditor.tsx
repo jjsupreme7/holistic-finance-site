@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import AdminNotice from "@/components/admin/AdminNotice";
 import { CONTACT } from "@/lib/constants";
 import { COURSE_ICONS, type CourseScheduleType, type ScheduleKind, type ScheduleStatus } from "@/lib/schedule";
 
@@ -24,6 +25,7 @@ interface ScheduleEditorProps {
     sortOrder: number;
   }) => void;
   saving: boolean;
+  onDirtyChange?: (dirty: boolean) => void;
   initialData?: {
     kind: ScheduleKind;
     status: ScheduleStatus;
@@ -47,6 +49,7 @@ interface ScheduleEditorProps {
 export default function ScheduleEditor({
   onSave,
   saving,
+  onDirtyChange,
   initialData,
 }: ScheduleEditorProps) {
   const [kind, setKind] = useState<ScheduleKind>(initialData?.kind || "course");
@@ -69,7 +72,75 @@ export default function ScheduleEditor({
     initialData?.highlights?.join("\n") || ""
   );
   const [sortOrder, setSortOrder] = useState(initialData?.sortOrder || 0);
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const isEditing = !!initialData;
+
+  const initialSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        kind: initialData?.kind || "course",
+        status: initialData?.status || "published",
+        title: initialData?.title || "",
+        icon: initialData?.icon || "finance",
+        scheduleType: initialData?.scheduleType === "paid" ? "paid" : "free",
+        priceLabel: initialData?.priceLabel || "",
+        duration: initialData?.duration || "",
+        format: initialData?.format || "",
+        dateLabel: initialData?.dateLabel || "",
+        timeLabel: initialData?.timeLabel || "",
+        description: initialData?.description || "",
+        location: initialData?.location || "",
+        sponsor: initialData?.sponsor || "",
+        contactLabel: initialData?.contactLabel || CONTACT.phone,
+        highlightsText: initialData?.highlights?.join("\n") || "",
+        sortOrder: initialData?.sortOrder || 0,
+      }),
+    [initialData]
+  );
+  const currentSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        kind,
+        status,
+        title,
+        icon,
+        scheduleType,
+        priceLabel,
+        duration,
+        format,
+        dateLabel,
+        timeLabel,
+        description,
+        location,
+        sponsor,
+        contactLabel,
+        highlightsText,
+        sortOrder,
+      }),
+    [
+      contactLabel,
+      dateLabel,
+      description,
+      duration,
+      format,
+      highlightsText,
+      icon,
+      kind,
+      location,
+      priceLabel,
+      scheduleType,
+      sortOrder,
+      sponsor,
+      status,
+      timeLabel,
+      title,
+    ]
+  );
+  const isDirty = currentSnapshot !== initialSnapshot;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   const kindLabel = kind === "course" ? "Course" : "Event";
   const submitLabel = saving
@@ -93,20 +164,21 @@ export default function ScheduleEditor({
     e.preventDefault();
 
     if (!title.trim() || !dateLabel.trim() || !description.trim()) {
-      alert("Title, date label, and description are required.");
+      setValidationMessage("Title, date, and description are required before you save.");
       return;
     }
 
     if (kind === "course" && (!duration.trim() || !format.trim())) {
-      alert("Course duration and format are required.");
+      setValidationMessage("Courses need both a duration and format.");
       return;
     }
 
     if (kind === "event" && (!timeLabel.trim() || !location.trim())) {
-      alert("Event time and location are required.");
+      setValidationMessage("Events need both a time and location.");
       return;
     }
 
+    setValidationMessage(null);
     onSave({
       kind,
       status,
@@ -129,6 +201,14 @@ export default function ScheduleEditor({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {validationMessage && (
+        <AdminNotice
+          tone="error"
+          message={validationMessage}
+          onDismiss={() => setValidationMessage(null)}
+        />
+      )}
+
       <div className="bg-white rounded-xl border border-border-light p-6 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div>
@@ -366,14 +446,21 @@ export default function ScheduleEditor({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border-light p-6 flex justify-end">
-        <button
-          type="submit"
-          disabled={saving}
-          className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-8 py-2.5 rounded-lg text-sm hover:shadow-lg hover:shadow-primary/25 transition-all cursor-pointer border-none disabled:opacity-50"
-        >
-          {submitLabel}
-        </button>
+      <div className="bg-white rounded-xl border border-border-light p-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p className="text-sm text-text-muted">
+            {isDirty
+              ? "You have unsaved changes in this item."
+              : "All changes are saved."}
+          </p>
+          <button
+            type="submit"
+            disabled={saving}
+            className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-8 py-2.5 rounded-lg text-sm hover:shadow-lg hover:shadow-primary/25 transition-all cursor-pointer border-none disabled:opacity-50"
+          >
+            {submitLabel}
+          </button>
+        </div>
       </div>
     </form>
   );

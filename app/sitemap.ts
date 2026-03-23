@@ -1,17 +1,25 @@
 import type { MetadataRoute } from "next";
+import { getPublishedBlogPosts } from "@/lib/blog/server";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://myholisticfinance.com";
+  const blogPosts = await getPublishedBlogPosts();
 
   return [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${baseUrl}/start-here`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
-    { url: `${baseUrl}/courses`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
-    { url: `${baseUrl}/events`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
-    { url: `${baseUrl}/newsletter`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: baseUrl, changeFrequency: "weekly", priority: 1 },
+    { url: `${baseUrl}/start-here`, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/services`, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${baseUrl}/blog`, changeFrequency: "daily", priority: 0.8 },
+    { url: `${baseUrl}/courses`, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${baseUrl}/events`, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${baseUrl}/newsletter`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${baseUrl}/contact`, changeFrequency: "monthly", priority: 0.8 },
+    ...blogPosts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.updated_at || post.published_at),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
   ];
 }

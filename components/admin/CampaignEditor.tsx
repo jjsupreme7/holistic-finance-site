@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import AdminNotice from "@/components/admin/AdminNotice";
 import { SITE_NAME } from "@/lib/constants";
 
 interface CampaignEditorProps {
@@ -10,6 +11,7 @@ interface CampaignEditorProps {
   onSave: (data: { subject: string; bodyHtml: string; previewText: string }) => Promise<void>;
   saving: boolean;
   readOnly?: boolean;
+  onDirtyChange?: (dirty: boolean) => void;
 }
 
 export default function CampaignEditor({
@@ -19,12 +21,14 @@ export default function CampaignEditor({
   onSave,
   saving,
   readOnly = false,
+  onDirtyChange,
 }: CampaignEditorProps) {
   const [subject, setSubject] = useState(initialSubject);
   const [bodyHtml, setBodyHtml] = useState(initialBodyHtml);
   const [previewText, setPreviewText] = useState(initialPreviewText);
   const [sendingTest, setSendingTest] = useState(false);
   const [testMessage, setTestMessage] = useState("");
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const [purify, setPurify] = useState<typeof import("dompurify").default | null>(null);
   const hasInitialContent = Boolean(initialSubject || initialBodyHtml || initialPreviewText);
   const saveLabel = saving
@@ -37,6 +41,25 @@ export default function CampaignEditor({
     import("dompurify").then((mod) => setPurify(() => mod.default));
   }, []);
 
+  const initialSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        subject: initialSubject,
+        bodyHtml: initialBodyHtml,
+        previewText: initialPreviewText,
+      }),
+    [initialBodyHtml, initialPreviewText, initialSubject]
+  );
+  const currentSnapshot = useMemo(
+    () => JSON.stringify({ subject, bodyHtml, previewText }),
+    [bodyHtml, previewText, subject]
+  );
+  const isDirty = currentSnapshot !== initialSnapshot;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
+
   const sanitizedHtml = useMemo(() => {
     const raw = bodyHtml || '<p style="color:#94a3b8;">Email body preview will appear here...</p>';
     return purify ? purify.sanitize(raw) : raw;
@@ -44,6 +67,11 @@ export default function CampaignEditor({
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!subject.trim() || !bodyHtml.trim()) {
+      setValidationMessage("Subject and body are required before you save.");
+      return;
+    }
+    setValidationMessage(null);
     await onSave({ subject, bodyHtml, previewText });
   };
 
@@ -76,6 +104,14 @@ export default function CampaignEditor({
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Editor */}
       <form onSubmit={handleSave} className="space-y-4">
+        {validationMessage && (
+          <AdminNotice
+            tone="error"
+            message={validationMessage}
+            onDismiss={() => setValidationMessage(null)}
+          />
+        )}
+
         <div>
           <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-1.5">
             Subject Line
@@ -147,6 +183,9 @@ export default function CampaignEditor({
             <p className="text-text-muted text-sm">
               Saving a draft does not email anyone. Campaigns only go out after you click the send
               button on the campaign page.
+            </p>
+            <p className="text-text-muted text-sm">
+              {isDirty ? "You have unsaved edits in this email." : "All changes are saved."}
             </p>
           </div>
         )}

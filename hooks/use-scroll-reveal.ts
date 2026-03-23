@@ -9,7 +9,13 @@ interface UseScrollRevealOptions {
 
 export function useScrollReveal({ threshold = 0.15, once = true }: UseScrollRevealOptions = {}) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
 
   useEffect(() => {
     const el = ref.current;
@@ -17,7 +23,6 @@ export function useScrollReveal({ threshold = 0.15, once = true }: UseScrollReve
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
-      setIsVisible(true);
       return;
     }
 

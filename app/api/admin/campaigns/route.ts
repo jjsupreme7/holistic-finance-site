@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { getSupabase } from "@/lib/supabase/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { data, error } = await getSupabase()
       .from("campaigns")
@@ -21,6 +27,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { subject, bodyHtml, previewText } = await req.json();
 

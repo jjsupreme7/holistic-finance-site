@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
+import AdminNotice from "@/components/admin/AdminNotice";
 
 interface BlogEditorProps {
   onSave: (data: {
@@ -13,6 +15,7 @@ interface BlogEditorProps {
   }) => void;
   saving: boolean;
   defaultStatus?: "draft" | "published";
+  onDirtyChange?: (dirty: boolean) => void;
   initialData?: {
     title: string;
     slug: string;
@@ -36,6 +39,7 @@ export default function BlogEditor({
   onSave,
   saving,
   defaultStatus = "draft",
+  onDirtyChange,
   initialData,
 }: BlogEditorProps) {
   const [title, setTitle] = useState(initialData?.title || "");
@@ -45,7 +49,38 @@ export default function BlogEditor({
   const [coverImage, setCoverImage] = useState(initialData?.coverImage || "");
   const [status, setStatus] = useState(initialData?.status || defaultStatus);
   const [slugEdited, setSlugEdited] = useState(!!initialData?.slug);
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const isEditing = !!initialData;
+
+  const initialSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        title: initialData?.title || "",
+        slug: initialData?.slug || "",
+        excerpt: initialData?.excerpt || "",
+        content: initialData?.content || "",
+        coverImage: initialData?.coverImage || "",
+        status: initialData?.status || defaultStatus,
+      }),
+    [defaultStatus, initialData]
+  );
+  const currentSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        title,
+        slug,
+        excerpt,
+        content,
+        coverImage,
+        status,
+      }),
+    [content, coverImage, excerpt, slug, status, title]
+  );
+  const isDirty = currentSnapshot !== initialSnapshot;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   const submitLabel = saving
     ? status === "published"
@@ -71,9 +106,10 @@ export default function BlogEditor({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) {
-      alert("Title and content are required.");
+      setValidationMessage("Title and content are required before you save.");
       return;
     }
+    setValidationMessage(null);
     onSave({
       title,
       slug: slug || toSlug(title),
@@ -89,6 +125,14 @@ export default function BlogEditor({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {validationMessage && (
+        <AdminNotice
+          tone="error"
+          message={validationMessage}
+          onDismiss={() => setValidationMessage(null)}
+        />
+      )}
+
       <div className="bg-white rounded-xl border border-border-light p-6 space-y-5">
         <div>
           <label className="block text-sm font-semibold text-dark mb-1.5">
@@ -136,9 +180,12 @@ export default function BlogEditor({
           />
           {coverImage && (
             <div className="mt-2 border border-border-light rounded-lg overflow-hidden">
-              <img
+              <Image
                 src={coverImage}
                 alt="Cover preview"
+                width={1200}
+                height={384}
+                unoptimized
                 className="w-full h-48 object-cover"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
@@ -180,7 +227,7 @@ export default function BlogEditor({
       </div>
 
       <div className="bg-white rounded-xl border border-border-light p-6">
-        <div className="flex items-center justify-between gap-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <div className="flex items-center gap-4">
               <label className="block text-sm font-semibold text-dark">Status</label>
@@ -213,6 +260,9 @@ export default function BlogEditor({
               {status === "published"
                 ? "This post will appear on the public /blog page after you save."
                 : "Draft posts stay hidden from the public /blog page until you publish them."}
+            </p>
+            <p className="text-text-muted text-xs mt-2">
+              {isDirty ? "You have unsaved changes on this post." : "All changes are saved."}
             </p>
           </div>
 

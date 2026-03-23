@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import AdminNotice from "@/components/admin/AdminNotice";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
 import TrainingSeriesGroupEditor from "@/components/admin/TrainingSeriesGroupEditor";
+import { useUnsavedChangesGuard } from "@/hooks/use-unsaved-changes-guard";
 import type { TrainingSeriesModule } from "@/lib/training-series";
 
 interface TrainingSeriesGroupItem {
@@ -17,6 +20,11 @@ interface TrainingSeriesGroupItem {
   sort_order: number;
 }
 
+interface Notice {
+  tone: "success" | "error" | "warning" | "info";
+  message: string;
+}
+
 export default function EditTrainingModulesPage() {
   const router = useRouter();
   const params = useParams();
@@ -25,6 +33,10 @@ export default function EditTrainingModulesPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [notice, setNotice] = useState<Notice | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const { pendingHref, continueNavigation, stayOnPage } = useUnsavedChangesGuard(hasUnsavedChanges);
 
   useEffect(() => {
     fetch(`/api/admin/training-modules/${id}`)
@@ -36,6 +48,7 @@ export default function EditTrainingModulesPage() {
 
   async function handleSave(data: Record<string, unknown>) {
     setSaving(true);
+    setNotice(null);
     try {
       const res = await fetch(`/api/admin/training-modules/${id}`, {
         method: "PUT",
@@ -45,23 +58,22 @@ export default function EditTrainingModulesPage() {
 
       const json = await res.json();
       if (!res.ok) {
-        alert(json.error || "Failed to update training group.");
+        setNotice({ tone: "error", message: json.error || "Failed to update training group." });
         return;
       }
 
       setItem(json.item);
-      alert("Training group saved.");
+      setNotice({ tone: "success", message: "Training group saved." });
     } catch {
-      alert("Failed to update training group.");
+      setNotice({ tone: "error", message: "Failed to update training group." });
     } finally {
       setSaving(false);
     }
   }
 
   async function handleDelete() {
-    if (!confirm("Delete this training group?")) return;
-
     setDeleting(true);
+    setNotice(null);
     try {
       const res = await fetch(`/api/admin/training-modules/${id}`, { method: "DELETE" });
       if (!res.ok) {
@@ -70,9 +82,10 @@ export default function EditTrainingModulesPage() {
 
       router.push("/admin/training-modules");
     } catch {
-      alert("Failed to delete training group.");
+      setNotice({ tone: "error", message: "Failed to delete training group." });
     } finally {
       setDeleting(false);
+      setShowDeleteDialog(false);
     }
   }
 
@@ -94,31 +107,41 @@ export default function EditTrainingModulesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
         <div>
           <Link
             href="/admin/training-modules"
             className="text-primary font-semibold no-underline hover:underline text-sm inline-flex items-center gap-2 mb-2"
           >
-            &larr; Back to Training Modules
+            &larr; Back to Curriculum
           </Link>
-          <h1 className="text-2xl font-bold text-dark">Edit Training Group</h1>
+          <h1 className="text-2xl font-bold text-dark">Edit Curriculum Group</h1>
           <p className="text-text-muted text-sm mt-1">
             Published groups are live on the website. Draft groups stay private.
           </p>
         </div>
         <button
-          onClick={handleDelete}
+          onClick={() => setShowDeleteDialog(true)}
           disabled={deleting}
           className="bg-white text-red-600 font-semibold px-5 py-2.5 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
         >
           {deleting ? "Deleting..." : "Delete Group"}
         </button>
       </div>
+      {notice && (
+        <div className="mb-6">
+          <AdminNotice
+            tone={notice.tone}
+            message={notice.message}
+            onDismiss={() => setNotice(null)}
+          />
+        </div>
+      )}
 
       <TrainingSeriesGroupEditor
         onSave={handleSave}
         saving={saving}
+        onDirtyChange={setHasUnsavedChanges}
         initialData={{
           status: item.status,
           eyebrow: item.eyebrow,
@@ -128,6 +151,25 @@ export default function EditTrainingModulesPage() {
           sortOrder: item.sort_order,
           modules: item.modules,
         }}
+      />
+      <ConfirmDialog
+        open={showDeleteDialog}
+        title="Delete this training group?"
+        description="This will remove the curriculum group and its module list from the admin and public site."
+        confirmLabel="Delete group"
+        tone="danger"
+        loading={deleting}
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteDialog(false)}
+      />
+      <ConfirmDialog
+        open={Boolean(pendingHref)}
+        title="Leave without saving?"
+        description="You have unsaved changes in this curriculum group. If you leave now, those edits will be lost."
+        confirmLabel="Leave page"
+        tone="danger"
+        onConfirm={continueNavigation}
+        onCancel={stayOnPage}
       />
     </div>
   );

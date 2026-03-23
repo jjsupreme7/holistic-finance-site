@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
@@ -68,13 +69,13 @@ export default function NewsletterPage() {
                   Visit the blog if you want full-length public articles you can browse anytime
                   without subscribing.
                 </p>
-                <a
+                <Link
                   href="/blog"
                   className="inline-flex items-center gap-2 text-foreground font-medium no-underline group text-sm uppercase tracking-[0.15em]"
                 >
                   Visit the Blog
                   <span className="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
-                </a>
+                </Link>
               </div>
 
               <div className="pt-6">

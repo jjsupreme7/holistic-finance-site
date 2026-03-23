@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+import AdminNotice from "@/components/admin/AdminNotice";
 import BlogEditor from "@/components/admin/BlogEditor";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
+import { useUnsavedChangesGuard } from "@/hooks/use-unsaved-changes-guard";
 
 interface BlogPost {
   id: string;
@@ -16,6 +19,11 @@ interface BlogPost {
   created_at: string;
 }
 
+interface Notice {
+  tone: "success" | "error" | "warning" | "info";
+  message: string;
+}
+
 export default function EditBlogPostPage() {
   const router = useRouter();
   const params = useParams();
@@ -24,6 +32,10 @@ export default function EditBlogPostPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [notice, setNotice] = useState<Notice | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const { pendingHref, continueNavigation, stayOnPage } = useUnsavedChangesGuard(hasUnsavedChanges);
 
   useEffect(() => {
     fetch(`/api/admin/blog/${id}`)
@@ -42,6 +54,7 @@ export default function EditBlogPostPage() {
     status: string;
   }) => {
     setSaving(true);
+    setNotice(null);
     try {
       const res = await fetch(`/api/admin/blog/${id}`, {
         method: "PUT",
@@ -51,31 +64,32 @@ export default function EditBlogPostPage() {
 
       if (!res.ok) {
         const json = await res.json();
-        alert(json.error || "Failed to update post.");
+        setNotice({ tone: "error", message: json.error || "Failed to update post." });
         return;
       }
 
       const { post: updated } = await res.json();
       setPost(updated);
-      alert("Post saved!");
+      setNotice({ tone: "success", message: "Post saved." });
     } catch {
-      alert("Failed to update post.");
+      setNotice({ tone: "error", message: "Failed to update post." });
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this post?")) return;
     setDeleting(true);
+    setNotice(null);
     try {
       const res = await fetch(`/api/admin/blog/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error();
       router.push("/admin/blog");
     } catch {
-      alert("Failed to delete post.");
+      setNotice({ tone: "error", message: "Failed to delete post." });
     } finally {
       setDeleting(false);
+      setShowDeleteDialog(false);
     }
   };
 
@@ -97,9 +111,9 @@ export default function EditBlogPostPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
         <h1 className="text-2xl font-bold text-dark">Edit Blog Post</h1>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           {post.status === "published" && (
             <a
               href={`/blog/${post.slug}`}
@@ -111,7 +125,7 @@ export default function EditBlogPostPage() {
             </a>
           )}
           <button
-            onClick={handleDelete}
+            onClick={() => setShowDeleteDialog(true)}
             disabled={deleting}
             className="bg-white text-red-600 font-semibold px-5 py-2.5 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
           >
@@ -119,9 +133,19 @@ export default function EditBlogPostPage() {
           </button>
         </div>
       </div>
+      {notice && (
+        <div className="mb-6">
+          <AdminNotice
+            tone={notice.tone}
+            message={notice.message}
+            onDismiss={() => setNotice(null)}
+          />
+        </div>
+      )}
       <BlogEditor
         onSave={handleSave}
         saving={saving}
+        onDirtyChange={setHasUnsavedChanges}
         initialData={{
           title: post.title,
           slug: post.slug,
@@ -130,6 +154,25 @@ export default function EditBlogPostPage() {
           coverImage: post.cover_image || "",
           status: post.status,
         }}
+      />
+      <ConfirmDialog
+        open={showDeleteDialog}
+        title="Delete this post?"
+        description="This removes the article from the admin and public blog. This action cannot be undone."
+        confirmLabel="Delete post"
+        tone="danger"
+        loading={deleting}
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteDialog(false)}
+      />
+      <ConfirmDialog
+        open={Boolean(pendingHref)}
+        title="Leave without saving?"
+        description="You have unsaved changes in this blog post. If you leave now, those edits will be lost."
+        confirmLabel="Leave page"
+        tone="danger"
+        onConfirm={continueNavigation}
+        onCancel={stayOnPage}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { guardPublicPostRoute } from "@/lib/public-route";
 import {
   buildCheckoutCancelUrl,
   buildCheckoutLineItem,
@@ -35,6 +36,16 @@ function getUserFacingError(error: unknown) {
 
 export async function POST(req: Request) {
   try {
+    const blocked = guardPublicPostRoute(req, {
+      key: "shop-checkout",
+      limit: 15,
+      windowMs: 10 * 60_000,
+      message: "Too many checkout attempts. Please wait a few minutes and try again.",
+    });
+    if (blocked) {
+      return blocked;
+    }
+
     if (!isStripeCheckoutEnabled()) {
       return NextResponse.json(
         {
