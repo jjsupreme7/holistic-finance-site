@@ -18,7 +18,6 @@ export default function AnalyticsPage() {
   const [range, setRange] = useState(7);
 
   useEffect(() => {
-    setLoading(true);
     fetch(`/api/admin/analytics?range=${range}`)
       .then((res) => {
         if (!res.ok) throw new Error(`API error: ${res.status}`);
@@ -61,7 +60,10 @@ export default function AnalyticsPage() {
           {[7, 14, 30].map((d) => (
             <button
               key={d}
-              onClick={() => setRange(d)}
+              onClick={() => {
+                setLoading(true);
+                setRange(d);
+              }}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer border-none transition-colors ${
                 range === d
                   ? "bg-primary text-white"

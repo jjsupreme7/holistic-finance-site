@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import {
   buildTrainingSeriesUpsertRow,
   validateTrainingSeriesForm,
@@ -8,9 +9,14 @@ import { isMissingRelationError } from "@/lib/supabase/errors";
 import { getSupabase } from "@/lib/supabase/server";
 
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { id } = await params;
     const { data, error } = await getSupabase()
@@ -34,6 +40,11 @@ export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { id } = await params;
     const body = (await req.json()) as TrainingSeriesFormData;
@@ -74,9 +85,14 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { id } = await params;
     const { error } = await getSupabase()

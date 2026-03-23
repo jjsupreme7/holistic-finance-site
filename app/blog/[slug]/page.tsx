@@ -1,70 +1,61 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
-import { BOOKING_URL } from "@/lib/constants";
-
-interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  content: string;
-  cover_image: string | null;
-  published_at: string;
-}
+import { getPublishedBlogPostBySlug } from "@/lib/blog/server";
+import { BOOKING_URL, SITE_NAME } from "@/lib/constants";
 
 function renderContent(text: string) {
   return text
     .split(/\n\n+/)
-    .filter((p) => p.trim())
-    .map((paragraph, i) => {
+    .filter((paragraph) => paragraph.trim())
+    .map((paragraph, index) => {
       const trimmed = paragraph.trim();
 
-      // Headings
       if (trimmed.startsWith("### ")) {
         return (
-          <h4 key={i} className="text-lg font-medium text-foreground mt-8 mb-3">
+          <h4 key={index} className="text-lg font-medium text-foreground mt-8 mb-3">
             {trimmed.slice(4)}
           </h4>
         );
       }
+
       if (trimmed.startsWith("## ")) {
         return (
-          <h3 key={i} className="text-xl font-extralight text-foreground mt-10 mb-3">
+          <h3 key={index} className="text-xl font-extralight text-foreground mt-10 mb-3">
             {trimmed.slice(3)}
           </h3>
         );
       }
+
       if (trimmed.startsWith("# ")) {
         return (
-          <h2 key={i} className="text-2xl font-extralight text-foreground mt-12 mb-4">
+          <h2 key={index} className="text-2xl font-extralight text-foreground mt-12 mb-4">
             {trimmed.slice(2)}
           </h2>
         );
       }
 
-      // Bullet lists
       if (trimmed.split("\n").every((line) => line.trim().startsWith("- "))) {
         return (
-          <ul key={i} className="list-disc pl-6 space-y-1 text-text-secondary leading-relaxed mb-4">
-            {trimmed.split("\n").map((line, j) => (
-              <li key={j}>{line.trim().slice(2)}</li>
+          <ul
+            key={index}
+            className="list-disc pl-6 space-y-1 text-text-secondary leading-relaxed mb-4"
+          >
+            {trimmed.split("\n").map((line, lineIndex) => (
+              <li key={lineIndex}>{line.trim().slice(2)}</li>
             ))}
           </ul>
         );
       }
 
-      // Regular paragraph
       return (
-        <p key={i} className="text-text-secondary leading-relaxed mb-4">
-          {trimmed.split("\n").map((line, j) => (
-            <span key={j}>
-              {j > 0 && <br />}
+        <p key={index} className="text-text-secondary leading-relaxed mb-4">
+          {trimmed.split("\n").map((line, lineIndex) => (
+            <span key={lineIndex}>
+              {lineIndex > 0 ? <br /> : null}
               {line}
             </span>
           ))}
@@ -73,54 +64,61 @@ function renderContent(text: string) {
     });
 }
 
-export default function BlogPostPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+function buildMetadataDescription(excerpt: string | null, content: string) {
+  const fallback = content.replace(/\s+/g, " ").trim().slice(0, 160);
+  return excerpt || fallback || `Read this article from ${SITE_NAME}.`;
+}
 
-  useEffect(() => {
-    fetch(`/api/blog/${slug}`)
-      .then((res) => {
-        if (!res.ok) {
-          setNotFound(true);
-          return null;
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data) setPost(data.post);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, [slug]);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPublishedBlogPostBySlug(slug);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="w-8 h-8 border-2 border-border border-t-foreground animate-spin" />
-      </div>
-    );
+  if (!post) {
+    return {
+      title: "Article Not Found",
+    };
   }
 
-  if (notFound || !post) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-6 bg-background pt-24">
-        <div className="text-center">
-          <h1 className="heading-lg font-extralight text-foreground mb-4">Article Not Found</h1>
-          <p className="text-text-secondary mb-8">
-            This article doesn&apos;t exist or has been removed.
-          </p>
-          <Link
-            href="/blog"
-            className="inline-block bg-accent text-foreground font-medium py-3.5 px-8 text-sm uppercase tracking-[0.15em] no-underline transition-colors hover:bg-accent-dark"
-          >
-            Back to Blog
-          </Link>
-        </div>
-      </div>
-    );
+  const description = buildMetadataDescription(post.excerpt, post.content);
+
+  return {
+    title: post.title,
+    description,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description,
+      publishedTime: post.published_at,
+      images: post.cover_image ? [{ url: post.cover_image, alt: post.title }] : undefined,
+    },
+    twitter: {
+      card: post.cover_image ? "summary_large_image" : "summary",
+      title: post.title,
+      description,
+      images: post.cover_image ? [post.cover_image] : undefined,
+    },
+  };
+}
+
+export const dynamic = "force-dynamic";
+
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = await getPublishedBlogPostBySlug(slug);
+
+  if (!post) {
+    notFound();
   }
 
   return (
@@ -163,9 +161,7 @@ export default function BlogPostPage() {
                   year: "numeric",
                 })}
               </p>
-              <h1 className="heading-lg font-extralight text-white max-w-3xl">
-                {post.title}
-              </h1>
+              <h1 className="heading-lg font-extralight text-white max-w-3xl">{post.title}</h1>
             </FadeIn>
           </div>
         </div>

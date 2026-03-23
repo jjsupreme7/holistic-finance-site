@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import Icon from "@/components/ui/Icon";
 import CTABanner from "@/components/sections/CTABanner";
-import { BOOKING_URL, IMAGES } from "@/lib/constants";
+import { IMAGES } from "@/lib/constants";
 import type { CourseScheduleItem } from "@/lib/schedule";
 import type { TrainingSeriesGroup } from "@/lib/training-series";
 

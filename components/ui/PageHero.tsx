@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { IMAGES, SITE_NAME } from "@/lib/constants";
@@ -25,7 +26,9 @@ function Breadcrumbs() {
     <nav aria-label="Breadcrumb" className="mb-6">
       <ol className="flex items-center gap-2 text-xs text-white/50">
         <li>
-          <a href="/" className="hover:text-white transition-colors no-underline text-white/50">Home</a>
+          <Link href="/" className="hover:text-white transition-colors no-underline text-white/50">
+            Home
+          </Link>
         </li>
         <li aria-hidden="true">/</li>
         <li className="text-white/80 font-medium">{pageName}</li>

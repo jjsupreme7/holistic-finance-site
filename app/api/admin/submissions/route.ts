@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { getSupabase } from "@/lib/supabase/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { data, error } = await getSupabase()
       .from("contact_submissions")
@@ -21,6 +27,11 @@ export async function GET() {
 }
 
 export async function PATCH(req: NextRequest) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { id, status } = await req.json();
     if (!id || !status) {
@@ -45,6 +56,11 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { id } = await req.json();
     if (!id) {

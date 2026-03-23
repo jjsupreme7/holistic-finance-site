@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { getSupabase } from "@/lib/supabase/server";
 
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { id } = await params;
 
@@ -35,9 +41,38 @@ export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { id } = await params;
     const body = await req.json();
+
+    const { data: existing, error: getError } = await getSupabase()
+      .from("campaigns")
+      .select("status, recipient_count")
+      .eq("id", id)
+      .single();
+
+    if (getError || !existing) {
+      return NextResponse.json(
+        { error: "Campaign not found." },
+        { status: 404 }
+      );
+    }
+
+    const deliveredCount = Number(existing.recipient_count || 0);
+    const canEdit =
+      existing.status === "draft" || (existing.status === "failed" && deliveredCount === 0);
+
+    if (!canEdit) {
+      return NextResponse.json(
+        { error: "This campaign can no longer be edited because delivery has already started." },
+        { status: 409 }
+      );
+    }
 
     const updates: Record<string, unknown> = {};
     if (body.subject !== undefined) updates.subject = body.subject;
@@ -48,14 +83,13 @@ export async function PATCH(
       .from("campaigns")
       .update(updates)
       .eq("id", id)
-      .eq("status", "draft")
       .select()
       .single();
 
     if (error || !data) {
       return NextResponse.json(
-        { error: "Campaign not found or already sent." },
-        { status: 404 }
+        { error: "Failed to update campaign." },
+        { status: 500 }
       );
     }
 

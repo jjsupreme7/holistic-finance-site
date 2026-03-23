@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
-import { useRouter } from "next/navigation";
+import AdminNotice from "@/components/admin/AdminNotice";
 import CampaignEditor from "@/components/admin/CampaignEditor";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
+import { useUnsavedChangesGuard } from "@/hooks/use-unsaved-changes-guard";
 
 interface Campaign {
   id: string;
@@ -14,17 +16,25 @@ interface Campaign {
   recipient_count: number;
 }
 
+interface Notice {
+  tone: "success" | "error" | "warning" | "info";
+  message: string;
+}
+
 export default function CampaignDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const router = useRouter();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [sending, setSending] = useState(false);
+  const [notice, setNotice] = useState<Notice | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showSendDialog, setShowSendDialog] = useState(false);
+  const { pendingHref, continueNavigation, stayOnPage } = useUnsavedChangesGuard(hasUnsavedChanges);
 
   useEffect(() => {
     fetch(`/api/admin/campaigns/${id}`)
@@ -40,6 +50,7 @@ export default function CampaignDetailPage({
     previewText: string;
   }) => {
     setSaving(true);
+    setNotice(null);
     try {
       const res = await fetch(`/api/admin/campaigns/${id}`, {
         method: "PATCH",
@@ -47,22 +58,28 @@ export default function CampaignDetailPage({
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) throw new Error("Failed to save");
+      const json = await res.json();
 
-      const { campaign: updated } = await res.json();
-      setCampaign(updated);
+      if (!res.ok) {
+        throw new Error(json.error || "Failed to save");
+      }
+
+      setCampaign(json.campaign);
+      setNotice({ tone: "success", message: "Campaign draft saved." });
     } catch (err) {
       console.error(err);
-      alert("Failed to save campaign.");
+      setNotice({
+        tone: "error",
+        message: err instanceof Error ? err.message : "Failed to save campaign.",
+      });
     } finally {
       setSaving(false);
     }
   };
 
   const handleSend = async () => {
-    if (!confirm("Send this campaign to all active subscribers?")) return;
-
     setSending(true);
+    setNotice(null);
     try {
       const res = await fetch(`/api/admin/campaigns/${id}/send`, {
         method: "POST",
@@ -71,17 +88,19 @@ export default function CampaignDetailPage({
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.error || "Failed to send.");
+        setNotice({ tone: "error", message: data.error || "Failed to send." });
         return;
       }
 
-      alert(data.message);
-      router.push("/admin/campaigns");
+      setNotice({ tone: "success", message: data.message });
+      const refreshed = await fetch(`/api/admin/campaigns/${id}`).then((response) => response.json());
+      setCampaign(refreshed.campaign || null);
     } catch (err) {
       console.error(err);
-      alert("Failed to send campaign.");
+      setNotice({ tone: "error", message: "Failed to send campaign." });
     } finally {
       setSending(false);
+      setShowSendDialog(false);
     }
   };
 
@@ -98,10 +117,17 @@ export default function CampaignDetailPage({
   }
 
   const isSent = campaign.status === "sent";
+  const isLocked =
+    campaign.status === "sent" ||
+    campaign.status === "sending" ||
+    (campaign.status === "failed" && campaign.recipient_count > 0);
+  const canSend =
+    campaign.status === "draft" ||
+    (campaign.status === "failed" && campaign.recipient_count === 0);
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-dark">
             {isSent ? "Campaign Details" : "Edit Campaign"}
@@ -112,17 +138,46 @@ export default function CampaignDetailPage({
               {new Date(campaign.sent_at!).toLocaleDateString()}
             </p>
           )}
+          {campaign.status === "sending" && (
+            <p className="text-text-muted text-sm mt-0.5">
+              This campaign is currently sending. Editing is temporarily locked.
+            </p>
+          )}
+          {campaign.status === "failed" && campaign.recipient_count === 0 && (
+            <p className="text-red-600 text-sm mt-0.5">
+              The last send failed before any emails were delivered. You can edit and try again.
+            </p>
+          )}
+          {campaign.status === "failed" && campaign.recipient_count > 0 && (
+            <p className="text-red-600 text-sm mt-0.5">
+              This campaign was only partially delivered to {campaign.recipient_count} subscribers.
+              It is locked to avoid duplicate sends.
+            </p>
+          )}
         </div>
-        {!isSent && (
+        {canSend && (
           <button
-            onClick={handleSend}
-            disabled={sending}
+            onClick={() => setShowSendDialog(true)}
+            disabled={sending || saving}
             className="bg-gradient-to-r from-gold to-gold-dark text-dark font-bold px-6 py-2.5 rounded-lg text-sm cursor-pointer border-none hover:shadow-lg hover:shadow-gold/25 transition-all disabled:opacity-60"
           >
-            {sending ? "Sending Campaign..." : "Send Campaign to Subscribers"}
+            {sending
+              ? "Sending Campaign..."
+              : campaign.status === "failed"
+                ? "Retry Send to Subscribers"
+                : "Send Campaign to Subscribers"}
           </button>
         )}
       </div>
+      {notice && (
+        <div className="mb-6">
+          <AdminNotice
+            tone={notice.tone}
+            message={notice.message}
+            onDismiss={() => setNotice(null)}
+          />
+        </div>
+      )}
 
       <CampaignEditor
         initialSubject={campaign.subject}
@@ -130,7 +185,26 @@ export default function CampaignDetailPage({
         initialPreviewText={campaign.preview_text || ""}
         onSave={handleSave}
         saving={saving}
-        readOnly={isSent}
+        readOnly={isLocked}
+        onDirtyChange={setHasUnsavedChanges}
+      />
+      <ConfirmDialog
+        open={showSendDialog}
+        title="Send this campaign?"
+        description="This will send the campaign to all active subscribers. You should only continue if the subject, preview text, and email body are final."
+        confirmLabel="Send campaign"
+        loading={sending}
+        onConfirm={handleSend}
+        onCancel={() => setShowSendDialog(false)}
+      />
+      <ConfirmDialog
+        open={Boolean(pendingHref)}
+        title="Leave without saving?"
+        description="You have unsaved changes in this email campaign. If you leave now, those edits will be lost."
+        confirmLabel="Leave page"
+        tone="danger"
+        onConfirm={continueNavigation}
+        onCancel={stayOnPage}
       />
     </div>
   );

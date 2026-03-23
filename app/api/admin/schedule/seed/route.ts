@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { buildDefaultScheduleRows } from "@/lib/schedule";
 import { isMissingRelationError } from "@/lib/supabase/errors";
 import { getSupabase } from "@/lib/supabase/server";
 
-export async function POST() {
+export async function POST(req: Request) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const supabase = getSupabase();
     const { count, error: countError } = await supabase

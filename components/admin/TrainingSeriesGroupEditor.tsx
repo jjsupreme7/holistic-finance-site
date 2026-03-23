@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import AdminNotice from "@/components/admin/AdminNotice";
 import {
   TRAINING_GROUP_ICONS,
   type TrainingSeriesModule,
@@ -22,6 +23,7 @@ interface TrainingSeriesGroupEditorProps {
     }>;
   }) => void;
   saving: boolean;
+  onDirtyChange?: (dirty: boolean) => void;
   initialData?: {
     status: TrainingSeriesStatus;
     eyebrow: string;
@@ -40,6 +42,7 @@ function createEmptyModule() {
 export default function TrainingSeriesGroupEditor({
   onSave,
   saving,
+  onDirtyChange,
   initialData,
 }: TrainingSeriesGroupEditorProps) {
   const [status, setStatus] = useState<TrainingSeriesStatus>(initialData?.status || "published");
@@ -55,21 +58,59 @@ export default function TrainingSeriesGroupEditor({
       videoUrl: module.videoUrl || "",
     })) || [createEmptyModule()]
   );
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const isEditing = !!initialData;
+
+  const initialSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        status: initialData?.status || "published",
+        eyebrow: initialData?.eyebrow || "",
+        title: initialData?.title || "",
+        description: initialData?.description || "",
+        accent: initialData?.accent || "finance",
+        sortOrder: initialData?.sortOrder || 0,
+        modules:
+          initialData?.modules?.map((module) => ({
+            title: module.title,
+            description: module.description,
+            videoUrl: module.videoUrl || "",
+          })) || [createEmptyModule()],
+      }),
+    [initialData]
+  );
+  const currentSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        status,
+        eyebrow,
+        title,
+        description,
+        accent,
+        sortOrder,
+        modules,
+      }),
+    [accent, description, eyebrow, modules, sortOrder, status, title]
+  );
+  const isDirty = currentSnapshot !== initialSnapshot;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   const submitLabel = saving
     ? status === "published"
-      ? "Publishing Training Group..."
+      ? "Publishing Curriculum Group..."
       : "Saving Draft..."
     : !isEditing
       ? status === "published"
-        ? "Publish Training Group"
-        : "Save Training Group Draft"
+        ? "Publish Curriculum Group"
+        : "Save Curriculum Draft"
       : status === "published" && initialData?.status !== "published"
-        ? "Publish Training Group"
+        ? "Publish Curriculum Group"
         : status === "draft"
-          ? "Save Training Group Draft"
-          : "Update Training Group";
+          ? "Save Curriculum Draft"
+          : "Update Curriculum Group";
 
   const inputClass =
     "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
@@ -117,7 +158,7 @@ export default function TrainingSeriesGroupEditor({
     e.preventDefault();
 
     if (!eyebrow.trim() || !title.trim() || !description.trim()) {
-      alert("Section label, group title, and description are required.");
+      setValidationMessage("Section label, group title, and description are required.");
       return;
     }
 
@@ -126,17 +167,18 @@ export default function TrainingSeriesGroupEditor({
     );
 
     if (filledModules.length === 0) {
-      alert("Add at least one module.");
+      setValidationMessage("Add at least one module before saving this group.");
       return;
     }
 
     if (
       filledModules.some((module) => !module.title.trim() || !module.description.trim())
     ) {
-      alert("Each module needs both a title and description.");
+      setValidationMessage("Each module needs both a title and description.");
       return;
     }
 
+    setValidationMessage(null);
     onSave({
       status,
       eyebrow,
@@ -150,6 +192,14 @@ export default function TrainingSeriesGroupEditor({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {validationMessage && (
+        <AdminNotice
+          tone="error"
+          message={validationMessage}
+          onDismiss={() => setValidationMessage(null)}
+        />
+      )}
+
       <div className="bg-white rounded-xl border border-border-light p-6 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div>
@@ -164,8 +214,8 @@ export default function TrainingSeriesGroupEditor({
             </select>
             <p className="text-text-muted text-xs mt-2">
               {status === "published"
-                ? "Published training groups appear on the public training modules page."
-                : "Draft training groups stay hidden until you publish them."}
+                ? "Published curriculum groups appear on the public curriculum page."
+                : "Draft curriculum groups stay hidden until you publish them."}
             </p>
           </div>
 
@@ -336,14 +386,21 @@ export default function TrainingSeriesGroupEditor({
         </div>
       </div>
 
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={saving}
-          className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-3 rounded-lg text-sm hover:shadow-lg hover:shadow-primary/25 transition-all cursor-pointer disabled:opacity-50 border-none"
-        >
-          {submitLabel}
-        </button>
+      <div className="bg-white rounded-xl border border-border-light p-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <p className="text-sm text-text-muted">
+            {isDirty
+              ? "You have unsaved changes in this curriculum group."
+              : "All changes are saved."}
+          </p>
+          <button
+            type="submit"
+            disabled={saving}
+            className="bg-gradient-to-r from-primary to-primary-light text-white font-semibold px-6 py-3 rounded-lg text-sm hover:shadow-lg hover:shadow-primary/25 transition-all cursor-pointer disabled:opacity-50 border-none"
+          >
+            {submitLabel}
+          </button>
+        </div>
       </div>
     </form>
   );

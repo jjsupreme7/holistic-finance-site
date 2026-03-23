@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { getSupabase } from "@/lib/supabase/server";
 import { isMissingRelationError } from "@/lib/supabase/errors";
 
 export async function GET(req: NextRequest) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const range = req.nextUrl.searchParams.get("range") || "7";
     const days = Math.min(parseInt(range, 10) || 7, 90);

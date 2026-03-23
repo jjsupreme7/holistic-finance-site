@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import AdminNotice from "@/components/admin/AdminNotice";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
 
 interface BlogPost {
   id: string;
@@ -25,11 +27,6 @@ const statusColors: Record<string, string> = {
   published: "bg-success-bg text-success",
 };
 
-const noticeColors: Record<Notice["tone"], string> = {
-  success: "border-green-200 bg-green-50 text-green-800",
-  error: "border-red-200 bg-red-50 text-red-700",
-};
-
 function formatDate(dateString: string | null) {
   if (!dateString) return "Not published yet";
 
@@ -47,6 +44,8 @@ export default function AdminBlogPage() {
   const [savingId, setSavingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
+  const [pendingDraftPost, setPendingDraftPost] = useState<BlogPost | null>(null);
+  const [pendingDeletePost, setPendingDeletePost] = useState<BlogPost | null>(null);
 
   useEffect(() => {
     async function loadPosts() {
@@ -92,13 +91,6 @@ export default function AdminBlogPage() {
   const totalPublished = posts.filter((post) => post.status === "published").length;
 
   const handleStatusChange = async (post: BlogPost, nextStatus: "draft" | "published") => {
-    if (
-      nextStatus === "draft" &&
-      !confirm("Move this post back to draft? It will disappear from the public blog.")
-    ) {
-      return;
-    }
-
     setSavingId(post.id);
     setNotice(null);
 
@@ -141,12 +133,13 @@ export default function AdminBlogPage() {
       });
     } finally {
       setSavingId(null);
+      if (nextStatus === "draft") {
+        setPendingDraftPost(null);
+      }
     }
   };
 
   const handleDelete = async (post: BlogPost) => {
-    if (!confirm(`Delete "${post.title}" permanently?`)) return;
-
     setDeletingId(post.id);
     setNotice(null);
 
@@ -171,6 +164,7 @@ export default function AdminBlogPage() {
       });
     } finally {
       setDeletingId(null);
+      setPendingDeletePost(null);
     }
   };
 
@@ -232,7 +226,7 @@ export default function AdminBlogPage() {
                 View Live
               </a>
               <button
-                onClick={() => handleStatusChange(post, "draft")}
+                onClick={() => setPendingDraftPost(post)}
                 disabled={isPublishing || isDeleting}
                 className="bg-white text-primary font-semibold px-4 py-2 rounded-lg border border-border-light text-sm hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-50"
               >
@@ -249,7 +243,7 @@ export default function AdminBlogPage() {
           </Link>
 
           <button
-            onClick={() => handleDelete(post)}
+            onClick={() => setPendingDeletePost(post)}
             disabled={isPublishing || isDeleting}
             className="bg-white text-red-600 font-semibold px-4 py-2 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
           >
@@ -288,8 +282,12 @@ export default function AdminBlogPage() {
       </div>
 
       {notice && (
-        <div className={`rounded-xl border px-4 py-3 text-sm ${noticeColors[notice.tone]}`}>
-          {notice.message}
+        <div>
+          <AdminNotice
+            tone={notice.tone}
+            message={notice.message}
+            onDismiss={() => setNotice(null)}
+          />
         </div>
       )}
 
@@ -386,6 +384,35 @@ export default function AdminBlogPage() {
           </section>
         </>
       )}
+      <ConfirmDialog
+        open={Boolean(pendingDraftPost)}
+        title="Move this post to draft?"
+        description={
+          pendingDraftPost
+            ? `"${pendingDraftPost.title}" will disappear from the public blog until you publish it again.`
+            : ""
+        }
+        confirmLabel="Move to draft"
+        loading={pendingDraftPost ? savingId === pendingDraftPost.id : false}
+        onConfirm={() =>
+          pendingDraftPost ? handleStatusChange(pendingDraftPost, "draft") : undefined
+        }
+        onCancel={() => setPendingDraftPost(null)}
+      />
+      <ConfirmDialog
+        open={Boolean(pendingDeletePost)}
+        title="Delete this post?"
+        description={
+          pendingDeletePost
+            ? `"${pendingDeletePost.title}" will be permanently removed from the admin and public blog.`
+            : ""
+        }
+        confirmLabel="Delete post"
+        tone="danger"
+        loading={pendingDeletePost ? deletingId === pendingDeletePost.id : false}
+        onConfirm={() => (pendingDeletePost ? handleDelete(pendingDeletePost) : undefined)}
+        onCancel={() => setPendingDeletePost(null)}
+      />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 const COOKIE_NAME = "admin_token";
 
@@ -45,4 +46,35 @@ export async function clearAuthCookie() {
 export async function getAuthToken(): Promise<string | undefined> {
   const cookieStore = await cookies();
   return cookieStore.get(COOKIE_NAME)?.value;
+}
+
+function isLocalPreviewUrl(url: string) {
+  if (process.env.NODE_ENV === "production") return false;
+
+  try {
+    const hostname = new URL(url).hostname;
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  } catch {
+    return false;
+  }
+}
+
+export async function requireAdmin(req: Request) {
+  if (isLocalPreviewUrl(req.url)) {
+    return null;
+  }
+
+  const token = await getAuthToken();
+  if (!token) {
+    await clearAuthCookie();
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const isValid = await verifyToken(token);
+  if (!isValid) {
+    await clearAuthCookie();
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  return null;
 }

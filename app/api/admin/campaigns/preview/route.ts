@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { getResend } from "@/lib/email/resend";
 import { campaignEmail } from "@/lib/email/templates";
 import { EMAIL_CONFIG, CONTACT } from "@/lib/constants";
 
 export async function POST(req: Request) {
+  const unauthorized = await requireAdmin(req);
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   try {
     const { subject, bodyHtml, to } = await req.json();
 

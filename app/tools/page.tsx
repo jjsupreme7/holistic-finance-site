@@ -3,7 +3,6 @@
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import FadeIn from "@/components/motion/FadeIn";
-import Button from "@/components/ui/Button";
 import CTABanner from "@/components/sections/CTABanner";
 import { IMAGES } from "@/lib/constants";
 import Link from "next/link";
