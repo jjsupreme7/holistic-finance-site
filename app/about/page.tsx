@@ -5,12 +5,21 @@ import Button from "@/components/ui/Button";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import { BOOKING_URL, IMAGES } from "@/lib/constants";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "About Anna Huang",
   description:
-    "Meet Anna Huang - 11+ years of experience in Healthcare Finance and Insurance. Licensed Health and Life Insurance agent, Tax Preparer, CPA candidate, and Certified Professional Medical Auditor in University Place, WA.",
-};
+    "Meet Anna Huang, a University Place financial planner with healthcare finance, insurance, tax preparation, and retirement planning experience.",
+  path: "/about",
+  keywords: [
+    "Anna Huang",
+    "financial planner University Place",
+    "tax preparer",
+    "health insurance agent",
+    "retirement planning advisor",
+  ],
+});
 
 const credentialsList = [
   { top: "11+ Years", bottom: "Experience" },

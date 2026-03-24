@@ -7,12 +7,20 @@ import Button from "@/components/ui/Button";
 import CTABanner from "@/components/sections/CTABanner";
 import { BOOKING_URL, IMAGES } from "@/lib/constants";
 import type { IconName } from "@/lib/icons";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Start Here",
   description:
-    "Choose the right next step for financial planning, classes, and support at Holistic Health & Financial Services.",
-};
+    "Choose the right next step for financial planning, classes, consultations, and support at Holistic Health & Financial Services.",
+  path: "/start-here",
+  keywords: [
+    "financial planning start here",
+    "book consultation",
+    "financial classes",
+    "financial help University Place",
+  ],
+});
 
 const START_PATHS: Array<{
   icon: IconName;

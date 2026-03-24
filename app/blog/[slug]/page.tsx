@@ -6,6 +6,7 @@ import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import { getPublishedBlogPostBySlug } from "@/lib/blog/server";
 import { BOOKING_URL, SITE_NAME } from "@/lib/constants";
+import { DEFAULT_SOCIAL_IMAGE } from "@/lib/seo";
 
 function renderContent(text: string) {
   return text
@@ -96,13 +97,15 @@ export async function generateMetadata({
       title: post.title,
       description,
       publishedTime: post.published_at,
-      images: post.cover_image ? [{ url: post.cover_image, alt: post.title }] : undefined,
+      images: post.cover_image
+        ? [{ url: post.cover_image, alt: post.title }]
+        : [{ url: DEFAULT_SOCIAL_IMAGE, alt: `${SITE_NAME} social preview` }],
     },
     twitter: {
       card: post.cover_image ? "summary_large_image" : "summary",
       title: post.title,
       description,
-      images: post.cover_image ? [post.cover_image] : undefined,
+      images: [post.cover_image || DEFAULT_SOCIAL_IMAGE],
     },
   };
 }
