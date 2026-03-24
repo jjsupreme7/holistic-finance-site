@@ -16,17 +16,23 @@ export async function GET(req: NextRequest) {
     since.setDate(since.getDate() - days);
 
     const supabase = getSupabase();
+    const missingTables: string[] = [];
 
-    // Get all views in range
     const { data: views, error } = await supabase
       .from("page_views")
       .select("path, referrer, created_at")
       .gte("created_at", since.toISOString())
       .order("created_at", { ascending: true });
 
-    if (error) throw error;
+    if (error && !isMissingRelationError(error)) {
+      throw error;
+    }
 
-    const rows = views || [];
+    if (error && isMissingRelationError(error)) {
+      missingTables.push("page_views");
+    }
+
+    const rows = error ? [] : views || [];
     const totalViews = rows.length;
 
     const { data: conversions, error: conversionError } = await supabase
@@ -40,7 +46,11 @@ export async function GET(req: NextRequest) {
       throw conversionError;
     }
 
-    const bookingRows = conversions || [];
+    if (conversionError && isMissingRelationError(conversionError)) {
+      missingTables.push("conversion_events");
+    }
+
+    const bookingRows = conversionError ? [] : conversions || [];
 
     // Views per day
     const viewsByDay: Record<string, number> = {};
@@ -98,6 +108,8 @@ export async function GET(req: NextRequest) {
       .map(([path, count]) => ({ path, count }));
 
     return NextResponse.json({
+      trackingConfigured: missingTables.length === 0,
+      missingTables,
       totalViews,
       viewsByDay,
       bookingClicksTotal: bookingRows.length,

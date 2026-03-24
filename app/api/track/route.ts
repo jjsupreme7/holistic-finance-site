@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { guardPublicPostRoute } from "@/lib/public-route";
 import { getSupabase } from "@/lib/supabase/server";
+import { isMissingRelationError } from "@/lib/supabase/errors";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,14 +26,20 @@ export async function POST(req: NextRequest) {
 
     const userAgent = req.headers.get("user-agent") || null;
 
-    const { error } = await getSupabase().from("page_views").insert({
-      path,
-      referrer: referrer || null,
-      user_agent: userAgent,
-    });
+    try {
+      const { error } = await getSupabase().from("page_views").insert({
+        path,
+        referrer: referrer || null,
+        user_agent: userAgent,
+      });
 
-    if (error) {
-      console.error("Page tracking insert failed:", error);
+      if (error && !isMissingRelationError(error)) {
+        console.error("Page tracking insert failed:", error);
+      }
+    } catch (error) {
+      if (!isMissingRelationError(error)) {
+        console.error("Page tracking insert failed:", error);
+      }
     }
 
     return NextResponse.json({ ok: true });
