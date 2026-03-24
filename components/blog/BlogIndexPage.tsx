@@ -18,6 +18,7 @@ export default function BlogIndexPage({
 }) {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [brokenImageIds, setBrokenImageIds] = useState<string[]>([]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return posts;
@@ -37,6 +38,10 @@ export default function BlogIndexPage({
   const handleSearchChange = (value: string) => {
     setSearch(value);
     setPage(1);
+  };
+
+  const markImageBroken = (postId: string) => {
+    setBrokenImageIds((current) => (current.includes(postId) ? current : [...current, postId]));
   };
 
   return (
@@ -122,14 +127,20 @@ export default function BlogIndexPage({
                           href={`/blog/${post.slug}`}
                           className="block bg-background group no-underline"
                         >
-                          {post.cover_image ? (
+                          {post.cover_image && !brokenImageIds.includes(post.id) ? (
                             <div className="relative h-52 overflow-hidden">
                               <Image
                                 src={post.cover_image}
                                 alt={post.title}
                                 fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                onError={() => markImageBroken(post.id)}
                               />
+                            </div>
+                          ) : post.cover_image ? (
+                            <div className="h-52 bg-muted border-b border-border p-6 flex items-end">
+                              <span className="label text-text-muted">Article</span>
                             </div>
                           ) : null}
                           <div className="p-8">

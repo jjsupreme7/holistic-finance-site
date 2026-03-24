@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AdminNotice from "@/components/admin/AdminNotice";
 
 interface AnalyticsData {
+  trackingConfigured: boolean;
+  missingTables: string[];
   totalViews: number;
   viewsByDay: Record<string, number>;
   bookingClicksTotal: number;
@@ -16,17 +19,27 @@ export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [range, setRange] = useState(7);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`/api/admin/analytics?range=${range}`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
-        return res.json();
+      .then(async (res) => {
+        const json = await res.json().catch(() => null);
+        if (!res.ok) {
+          throw new Error(json?.error || `API error: ${res.status}`);
+        }
+        return json;
       })
       .then((json) => {
-        if (json.viewsByDay) setData(json);
+        if (json.viewsByDay) {
+          setData(json);
+          setErrorMessage(null);
+        }
       })
-      .catch(console.error)
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage(error instanceof Error ? error.message : "Failed to load analytics.");
+      })
       .finally(() => setLoading(false));
   }, [range]);
 
@@ -39,7 +52,12 @@ export default function AnalyticsPage() {
   }
 
   if (!data) {
-    return <p className="text-text-muted">Failed to load analytics.</p>;
+    return (
+      <div className="space-y-4">
+        <p className="text-text-muted">Failed to load analytics.</p>
+        {errorMessage && <AdminNotice tone="error" message={errorMessage} />}
+      </div>
+    );
   }
 
   const days = Object.entries(data.viewsByDay);
@@ -62,6 +80,7 @@ export default function AnalyticsPage() {
               key={d}
               onClick={() => {
                 setLoading(true);
+                setErrorMessage(null);
                 setRange(d);
               }}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer border-none transition-colors ${
@@ -75,6 +94,15 @@ export default function AnalyticsPage() {
           ))}
         </div>
       </div>
+
+      {!data.trackingConfigured && (
+        <div className="mb-6">
+          <AdminNotice
+            tone="warning"
+            message={`Analytics tracking is not fully configured yet. Missing table${data.missingTables.length === 1 ? "" : "s"}: ${data.missingTables.join(", ")}. Run the tracking SQL in supabase-schema.sql, then reload this page.`}
+          />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-white rounded-xl border border-border-light p-6">
