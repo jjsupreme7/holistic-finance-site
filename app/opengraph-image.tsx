@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
+import { SITE_URL } from "@/lib/seo";
 
 export const runtime = "edge";
 export const alt = `${SITE_NAME} social preview`;
@@ -125,7 +126,7 @@ export default function OpenGraphImage() {
                   background: "#9cb39d",
                 }}
               />
-              myholisticfinance.com
+              {SITE_URL.replace("https://", "")}
             </div>
             <div
               style={{

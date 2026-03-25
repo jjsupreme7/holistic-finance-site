@@ -7,6 +7,7 @@ import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import { BOOKING_URL, IMAGES, SITE_NAME } from "@/lib/constants";
 import { getPublishedEvents } from "@/lib/schedule/server";
+import { buildPageMetadata } from "@/lib/seo";
 
 const calendlySteps = [
   "Open Anna's Calendly page",
@@ -18,7 +19,8 @@ const calendlySteps = [
 
 const bookingBenefits = [
   "Live availability without back-and-forth emails",
-  "30-minute consultation booking",
+  "45-minute consultation booking",
+  "Payment can be collected during scheduling when required",
   "Automatic confirmation and reminder emails",
 ];
 
@@ -28,11 +30,46 @@ const bookingPrep = [
   "The best way for Anna to follow up",
 ];
 
-export const metadata: Metadata = {
+const bookingPolicies = [
+  {
+    title: "24-business-hour notice",
+    description:
+      "Cancel or reschedule at least 24 business hours before your appointment to avoid fees.",
+  },
+  {
+    title: "Full refund or credit",
+    description:
+      "Appointments changed within the notice window can receive a full refund or credit toward a future session.",
+  },
+  {
+    title: "Late cancellation or no-show",
+    description:
+      "Cancellations made with less than 24 business hours of notice, or missed appointments, forfeit the full fee.",
+  },
+  {
+    title: "Refund timing",
+    description:
+      "Refunds can take up to 30 days to process and may be reduced by payment processor or bank fees of up to 7.5%.",
+  },
+  {
+    title: "Consultant-side technical issues",
+    description:
+      "If Anna cannot attend or a technical problem occurs on our side, you will receive a full refund.",
+  },
+];
+
+export const metadata: Metadata = buildPageMetadata({
   title: "Events & Appointments",
   description:
-    `Book your appointment with ${SITE_NAME}. View upcoming events and schedule your consultation.`,
-};
+    "Book a consultation, view upcoming financial events, and explore appointment options at Holistic Health & Financial Services.",
+  path: "/events",
+  keywords: [
+    "financial planning appointment",
+    "book consultation",
+    "financial events",
+    "University Place workshops",
+  ],
+});
 
 export const dynamic = "force-dynamic";
 
@@ -76,7 +113,7 @@ export default async function EventsPage() {
               </ol>
               <div className="flex flex-wrap gap-3 mb-8">
                 <span className="text-text-secondary text-sm font-medium border border-border px-5 py-2">
-                  30-minute consultation
+                  45-minute consultation
                 </span>
                 <span className="text-text-secondary text-sm font-medium border border-border px-5 py-2">
                   Online scheduling with Calendly
@@ -225,13 +262,30 @@ export default async function EventsPage() {
                   </div>
                 </div>
 
+                <div className="border border-border bg-background p-8">
+                  <span className="label text-accent block mb-4">Policies</span>
+                  <h3 className="text-2xl font-extralight text-foreground mb-4">
+                    Cancellation &amp; refund policy
+                  </h3>
+                  <div className="space-y-3">
+                    {bookingPolicies.map((policy) => (
+                      <div key={policy.title} className="border border-border px-4 py-4">
+                        <p className="text-foreground font-medium mb-1">{policy.title}</p>
+                        <p className="text-text-secondary text-sm leading-relaxed">
+                          {policy.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="border border-border bg-foreground text-background p-8">
                   <span className="label text-background/70 block mb-4">Need Flexibility?</span>
                   <h3 className="text-2xl font-extralight mb-4">
                     Reach out if you do not see the right opening.
                   </h3>
                   <p className="text-background/80 leading-relaxed mb-6">
-                    If the current 30-minute Calendly option is not the right fit, use the contact
+                    If the current 45-minute Calendly option is not the right fit, use the contact
                     page and we can help route your request.
                   </p>
                   <Button href="/contact" variant="dark">Contact Us</Button>
