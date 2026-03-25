@@ -3,5 +3,8 @@ export function isMissingRelationError(error: unknown) {
     return false;
   }
 
-  return "code" in error && error.code === "42P01";
+  return (
+    "code" in error &&
+    (error.code === "42P01" || error.code === "PGRST205")
+  );
 }
