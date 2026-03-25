@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import PageTracker from "@/components/PageTracker";
 import LayoutShell from "@/components/layout/LayoutShell";
 import { SITE_NAME } from "@/lib/constants";
+import { DEFAULT_SOCIAL_IMAGE, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -19,7 +20,10 @@ export const metadata: Metadata = {
   },
   description:
     `${SITE_NAME} offers personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA. Book a consultation today.`,
-  metadataBase: new URL("https://myholisticfinance.com"),
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/favicon.svg",
   },
@@ -30,12 +34,20 @@ export const metadata: Metadata = {
     title: `${SITE_NAME} - Personalized Financial Planning`,
     description:
       `${SITE_NAME} provides personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA.`,
+    url: "/",
+    images: [
+      {
+        url: DEFAULT_SOCIAL_IMAGE,
+        alt: `${SITE_NAME} social preview`,
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: SITE_NAME,
     description:
       `${SITE_NAME} provides personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA.`,
+    images: [DEFAULT_SOCIAL_IMAGE],
   },
   robots: {
     index: true,
@@ -49,7 +61,7 @@ const jsonLd = {
   name: "Holistic Health & Financial Services",
   description:
     "Personalized financial planning, insurance, tax preparation, and retirement guidance for families in University Place, WA.",
-  url: "https://myholisticfinance.com",
+  url: SITE_URL,
   telephone: "+1-253-666-8663",
   email: "Holistic.Health.Finance@gmail.com",
   address: {
@@ -69,7 +81,7 @@ const jsonLd = {
     },
   ],
   priceRange: "$$",
-  image: "https://myholisticfinance.com/logo.svg",
+  image: `${SITE_URL}/logo.svg`,
 };
 
 const jsonLdString = JSON.stringify(jsonLd);

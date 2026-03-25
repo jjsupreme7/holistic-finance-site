@@ -5,12 +5,20 @@ import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import NewsletterForm from "@/components/sections/NewsletterForm";
 import { BOOKING_URL, RESOURCES, IMAGES, SITE_NAME } from "@/lib/constants";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Email Updates & Resources",
   description:
     `Subscribe for ${SITE_NAME} email updates, including new classes, event announcements, product launch alerts, and helpful financial resources.`,
-};
+  path: "/newsletter",
+  keywords: [
+    "newsletter signup",
+    "financial updates",
+    "event announcements",
+    "financial resources",
+  ],
+});
 
 export default function NewsletterPage() {
   return (
