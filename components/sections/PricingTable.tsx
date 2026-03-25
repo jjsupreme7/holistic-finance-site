@@ -11,7 +11,7 @@ const plans = [
     per: "per session",
     description: "Perfect for a one-time consultation on a specific topic",
     features: [
-      "60-minute session",
+      "45-minute session",
       "Choose any service topic",
       "Zoom or in-person",
       "Personalized action plan",
@@ -28,7 +28,7 @@ const plans = [
     per: "3-session package",
     description: "A deep dive into your full financial picture with ongoing support",
     features: [
-      "Three 60-minute sessions",
+      "Three 45-minute sessions",
       "Full financial health review",
       "Retirement + insurance audit",
       "Custom family financial plan",
