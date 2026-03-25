@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       return blocked;
     }
 
-    const { path, referrer } = await req.json();
+    const { path, referrer, visitorId } = await req.json();
     if (!path || typeof path !== "string" || !path.startsWith("/")) {
       return NextResponse.json({ error: "Missing path" }, { status: 400 });
     }
@@ -31,6 +31,10 @@ export async function POST(req: NextRequest) {
         path,
         referrer: referrer || null,
         user_agent: userAgent,
+        visitor_id:
+          visitorId && typeof visitorId === "string" && visitorId.length <= 36
+            ? visitorId
+            : null,
       });
 
       if (error && !isMissingRelationError(error)) {

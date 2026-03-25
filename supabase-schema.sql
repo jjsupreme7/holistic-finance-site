@@ -27,6 +27,20 @@ CREATE INDEX idx_subscribers_status ON subscribers(status);
 CREATE INDEX idx_subscribers_email ON subscribers(email);
 CREATE INDEX idx_campaigns_status ON campaigns(status);
 
+-- Page view tracking for analytics dashboard
+CREATE TABLE IF NOT EXISTS page_views (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  path TEXT NOT NULL,
+  referrer TEXT,
+  user_agent TEXT,
+  visitor_id TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_page_views_created_at ON page_views(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_page_views_path ON page_views(path);
+CREATE INDEX IF NOT EXISTS idx_page_views_visitor_id ON page_views(visitor_id);
+
 -- Conversion tracking for booking clicks and other lead actions
 CREATE TABLE IF NOT EXISTS conversion_events (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,

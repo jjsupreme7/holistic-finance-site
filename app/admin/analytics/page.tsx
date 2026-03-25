@@ -2,17 +2,79 @@
 
 import { useEffect, useState } from "react";
 import AdminNotice from "@/components/admin/AdminNotice";
+import BarChart from "@/components/admin/BarChart";
 
 interface AnalyticsData {
   trackingConfigured: boolean;
   missingTables: string[];
   totalViews: number;
+  uniqueVisitors: number;
   viewsByDay: Record<string, number>;
+  uniqueVisitorsByDay: Record<string, number>;
+  deviceBreakdown: Record<string, number>;
+  browserBreakdown: Record<string, number>;
   bookingClicksTotal: number;
   bookingClicksByDay: Record<string, number>;
   topPages: { path: string; count: number }[];
   topReferrers: { source: string; count: number }[];
   topBookingSources: { path: string; count: number }[];
+  totalSubscribers: number;
+  newSubscribers: number;
+  subscribersByDay: Record<string, number>;
+  totalSubmissions: number;
+  newSubmissions: number;
+  submissionsByDay: Record<string, number>;
+  contactConversionRate: number;
+}
+
+function StatCard({
+  label,
+  value,
+  subtext,
+}: {
+  label: string;
+  value: string | number;
+  subtext?: string;
+}) {
+  return (
+    <div className="bg-white rounded-xl border border-border-light p-5">
+      <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+        {label}
+      </p>
+      <p className="text-2xl font-bold text-primary">{value}</p>
+      {subtext && (
+        <p className="text-text-muted text-xs mt-0.5">{subtext}</p>
+      )}
+    </div>
+  );
+}
+
+function PercentageBar({
+  label,
+  count,
+  total,
+}: {
+  label: string;
+  count: number;
+  total: number;
+}) {
+  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+  return (
+    <div className="flex items-center gap-3 mb-3 last:mb-0">
+      <span className="text-sm text-dark font-medium w-16 shrink-0">
+        {label}
+      </span>
+      <div className="flex-1 bg-primary/10 rounded h-5 overflow-hidden">
+        <div
+          className="bg-primary/70 h-full rounded"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <span className="text-sm text-text-muted w-20 text-right shrink-0">
+        {pct}% ({count})
+      </span>
+    </div>
+  );
 }
 
 export default function AnalyticsPage() {
@@ -38,7 +100,9 @@ export default function AnalyticsPage() {
       })
       .catch((error) => {
         console.error(error);
-        setErrorMessage(error instanceof Error ? error.message : "Failed to load analytics.");
+        setErrorMessage(
+          error instanceof Error ? error.message : "Failed to load analytics.",
+        );
       })
       .finally(() => setLoading(false));
   }, [range]);
@@ -60,18 +124,23 @@ export default function AnalyticsPage() {
     );
   }
 
-  const days = Object.entries(data.viewsByDay);
-  const maxViews = Math.max(...days.map(([, v]) => v), 1);
-  const bookingDays = Object.entries(data.bookingClicksByDay);
-  const maxBookings = Math.max(...bookingDays.map(([, v]) => v), 1);
+  const deviceTotal = Object.values(data.deviceBreakdown).reduce(
+    (a, b) => a + b,
+    0,
+  );
+  const browserEntries = Object.entries(data.browserBreakdown).sort(
+    (a, b) => b[1] - a[1],
+  );
+  const browserTotal = browserEntries.reduce((a, [, v]) => a + v, 0);
 
   return (
     <div>
+      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-dark">Analytics</h1>
           <p className="text-text-muted text-sm mt-0.5">
-            {data.totalViews} total page views and {data.bookingClicksTotal} booking clicks
+            Traffic, engagement, and growth metrics
           </p>
         </div>
         <div className="flex gap-2">
@@ -104,80 +173,125 @@ export default function AnalyticsPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
+        <StatCard
+          label="Page Views"
+          value={data.totalViews}
+          subtext={`${range}d total`}
+        />
+        <StatCard
+          label="Unique Visitors"
+          value={data.uniqueVisitors}
+          subtext={`${range}d unique`}
+        />
+        <StatCard
+          label="Booking Clicks"
+          value={data.bookingClicksTotal}
+          subtext={`${range}d clicks`}
+        />
+        <StatCard
+          label="Subscribers"
+          value={data.totalSubscribers}
+          subtext={`+${data.newSubscribers} in ${range}d`}
+        />
+        <StatCard
+          label="Submissions"
+          value={data.totalSubmissions}
+          subtext={`+${data.newSubmissions} in ${range}d`}
+        />
+        <StatCard
+          label="Contact Conv."
+          value={`${data.contactConversionRate}%`}
+          subtext="visits → submissions"
+        />
+      </div>
+
+      {/* Page Views + Unique Visitors chart */}
+      <BarChart
+        title="Page Views"
+        data={data.viewsByDay}
+        overlay={data.uniqueVisitorsByDay}
+        mainLabel="Total views"
+        overlayLabel="Unique visitors"
+        overlayColor="bg-blue-300"
+        unitLabel="views"
+      />
+
+      {/* Booking Clicks chart */}
+      <BarChart
+        title="Booking Clicks"
+        data={data.bookingClicksByDay}
+        unitLabel="clicks"
+      />
+
+      {/* Device + Browser breakdown */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div className="bg-white rounded-xl border border-border-light p-6">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
-            Page Views
+          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-4">
+            Device Breakdown
           </p>
-          <p className="text-3xl font-bold text-primary">{data.totalViews}</p>
+          {deviceTotal === 0 ? (
+            <p className="text-text-muted text-sm">No data yet.</p>
+          ) : (
+            <>
+              <PercentageBar
+                label="Desktop"
+                count={data.deviceBreakdown.desktop || 0}
+                total={deviceTotal}
+              />
+              <PercentageBar
+                label="Mobile"
+                count={data.deviceBreakdown.mobile || 0}
+                total={deviceTotal}
+              />
+              <PercentageBar
+                label="Tablet"
+                count={data.deviceBreakdown.tablet || 0}
+                total={deviceTotal}
+              />
+            </>
+          )}
         </div>
+
         <div className="bg-white rounded-xl border border-border-light p-6">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
-            Booking Clicks
+          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-4">
+            Browser Breakdown
           </p>
-          <p className="text-3xl font-bold text-primary">{data.bookingClicksTotal}</p>
-        </div>
-      </div>
-
-      {/* Views Chart */}
-      <div className="bg-white rounded-xl border border-border-light p-6 mb-6">
-        <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-4">
-          Page Views
-        </p>
-        <div className="flex items-end gap-1 h-40">
-          {days.map(([day, count]) => (
-            <div key={day} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[10px] text-text-muted font-medium">
-                {count > 0 ? count : ""}
-              </span>
-              <div
-                className="w-full bg-primary/80 rounded-t transition-all hover:bg-primary"
-                style={{
-                  height: `${Math.max((count / maxViews) * 100, count > 0 ? 4 : 0)}%`,
-                  minHeight: count > 0 ? "4px" : "0px",
-                }}
-                title={`${day}: ${count} views`}
+          {browserTotal === 0 ? (
+            <p className="text-text-muted text-sm">No data yet.</p>
+          ) : (
+            browserEntries.map(([browser, count]) => (
+              <PercentageBar
+                key={browser}
+                label={browser}
+                count={count}
+                total={browserTotal}
               />
-              <span className="text-[9px] text-text-muted mt-1 hidden sm:block">
-                {new Date(day + "T12:00:00").toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })}
-              </span>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border-light p-6 mb-6">
-        <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-4">
-          Booking Clicks
-        </p>
-        <div className="flex items-end gap-1 h-40">
-          {bookingDays.map(([day, count]) => (
-            <div key={day} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[10px] text-text-muted font-medium">
-                {count > 0 ? count : ""}
-              </span>
-              <div
-                className="w-full bg-primary/80 rounded-t transition-all hover:bg-primary"
-                style={{
-                  height: `${Math.max((count / maxBookings) * 100, count > 0 ? 4 : 0)}%`,
-                  minHeight: count > 0 ? "4px" : "0px",
-                }}
-                title={`${day}: ${count} booking clicks`}
-              />
-              <span className="text-[9px] text-text-muted mt-1 hidden sm:block">
-                {new Date(day + "T12:00:00").toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })}
-              </span>
-            </div>
-          ))}
-        </div>
+      {/* Subscriber + Submission growth */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <BarChart
+          title="New Subscribers"
+          data={data.subscribersByDay}
+          color="bg-green-500/80"
+          hoverColor="bg-green-600"
+          unitLabel="subscribers"
+        />
+        <BarChart
+          title="Contact Submissions"
+          data={data.submissionsByDay}
+          color="bg-amber-500/80"
+          hoverColor="bg-amber-600"
+          unitLabel="submissions"
+        />
       </div>
 
+      {/* Tables */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Top Pages */}
         <div className="bg-white rounded-xl border border-border-light overflow-hidden">
@@ -198,7 +312,9 @@ export default function AnalyticsPage() {
                     key={p.path}
                     className="border-b border-border-light last:border-0 hover:bg-[#f8faff] transition-colors"
                   >
-                    <td className="px-4 py-3 text-dark font-medium">{p.path}</td>
+                    <td className="px-4 py-3 text-dark font-medium">
+                      {p.path}
+                    </td>
                     <td className="px-4 py-3 text-right text-text-muted">
                       {p.count} <span className="text-xs">views</span>
                     </td>
@@ -209,6 +325,7 @@ export default function AnalyticsPage() {
           )}
         </div>
 
+        {/* Booking Sources */}
         <div className="bg-white rounded-xl border border-border-light overflow-hidden">
           <div className="px-4 py-3 border-b border-border-light bg-[#f8faff]">
             <p className="text-text-muted text-xs font-semibold uppercase tracking-wider">
@@ -227,7 +344,9 @@ export default function AnalyticsPage() {
                     key={source.path}
                     className="border-b border-border-light last:border-0 hover:bg-[#f8faff] transition-colors"
                   >
-                    <td className="px-4 py-3 text-dark font-medium">{source.path}</td>
+                    <td className="px-4 py-3 text-dark font-medium">
+                      {source.path}
+                    </td>
                     <td className="px-4 py-3 text-right text-text-muted">
                       {source.count} <span className="text-xs">clicks</span>
                     </td>
@@ -257,7 +376,9 @@ export default function AnalyticsPage() {
                     key={r.source}
                     className="border-b border-border-light last:border-0 hover:bg-[#f8faff] transition-colors"
                   >
-                    <td className="px-4 py-3 text-dark font-medium">{r.source}</td>
+                    <td className="px-4 py-3 text-dark font-medium">
+                      {r.source}
+                    </td>
                     <td className="px-4 py-3 text-right text-text-muted">
                       {r.count} <span className="text-xs">visits</span>
                     </td>
