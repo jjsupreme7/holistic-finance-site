@@ -5,9 +5,14 @@ import Image from "next/image";
 import Markdown from "react-markdown";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
+import BlogHtmlContent from "@/components/blog/BlogHtmlContent";
 import { getPublishedBlogPostBySlug } from "@/lib/blog/server";
 import { BOOKING_URL, SITE_NAME } from "@/lib/constants";
 import { DEFAULT_SOCIAL_IMAGE } from "@/lib/seo";
+
+function isHtmlContent(content: string): boolean {
+  return /^\s*</.test(content);
+}
 
 const markdownComponents = {
   h1: (props: React.ComponentProps<"h1">) => (
@@ -147,7 +152,11 @@ export default async function BlogPostPage({
       <article className="py-16 px-6">
         <div className="max-w-[720px] mx-auto">
           <FadeIn>
-            <Markdown components={markdownComponents}>{post.content}</Markdown>
+            {isHtmlContent(post.content) ? (
+              <BlogHtmlContent html={post.content} />
+            ) : (
+              <Markdown components={markdownComponents}>{post.content}</Markdown>
+            )}
           </FadeIn>
 
           <div className="border-t border-border mt-16 pt-8">

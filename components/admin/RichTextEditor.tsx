@@ -4,7 +4,9 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
-import { Markdown } from "tiptap-markdown";
+import Color from "@tiptap/extension-color";
+import { TextStyle } from "@tiptap/extension-text-style";
+import Highlight from "@tiptap/extension-highlight";
 import {
   Bold,
   Italic,
@@ -20,12 +22,15 @@ import {
   Minus,
   Undo,
   Redo,
+  Type,
+  Highlighter,
+  RemoveFormatting,
 } from "lucide-react";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState, useRef } from "react";
 
 interface RichTextEditorProps {
   content: string;
-  onChange: (markdown: string) => void;
+  onChange: (html: string) => void;
   placeholder?: string;
 }
 
@@ -36,6 +41,31 @@ interface ToolbarButtonProps {
   title: string;
   children: React.ReactNode;
 }
+
+const TEXT_COLORS = [
+  { label: "Default", value: "" },
+  { label: "Black", value: "#1a1a1a" },
+  { label: "Dark Gray", value: "#4a4a4a" },
+  { label: "Gray", value: "#6b7280" },
+  { label: "Red", value: "#dc2626" },
+  { label: "Orange", value: "#ea580c" },
+  { label: "Gold", value: "#d4952e" },
+  { label: "Green", value: "#16a34a" },
+  { label: "Blue", value: "#2563eb" },
+  { label: "Purple", value: "#7c3aed" },
+  { label: "Pink", value: "#db2777" },
+];
+
+const HIGHLIGHT_COLORS = [
+  { label: "None", value: "" },
+  { label: "Yellow", value: "#fef08a" },
+  { label: "Green", value: "#bbf7d0" },
+  { label: "Blue", value: "#bfdbfe" },
+  { label: "Purple", value: "#ddd6fe" },
+  { label: "Pink", value: "#fbcfe8" },
+  { label: "Orange", value: "#fed7aa" },
+  { label: "Red", value: "#fecaca" },
+];
 
 function ToolbarButton({ onClick, active, disabled, title, children }: ToolbarButtonProps) {
   return (
@@ -59,9 +89,74 @@ function ToolbarDivider() {
   return <div className="w-px h-5 bg-border-light mx-1" />;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getMarkdown(editor: { storage: any }): string {
-  return editor.storage.markdown.getMarkdown();
+function ColorDropdown({
+  colors,
+  onSelect,
+  activeColor,
+  icon,
+  title,
+}: {
+  colors: { label: string; value: string }[];
+  onSelect: (color: string) => void;
+  activeColor: string | undefined;
+  icon: React.ReactNode;
+  title: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        title={title}
+        className={`p-1.5 rounded-md transition-colors cursor-pointer border-none flex items-center gap-0.5 ${
+          activeColor
+            ? "bg-primary/10 text-primary"
+            : "text-text-muted hover:text-dark hover:bg-gray-100"
+        }`}
+      >
+        {icon}
+        <svg width="8" height="8" viewBox="0 0 8 8" className="ml-0.5 opacity-50">
+          <path d="M1 3l3 3 3-3" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-1 bg-white border border-border-light rounded-lg shadow-lg p-2 z-50 grid grid-cols-4 gap-1 min-w-[140px]">
+          {colors.map((color) => (
+            <button
+              key={color.label}
+              type="button"
+              title={color.label}
+              onClick={() => {
+                onSelect(color.value);
+                setOpen(false);
+              }}
+              className={`w-7 h-7 rounded-md border cursor-pointer transition-transform hover:scale-110 ${
+                (activeColor || "") === color.value
+                  ? "border-primary ring-2 ring-primary/30"
+                  : "border-border-light"
+              }`}
+              style={{
+                background: color.value || "linear-gradient(135deg, #fff 45%, #ccc 45%, #ccc 55%, #fff 55%)",
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
@@ -75,11 +170,13 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         HTMLAttributes: { class: "text-primary underline" },
       }),
       Underline,
-      Markdown,
+      TextStyle,
+      Color,
+      Highlight.configure({ multicolor: true }),
     ],
     content,
     onUpdate: ({ editor }) => {
-      onChange(getMarkdown(editor));
+      onChange(editor.getHTML());
     },
     editorProps: {
       attributes: {
@@ -90,12 +187,11 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
   });
 
   // Sync external content changes (e.g. when loading initial data after mount)
-  const editorContent = editor ? getMarkdown(editor) : "";
   useEffect(() => {
-    if (editor && content && !editorContent) {
+    if (editor && content && editor.isEmpty) {
       editor.commands.setContent(content);
     }
-  }, [editor, content, editorContent]);
+  }, [editor, content]);
 
   const handleLink = useCallback(() => {
     if (!editor) return;
@@ -111,6 +207,35 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   }, [editor]);
 
+  const handleTextColor = useCallback(
+    (color: string) => {
+      if (!editor) return;
+      if (!color) {
+        editor.chain().focus().unsetColor().run();
+      } else {
+        editor.chain().focus().setColor(color).run();
+      }
+    },
+    [editor]
+  );
+
+  const handleHighlight = useCallback(
+    (color: string) => {
+      if (!editor) return;
+      if (!color) {
+        editor.chain().focus().unsetHighlight().run();
+      } else {
+        editor.chain().focus().setHighlight({ color }).run();
+      }
+    },
+    [editor]
+  );
+
+  const handleClearFormatting = useCallback(() => {
+    if (!editor) return;
+    editor.chain().focus().clearNodes().unsetAllMarks().run();
+  }, [editor]);
+
   if (!editor) {
     return (
       <div className="rounded-xl border-2 border-border-light bg-white overflow-hidden">
@@ -121,6 +246,8 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
   }
 
   const iconSize = 16;
+  const activeTextColor = editor.getAttributes("textStyle").color as string | undefined;
+  const activeHighlight = editor.getAttributes("highlight").color as string | undefined;
 
   return (
     <div className="rounded-xl border-2 border-border-light bg-white overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
@@ -153,6 +280,29 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
           title="Strikethrough"
         >
           <Strikethrough size={iconSize} />
+        </ToolbarButton>
+
+        <ToolbarDivider />
+
+        <ColorDropdown
+          colors={TEXT_COLORS}
+          onSelect={handleTextColor}
+          activeColor={activeTextColor}
+          icon={<Type size={iconSize} />}
+          title="Text Color"
+        />
+        <ColorDropdown
+          colors={HIGHLIGHT_COLORS}
+          onSelect={handleHighlight}
+          activeColor={activeHighlight}
+          icon={<Highlighter size={iconSize} />}
+          title="Highlight Color"
+        />
+        <ToolbarButton
+          onClick={handleClearFormatting}
+          title="Clear Formatting"
+        >
+          <RemoveFormatting size={iconSize} />
         </ToolbarButton>
 
         <ToolbarDivider />
