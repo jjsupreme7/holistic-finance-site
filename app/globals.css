@@ -13,7 +13,7 @@
   --color-success: #2e7d32;
   --color-success-bg: #e8f5e9;
 
-  /* Admin panel colors */
+  /* Admin panel colors (defaults = dark, overridden by [data-admin-theme="light"]) */
   --color-dark: #0d1117;
   --color-admin-card: #161b22;
   --color-admin-surface: #1c2333;
@@ -56,6 +56,20 @@
       scroll-behavior: auto !important;
     }
   }
+}
+
+/* Admin light theme override */
+[data-admin-theme="light"] {
+  --color-dark: #f8faff;
+  --color-admin-card: #ffffff;
+  --color-admin-surface: #f1f5f9;
+  --color-admin-hover: #e8eef6;
+  --color-primary: #2c5aa0;
+  --color-primary-light: #3d7dd4;
+  --color-text-light: #6b7280;
+  --color-border-light: #e2e8f0;
+  --color-admin-text: #1a1a2e;
+  --color-admin-text-secondary: #64748b;
 }
 
 @layer utilities {
