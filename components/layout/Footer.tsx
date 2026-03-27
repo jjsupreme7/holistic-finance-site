@@ -10,12 +10,11 @@ export default function Footer() {
   const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
-  const socialLinks = [
-    { label: "Facebook", href: SOCIAL.facebook },
-    { label: "Instagram", href: SOCIAL.instagram },
-  ].filter((social) => {
-    return !["https://facebook.com", "https://instagram.com"].includes(social.href);
-  });
+  const hasSocialLinks = SOCIAL.facebook !== "https://facebook.com" || SOCIAL.instagram !== "https://instagram.com";
+  const socialLinks = hasSocialLinks ? [
+    ...(SOCIAL.facebook !== "https://facebook.com" ? [{ label: "Facebook", href: SOCIAL.facebook }] : []),
+    ...(SOCIAL.instagram !== "https://instagram.com" ? [{ label: "Instagram", href: SOCIAL.instagram }] : []),
+  ] : [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

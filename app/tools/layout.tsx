@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Financial Calculators",
+  title: "Financial Calculators & Tools",
   description:
-    "Use free financial calculators for retirement, mortgage affordability, life insurance needs, and college savings planning.",
+    "Free financial calculators for retirement savings, mortgage affordability, life insurance needs, and college savings planning from Holistic Health & Financial Services.",
   path: "/tools",
   keywords: [
     "financial calculators",
     "retirement calculator",
     "mortgage calculator",
-    "life insurance calculator",
     "college savings calculator",
+    "life insurance calculator",
   ],
 });
 
