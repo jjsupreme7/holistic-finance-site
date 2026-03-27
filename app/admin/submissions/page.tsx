@@ -157,8 +157,8 @@ export default function SubmissionsPage() {
     <div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark">Contact Submissions</h1>
-          <p className="text-text-muted text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-admin-text">Contact Submissions</h1>
+          <p className="text-admin-text-secondary text-sm mt-0.5">
             {newCount} new of {submissions.length} total
           </p>
         </div>
@@ -174,27 +174,27 @@ export default function SubmissionsPage() {
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-border-light p-4 mb-4">
+      <div className="bg-admin-card rounded-2xl border border-border-light p-4 mb-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
           <div className="flex-1">
-            <label className="block text-sm font-semibold text-dark mb-2">Search submissions</label>
+            <label className="block text-sm font-semibold text-admin-text mb-2">Search submissions</label>
             <input
               type="text"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by name, email, phone, service, or message"
-              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
 
           <div className="w-full lg:w-52">
-            <label className="block text-sm font-semibold text-dark mb-2">Sort by</label>
+            <label className="block text-sm font-semibold text-admin-text mb-2">Sort by</label>
             <select
               value={sortBy}
               onChange={(event) =>
                 setSortBy(event.target.value as "newest" | "oldest" | "name")
               }
-              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             >
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
@@ -211,7 +211,7 @@ export default function SubmissionsPage() {
               className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border-none transition-colors ${
                 filter === f
                   ? "bg-primary text-white"
-                  : "bg-white text-text-light border border-border-light hover:bg-primary/5"
+                  : "bg-admin-surface text-text-light border border-border-light hover:bg-primary/10"
               }`}
             >
               {f}
@@ -221,9 +221,9 @@ export default function SubmissionsPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border-light overflow-hidden">
+      <div className="bg-admin-card rounded-xl border border-border-light overflow-hidden">
         {filtered.length === 0 ? (
-          <p className="px-4 py-8 text-center text-text-muted">
+          <p className="px-4 py-8 text-center text-admin-text-secondary">
             No submissions found.
           </p>
         ) : (
@@ -235,7 +235,7 @@ export default function SubmissionsPage() {
               >
                 {/* Row */}
                 <div
-                  className="flex items-center gap-4 px-4 py-3 hover:bg-[#f8faff] transition-colors cursor-pointer"
+                  className="flex items-center gap-4 px-4 py-3 hover:bg-admin-hover transition-colors cursor-pointer"
                   onClick={() => {
                     setExpanded(expanded === s.id ? null : s.id);
                   }}
@@ -246,36 +246,36 @@ export default function SubmissionsPage() {
                     }`}
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-dark font-medium truncate">
+                    <p className="text-sm text-admin-text font-medium truncate">
                       {s.first_name} {s.last_name}
                       {s.service && (
-                        <span className="text-text-muted font-normal"> — {s.service}</span>
+                        <span className="text-admin-text-secondary font-normal"> — {s.service}</span>
                       )}
                     </p>
-                    <p className="text-xs text-text-muted truncate">{s.email}</p>
+                    <p className="text-xs text-admin-text-secondary truncate">{s.email}</p>
                   </div>
-                  <span className="text-xs text-text-muted shrink-0">
+                  <span className="text-xs text-admin-text-secondary shrink-0">
                     {new Date(s.created_at).toLocaleDateString()}
                   </span>
-                  <span className="text-text-muted text-sm">
+                  <span className="text-admin-text-secondary text-sm">
                     {expanded === s.id ? "▲" : "▼"}
                   </span>
                 </div>
 
                 {/* Expanded detail */}
                 {expanded === s.id && (
-                  <div className="px-4 pb-4 pt-1 bg-[#f8faff]">
+                  <div className="px-4 pb-4 pt-1 bg-admin-surface">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
                       <div>
-                        <p className="text-xs text-text-muted font-semibold uppercase tracking-wider mb-0.5">
+                        <p className="text-xs text-admin-text-secondary font-semibold uppercase tracking-wider mb-0.5">
                           Name
                         </p>
-                        <p className="text-sm text-dark">
+                        <p className="text-sm text-admin-text">
                           {s.first_name} {s.last_name}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-text-muted font-semibold uppercase tracking-wider mb-0.5">
+                        <p className="text-xs text-admin-text-secondary font-semibold uppercase tracking-wider mb-0.5">
                           Email
                         </p>
                         <a
@@ -287,7 +287,7 @@ export default function SubmissionsPage() {
                       </div>
                       {s.phone && (
                         <div>
-                          <p className="text-xs text-text-muted font-semibold uppercase tracking-wider mb-0.5">
+                          <p className="text-xs text-admin-text-secondary font-semibold uppercase tracking-wider mb-0.5">
                             Phone
                           </p>
                           <a
@@ -300,19 +300,19 @@ export default function SubmissionsPage() {
                       )}
                       {s.service && (
                         <div>
-                          <p className="text-xs text-text-muted font-semibold uppercase tracking-wider mb-0.5">
+                          <p className="text-xs text-admin-text-secondary font-semibold uppercase tracking-wider mb-0.5">
                             Service
                           </p>
-                          <p className="text-sm text-dark">{s.service}</p>
+                          <p className="text-sm text-admin-text">{s.service}</p>
                         </div>
                       )}
                     </div>
                     {s.message && (
                       <div className="mb-3">
-                        <p className="text-xs text-text-muted font-semibold uppercase tracking-wider mb-0.5">
+                        <p className="text-xs text-admin-text-secondary font-semibold uppercase tracking-wider mb-0.5">
                           Message
                         </p>
-                        <p className="text-sm text-dark whitespace-pre-wrap leading-relaxed">
+                        <p className="text-sm text-admin-text whitespace-pre-wrap leading-relaxed">
                           {s.message}
                         </p>
                       </div>
@@ -325,7 +325,7 @@ export default function SubmissionsPage() {
                             markReviewed(s.id);
                           }}
                           disabled={reviewing === s.id}
-                          className="bg-white text-primary font-semibold px-4 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-50"
+                          className="bg-admin-surface text-primary-light font-semibold px-4 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/10 transition-all cursor-pointer disabled:opacity-50"
                         >
                           {reviewing === s.id ? "Updating…" : "Mark Reviewed"}
                         </button>
@@ -342,7 +342,7 @@ export default function SubmissionsPage() {
                           setPendingDelete(s);
                         }}
                         disabled={deleting === s.id}
-                        className="text-red-500 hover:text-red-700 text-xs font-semibold cursor-pointer border-none bg-transparent transition-colors disabled:opacity-50"
+                        className="text-red-400 hover:text-red-300 text-xs font-semibold cursor-pointer border-none bg-transparent transition-colors disabled:opacity-50"
                       >
                         {deleting === s.id ? "Deleting…" : "Delete Submission"}
                       </button>

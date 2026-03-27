@@ -77,8 +77,8 @@ function ToolbarButton({ onClick, active, disabled, title, children }: ToolbarBu
       title={title}
       className={`p-1.5 rounded-md transition-colors cursor-pointer border-none ${
         active
-          ? "bg-primary/10 text-primary"
-          : "text-text-muted hover:text-dark hover:bg-gray-100"
+          ? "bg-primary/20 text-primary-light"
+          : "text-admin-text-secondary hover:text-admin-text hover:bg-admin-hover"
       } disabled:opacity-30 disabled:cursor-not-allowed`}
     >
       {children}
@@ -124,8 +124,8 @@ function ColorDropdown({
         title={title}
         className={`p-1.5 rounded-md transition-colors cursor-pointer border-none flex items-center gap-0.5 ${
           activeColor
-            ? "bg-primary/10 text-primary"
-            : "text-text-muted hover:text-dark hover:bg-gray-100"
+            ? "bg-primary/20 text-primary-light"
+            : "text-admin-text-secondary hover:text-admin-text hover:bg-admin-hover"
         }`}
       >
         {icon}
@@ -134,7 +134,7 @@ function ColorDropdown({
         </svg>
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 bg-white border border-border-light rounded-lg shadow-lg p-2 z-50 grid grid-cols-4 gap-1 min-w-[140px]">
+        <div className="absolute top-full left-0 mt-1 bg-admin-card border border-border-light rounded-lg shadow-lg p-2 z-50 grid grid-cols-4 gap-1 min-w-[140px]">
           {colors.map((color) => (
             <button
               key={color.label}
@@ -250,8 +250,8 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
 
   if (!editor) {
     return (
-      <div className="rounded-xl border-2 border-border-light bg-white overflow-hidden">
-        <div className="h-10 bg-gray-50/50 border-b border-border-light animate-pulse" />
+      <div className="rounded-xl border-2 border-border-light bg-admin-card overflow-hidden">
+        <div className="h-10 bg-admin-surface border-b border-border-light animate-pulse" />
         <div className="min-h-[400px]" />
       </div>
     );
@@ -262,9 +262,9 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
   const activeHighlight = editor.getAttributes("highlight").color as string | undefined;
 
   return (
-    <div className="rounded-xl border-2 border-border-light bg-white overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+    <div className="rounded-xl border-2 border-border-light bg-admin-card overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-border-light bg-gray-50/50">
+      <div className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-border-light bg-admin-surface">
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           active={editor.isActive("bold")}

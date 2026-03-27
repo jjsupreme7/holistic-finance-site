@@ -122,7 +122,7 @@ export default function BlogEditor({
   };
 
   const inputClass =
-    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
+    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -134,9 +134,9 @@ export default function BlogEditor({
         />
       )}
 
-      <div className="bg-white rounded-xl border border-border-light p-6 space-y-5">
+      <div className="bg-admin-card rounded-xl border border-border-light p-6 space-y-5">
         <div>
-          <label className="block text-sm font-semibold text-dark mb-1.5">
+          <label className="block text-sm font-semibold text-admin-text mb-1.5">
             Title <span className="text-red-500">*</span>
           </label>
           <input
@@ -150,11 +150,11 @@ export default function BlogEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-dark mb-1.5">
+          <label className="block text-sm font-semibold text-admin-text mb-1.5">
             URL Slug
           </label>
           <div className="flex items-center gap-2">
-            <span className="text-text-muted text-sm">/blog/</span>
+            <span className="text-admin-text-secondary text-sm">/blog/</span>
             <input
               type="text"
               value={slug}
@@ -169,7 +169,7 @@ export default function BlogEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-dark mb-1.5">
+          <label className="block text-sm font-semibold text-admin-text mb-1.5">
             Cover Image URL
           </label>
           <input
@@ -197,7 +197,7 @@ export default function BlogEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-dark mb-1.5">
+          <label className="block text-sm font-semibold text-admin-text mb-1.5">
             Excerpt
           </label>
           <textarea
@@ -210,10 +210,10 @@ export default function BlogEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-dark mb-1.5">
+          <label className="block text-sm font-semibold text-admin-text mb-1.5">
             Content <span className="text-red-500">*</span>
           </label>
-          <p className="text-text-muted text-xs mb-2">
+          <p className="text-admin-text-secondary text-xs mb-2">
             Use the toolbar to format your article with headings, bold, lists, links, and more.
           </p>
           <RichTextEditor
@@ -224,19 +224,19 @@ export default function BlogEditor({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border-light p-6">
+      <div className="bg-admin-card rounded-xl border border-border-light p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <div className="flex items-center gap-4">
-              <label className="block text-sm font-semibold text-dark">Status</label>
+              <label className="block text-sm font-semibold text-admin-text">Status</label>
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setStatus("draft")}
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border transition-all ${
                     status === "draft"
-                      ? "bg-yellow-100 text-yellow-700 border-yellow-200"
-                      : "bg-white text-text-muted border-border-light hover:bg-yellow-50"
+                      ? "bg-yellow-900/30 text-yellow-400 border-yellow-800"
+                      : "bg-admin-surface text-admin-text-secondary border-border-light hover:bg-yellow-900/20"
                   }`}
                 >
                   Draft
@@ -246,20 +246,20 @@ export default function BlogEditor({
                   onClick={() => setStatus("published")}
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border transition-all ${
                     status === "published"
-                      ? "bg-success-bg text-success border-green-200"
-                      : "bg-white text-text-muted border-border-light hover:bg-green-50"
+                      ? "bg-green-900/30 text-green-400 border-green-800"
+                      : "bg-admin-surface text-admin-text-secondary border-border-light hover:bg-green-900/20"
                   }`}
                 >
                   Published
                 </button>
               </div>
             </div>
-            <p className="text-text-muted text-xs mt-2">
+            <p className="text-admin-text-secondary text-xs mt-2">
               {status === "published"
                 ? "This post will appear on the public /blog page after you save."
                 : "Draft posts stay hidden from the public /blog page until you publish them."}
             </p>
-            <p className="text-text-muted text-xs mt-2">
+            <p className="text-admin-text-secondary text-xs mt-2">
               {isDirty ? "You have unsaved changes on this post." : "All changes are saved."}
             </p>
           </div>

@@ -99,8 +99,8 @@ export default function EditTrainingModulesPage() {
 
   if (!item) {
     return (
-      <div className="bg-white rounded-xl border border-border-light p-12 text-center">
-        <p className="text-text-muted">Training group not found.</p>
+      <div className="bg-admin-card rounded-xl border border-border-light p-12 text-center">
+        <p className="text-admin-text-secondary">Training group not found.</p>
       </div>
     );
   }
@@ -115,15 +115,15 @@ export default function EditTrainingModulesPage() {
           >
             &larr; Back to Curriculum
           </Link>
-          <h1 className="text-2xl font-bold text-dark">Edit Curriculum Group</h1>
-          <p className="text-text-muted text-sm mt-1">
+          <h1 className="text-2xl font-bold text-admin-text">Edit Curriculum Group</h1>
+          <p className="text-admin-text-secondary text-sm mt-1">
             Published groups are live on the website. Draft groups stay private.
           </p>
         </div>
         <button
           onClick={() => setShowDeleteDialog(true)}
           disabled={deleting}
-          className="bg-white text-red-600 font-semibold px-5 py-2.5 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
+          className="bg-red-900/20 text-red-400 font-semibold px-5 py-2.5 rounded-lg border border-red-800/50 text-sm hover:bg-red-900/30 transition-all cursor-pointer disabled:opacity-50"
         >
           {deleting ? "Deleting..." : "Delete Group"}
         </button>

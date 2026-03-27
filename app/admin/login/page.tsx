@@ -39,21 +39,21 @@ export default function AdminLoginPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm mb-4";
+    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm mb-4";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f8faff] px-6">
+    <div className="min-h-screen flex items-center justify-center bg-dark px-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-dark">{SITE_NAME}</h1>
+          <h1 className="text-2xl font-bold text-admin-text">{SITE_NAME}</h1>
           <p className="text-text-light text-sm mt-1">Admin Dashboard</p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-lg p-8 border border-border-light"
+          className="bg-admin-card rounded-2xl shadow-lg p-8 border border-border-light"
         >
-          <label className="block text-sm font-semibold text-dark mb-2">
+          <label className="block text-sm font-semibold text-admin-text mb-2">
             Email
           </label>
           <input
@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
             className={inputClass}
           />
 
-          <label className="block text-sm font-semibold text-dark mb-2">
+          <label className="block text-sm font-semibold text-admin-text mb-2">
             Password
           </label>
           <input
@@ -78,7 +78,7 @@ export default function AdminLoginPage() {
           />
 
           {error && (
-            <p className="text-red-600 text-sm mb-4">{error}</p>
+            <p className="text-red-400 text-sm mb-4">{error}</p>
           )}
 
           <button

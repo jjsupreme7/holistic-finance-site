@@ -23,8 +23,8 @@ interface Notice {
 }
 
 const statusColors: Record<string, string> = {
-  draft: "bg-yellow-50 text-yellow-700",
-  published: "bg-success-bg text-success",
+  draft: "bg-yellow-900/30 text-yellow-400",
+  published: "bg-green-900/30 text-green-400",
 };
 
 function formatDate(dateString: string | null) {
@@ -175,23 +175,23 @@ export default function AdminBlogPage() {
     return (
       <article
         key={post.id}
-        className="bg-white rounded-2xl border border-border-light p-6 shadow-sm"
+        className="bg-admin-card rounded-2xl border border-border-light p-6"
       >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <h2 className="text-lg font-semibold text-dark">{post.title}</h2>
+              <h2 className="text-lg font-semibold text-admin-text">{post.title}</h2>
               <span
                 className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${
-                  statusColors[post.status] || "bg-gray-50 text-gray-600"
+                  statusColors[post.status] || "bg-gray-800 text-gray-400"
                 }`}
               >
                 {post.status}
               </span>
             </div>
 
-            <p className="text-text-muted text-sm mb-2">/blog/{post.slug}</p>
-            <p className="text-sm text-text-muted leading-relaxed">
+            <p className="text-admin-text-secondary text-sm mb-2">/blog/{post.slug}</p>
+            <p className="text-sm text-admin-text-secondary leading-relaxed">
               {post.excerpt?.trim()
                 ? post.excerpt
                 : post.status === "draft"
@@ -200,7 +200,7 @@ export default function AdminBlogPage() {
             </p>
           </div>
 
-          <div className="text-sm text-text-muted shrink-0 lg:text-right">
+          <div className="text-sm text-admin-text-secondary shrink-0 lg:text-right">
             <p>Created: {formatDate(post.created_at)}</p>
             <p>Live date: {formatDate(post.published_at)}</p>
           </div>
@@ -221,14 +221,14 @@ export default function AdminBlogPage() {
                 href={`/blog/${post.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white text-primary font-semibold px-4 py-2 rounded-lg border border-border-light no-underline text-sm hover:bg-primary/5 transition-all"
+                className="bg-admin-surface text-primary-light font-semibold px-4 py-2 rounded-lg border border-border-light no-underline text-sm hover:bg-primary/10 transition-all"
               >
                 View Live
               </a>
               <button
                 onClick={() => setPendingDraftPost(post)}
                 disabled={isPublishing || isDeleting}
-                className="bg-white text-primary font-semibold px-4 py-2 rounded-lg border border-border-light text-sm hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-50"
+                className="bg-admin-surface text-primary-light font-semibold px-4 py-2 rounded-lg border border-border-light text-sm hover:bg-primary/10 transition-all cursor-pointer disabled:opacity-50"
               >
                 {isPublishing ? "Saving..." : "Move to Draft"}
               </button>
@@ -237,7 +237,7 @@ export default function AdminBlogPage() {
 
           <Link
             href={`/admin/blog/${post.id}`}
-            className="bg-white text-primary font-semibold px-4 py-2 rounded-lg border border-border-light no-underline text-sm hover:bg-primary/5 transition-all"
+            className="bg-admin-surface text-primary-light font-semibold px-4 py-2 rounded-lg border border-border-light no-underline text-sm hover:bg-primary/10 transition-all"
           >
             Edit Post
           </Link>
@@ -245,7 +245,7 @@ export default function AdminBlogPage() {
           <button
             onClick={() => setPendingDeletePost(post)}
             disabled={isPublishing || isDeleting}
-            className="bg-white text-red-600 font-semibold px-4 py-2 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
+            className="bg-red-900/20 text-red-400 font-semibold px-4 py-2 rounded-lg border border-red-800/50 text-sm hover:bg-red-900/30 transition-all cursor-pointer disabled:opacity-50"
           >
             {isDeleting ? "Deleting..." : "Delete Post"}
           </button>
@@ -266,8 +266,8 @@ export default function AdminBlogPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-dark">Blog Posts</h1>
-          <p className="text-text-muted mt-2 max-w-2xl">
+          <h1 className="text-3xl font-bold text-admin-text">Blog Posts</h1>
+          <p className="text-admin-text-secondary mt-2 max-w-2xl">
             Publish and manage articles here. Published posts appear on your website. Drafts stay
             private until you publish them.
           </p>
@@ -292,46 +292,46 @@ export default function AdminBlogPage() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl border border-border-light p-5">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-[0.18em] mb-2">
+        <div className="bg-admin-card rounded-2xl border border-border-light p-5">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-[0.18em] mb-2">
             Total Posts
           </p>
-          <p className="text-3xl font-bold text-dark">{posts.length}</p>
+          <p className="text-3xl font-bold text-admin-text">{posts.length}</p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-border-light p-5">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-[0.18em] mb-2">
+        <div className="bg-admin-card rounded-2xl border border-border-light p-5">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-[0.18em] mb-2">
             Published
           </p>
           <p className="text-3xl font-bold text-success">{totalPublished}</p>
-          <p className="text-text-muted text-sm mt-2">These are currently live on the site.</p>
+          <p className="text-admin-text-secondary text-sm mt-2">These are currently live on the site.</p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-border-light p-5">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-[0.18em] mb-2">
+        <div className="bg-admin-card rounded-2xl border border-border-light p-5">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-[0.18em] mb-2">
             Drafts
           </p>
-          <p className="text-3xl font-bold text-yellow-700">{totalDrafts}</p>
-          <p className="text-text-muted text-sm mt-2">These are hidden until you publish them.</p>
+          <p className="text-3xl font-bold text-yellow-400">{totalDrafts}</p>
+          <p className="text-admin-text-secondary text-sm mt-2">These are hidden until you publish them.</p>
         </div>
       </div>
 
       {posts.length > 0 && (
-        <div className="bg-white rounded-2xl border border-border-light p-5">
-          <label className="block text-sm font-semibold text-dark mb-2">Search posts</label>
+        <div className="bg-admin-card rounded-2xl border border-border-light p-5">
+          <label className="block text-sm font-semibold text-admin-text mb-2">Search posts</label>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by title, slug, or excerpt"
-            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
           />
         </div>
       )}
 
       {posts.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-border-light p-12 text-center">
-          <p className="text-text-muted mb-4">No blog posts yet.</p>
+        <div className="bg-admin-card rounded-2xl border border-border-light p-12 text-center">
+          <p className="text-admin-text-secondary mb-4">No blog posts yet.</p>
           <Link
             href="/admin/blog/new"
             className="text-primary font-semibold no-underline hover:underline text-sm"
@@ -340,22 +340,22 @@ export default function AdminBlogPage() {
           </Link>
         </div>
       ) : filteredPosts.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-border-light p-12 text-center">
-          <p className="text-text-muted">No posts matched your search.</p>
+        <div className="bg-admin-card rounded-2xl border border-border-light p-12 text-center">
+          <p className="text-admin-text-secondary">No posts matched your search.</p>
         </div>
       ) : (
         <>
           <section className="space-y-4">
             <div className="flex flex-col gap-1">
-              <h2 className="text-xl font-semibold text-dark">Needs Publishing</h2>
-              <p className="text-sm text-text-muted">
+              <h2 className="text-xl font-semibold text-admin-text">Needs Publishing</h2>
+              <p className="text-sm text-admin-text-secondary">
                 Draft posts do not show up on your website until you click publish.
               </p>
             </div>
 
             {draftPosts.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-border-light p-8">
-                <p className="text-text-muted">No drafts right now.</p>
+              <div className="bg-admin-card rounded-2xl border border-border-light p-8">
+                <p className="text-admin-text-secondary">No drafts right now.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -366,15 +366,15 @@ export default function AdminBlogPage() {
 
           <section className="space-y-4">
             <div className="flex flex-col gap-1">
-              <h2 className="text-xl font-semibold text-dark">Live on Site</h2>
-              <p className="text-sm text-text-muted">
+              <h2 className="text-xl font-semibold text-admin-text">Live on Site</h2>
+              <p className="text-sm text-admin-text-secondary">
                 These posts are already visible on the public blog page.
               </p>
             </div>
 
             {publishedPosts.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-border-light p-8">
-                <p className="text-text-muted">No published posts yet.</p>
+              <div className="bg-admin-card rounded-2xl border border-border-light p-8">
+                <p className="text-admin-text-secondary">No published posts yet.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">

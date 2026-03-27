@@ -103,8 +103,8 @@ export default function EditBlogPostPage() {
 
   if (!post) {
     return (
-      <div className="bg-white rounded-xl border border-border-light p-12 text-center">
-        <p className="text-text-muted">Post not found.</p>
+      <div className="bg-admin-card rounded-xl border border-border-light p-12 text-center">
+        <p className="text-admin-text-secondary">Post not found.</p>
       </div>
     );
   }
@@ -112,14 +112,14 @@ export default function EditBlogPostPage() {
   return (
     <div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
-        <h1 className="text-2xl font-bold text-dark">Edit Blog Post</h1>
+        <h1 className="text-2xl font-bold text-admin-text">Edit Blog Post</h1>
         <div className="flex flex-wrap gap-3">
           {post.status === "published" && (
             <a
               href={`/blog/${post.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-white text-primary font-semibold px-5 py-2.5 rounded-lg border border-border-light no-underline text-sm hover:bg-primary/5 transition-all"
+              className="bg-admin-surface text-primary-light font-semibold px-5 py-2.5 rounded-lg border border-border-light no-underline text-sm hover:bg-primary/10 transition-all"
             >
               View Live Post
             </a>
@@ -127,7 +127,7 @@ export default function EditBlogPostPage() {
           <button
             onClick={() => setShowDeleteDialog(true)}
             disabled={deleting}
-            className="bg-white text-red-600 font-semibold px-5 py-2.5 rounded-lg border border-red-200 text-sm hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
+            className="bg-red-900/20 text-red-400 font-semibold px-5 py-2.5 rounded-lg border border-red-800/50 text-sm hover:bg-red-900/30 transition-all cursor-pointer disabled:opacity-50"
           >
             {deleting ? "Deleting..." : "Delete Post"}
           </button>

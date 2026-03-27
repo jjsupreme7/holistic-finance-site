@@ -37,13 +37,13 @@ function StatCard({
   subtext?: string;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-border-light p-5">
-      <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+    <div className="bg-admin-card rounded-xl border border-border-light p-5">
+      <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-1">
         {label}
       </p>
       <p className="text-2xl font-bold text-primary">{value}</p>
       {subtext && (
-        <p className="text-text-muted text-xs mt-0.5">{subtext}</p>
+        <p className="text-admin-text-secondary text-xs mt-0.5">{subtext}</p>
       )}
     </div>
   );
@@ -61,7 +61,7 @@ function PercentageBar({
   const pct = total > 0 ? Math.round((count / total) * 100) : 0;
   return (
     <div className="flex items-center gap-3 mb-3 last:mb-0">
-      <span className="text-sm text-dark font-medium w-16 shrink-0">
+      <span className="text-sm text-admin-text font-medium w-16 shrink-0">
         {label}
       </span>
       <div className="flex-1 bg-primary/10 rounded h-5 overflow-hidden">
@@ -70,7 +70,7 @@ function PercentageBar({
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-sm text-text-muted w-20 text-right shrink-0">
+      <span className="text-sm text-admin-text-secondary w-20 text-right shrink-0">
         {pct}% ({count})
       </span>
     </div>
@@ -118,7 +118,7 @@ export default function AnalyticsPage() {
   if (!data) {
     return (
       <div className="space-y-4">
-        <p className="text-text-muted">Failed to load analytics.</p>
+        <p className="text-admin-text-secondary">Failed to load analytics.</p>
         {errorMessage && <AdminNotice tone="error" message={errorMessage} />}
       </div>
     );
@@ -138,8 +138,8 @@ export default function AnalyticsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark">Analytics</h1>
-          <p className="text-text-muted text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-admin-text">Analytics</h1>
+          <p className="text-admin-text-secondary text-sm mt-0.5">
             Traffic, engagement, and growth metrics
           </p>
         </div>
@@ -155,7 +155,7 @@ export default function AnalyticsPage() {
               className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer border-none transition-colors ${
                 range === d
                   ? "bg-primary text-white"
-                  : "bg-white text-text-light border border-border-light hover:bg-primary/5"
+                  : "bg-admin-surface text-text-light border border-border-light hover:bg-primary/10"
               }`}
             >
               {d}d
@@ -214,7 +214,7 @@ export default function AnalyticsPage() {
         overlay={data.uniqueVisitorsByDay}
         mainLabel="Total views"
         overlayLabel="Unique visitors"
-        overlayColor="bg-blue-300"
+        overlayColor="bg-blue-400/60"
         unitLabel="views"
       />
 
@@ -227,12 +227,12 @@ export default function AnalyticsPage() {
 
       {/* Device + Browser breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white rounded-xl border border-border-light p-6">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-4">
+        <div className="bg-admin-card rounded-xl border border-border-light p-6">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-4">
             Device Breakdown
           </p>
           {deviceTotal === 0 ? (
-            <p className="text-text-muted text-sm">No data yet.</p>
+            <p className="text-admin-text-secondary text-sm">No data yet.</p>
           ) : (
             <>
               <PercentageBar
@@ -254,12 +254,12 @@ export default function AnalyticsPage() {
           )}
         </div>
 
-        <div className="bg-white rounded-xl border border-border-light p-6">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-4">
+        <div className="bg-admin-card rounded-xl border border-border-light p-6">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-4">
             Browser Breakdown
           </p>
           {browserTotal === 0 ? (
-            <p className="text-text-muted text-sm">No data yet.</p>
+            <p className="text-admin-text-secondary text-sm">No data yet.</p>
           ) : (
             browserEntries.map(([browser, count]) => (
               <PercentageBar
@@ -278,15 +278,15 @@ export default function AnalyticsPage() {
         <BarChart
           title="New Subscribers"
           data={data.subscribersByDay}
-          color="bg-green-500/80"
-          hoverColor="bg-green-600"
+          color="bg-green-400/70"
+          hoverColor="bg-green-500"
           unitLabel="subscribers"
         />
         <BarChart
           title="Contact Submissions"
           data={data.submissionsByDay}
-          color="bg-amber-500/80"
-          hoverColor="bg-amber-600"
+          color="bg-amber-400/70"
+          hoverColor="bg-amber-500"
           unitLabel="submissions"
         />
       </div>
@@ -294,14 +294,14 @@ export default function AnalyticsPage() {
       {/* Tables */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Top Pages */}
-        <div className="bg-white rounded-xl border border-border-light overflow-hidden">
-          <div className="px-4 py-3 border-b border-border-light bg-[#f8faff]">
-            <p className="text-text-muted text-xs font-semibold uppercase tracking-wider">
+        <div className="bg-admin-card rounded-xl border border-border-light overflow-hidden">
+          <div className="px-4 py-3 border-b border-border-light bg-admin-surface">
+            <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider">
               Top Pages
             </p>
           </div>
           {data.topPages.length === 0 ? (
-            <p className="px-4 py-8 text-center text-text-muted text-sm">
+            <p className="px-4 py-8 text-center text-admin-text-secondary text-sm">
               No page views yet.
             </p>
           ) : (
@@ -310,12 +310,12 @@ export default function AnalyticsPage() {
                 {data.topPages.map((p) => (
                   <tr
                     key={p.path}
-                    className="border-b border-border-light last:border-0 hover:bg-[#f8faff] transition-colors"
+                    className="border-b border-border-light last:border-0 hover:bg-admin-hover transition-colors"
                   >
-                    <td className="px-4 py-3 text-dark font-medium">
+                    <td className="px-4 py-3 text-admin-text font-medium">
                       {p.path}
                     </td>
-                    <td className="px-4 py-3 text-right text-text-muted">
+                    <td className="px-4 py-3 text-right text-admin-text-secondary">
                       {p.count} <span className="text-xs">views</span>
                     </td>
                   </tr>
@@ -326,14 +326,14 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Booking Sources */}
-        <div className="bg-white rounded-xl border border-border-light overflow-hidden">
-          <div className="px-4 py-3 border-b border-border-light bg-[#f8faff]">
-            <p className="text-text-muted text-xs font-semibold uppercase tracking-wider">
+        <div className="bg-admin-card rounded-xl border border-border-light overflow-hidden">
+          <div className="px-4 py-3 border-b border-border-light bg-admin-surface">
+            <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider">
               Booking Sources
             </p>
           </div>
           {data.topBookingSources.length === 0 ? (
-            <p className="px-4 py-8 text-center text-text-muted text-sm">
+            <p className="px-4 py-8 text-center text-admin-text-secondary text-sm">
               No booking clicks yet.
             </p>
           ) : (
@@ -342,12 +342,12 @@ export default function AnalyticsPage() {
                 {data.topBookingSources.map((source) => (
                   <tr
                     key={source.path}
-                    className="border-b border-border-light last:border-0 hover:bg-[#f8faff] transition-colors"
+                    className="border-b border-border-light last:border-0 hover:bg-admin-hover transition-colors"
                   >
-                    <td className="px-4 py-3 text-dark font-medium">
+                    <td className="px-4 py-3 text-admin-text font-medium">
                       {source.path}
                     </td>
-                    <td className="px-4 py-3 text-right text-text-muted">
+                    <td className="px-4 py-3 text-right text-admin-text-secondary">
                       {source.count} <span className="text-xs">clicks</span>
                     </td>
                   </tr>
@@ -358,14 +358,14 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Top Referrers */}
-        <div className="bg-white rounded-xl border border-border-light overflow-hidden">
-          <div className="px-4 py-3 border-b border-border-light bg-[#f8faff]">
-            <p className="text-text-muted text-xs font-semibold uppercase tracking-wider">
+        <div className="bg-admin-card rounded-xl border border-border-light overflow-hidden">
+          <div className="px-4 py-3 border-b border-border-light bg-admin-surface">
+            <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider">
               Top Referrers
             </p>
           </div>
           {data.topReferrers.length === 0 ? (
-            <p className="px-4 py-8 text-center text-text-muted text-sm">
+            <p className="px-4 py-8 text-center text-admin-text-secondary text-sm">
               No referrer data yet.
             </p>
           ) : (
@@ -374,12 +374,12 @@ export default function AnalyticsPage() {
                 {data.topReferrers.map((r) => (
                   <tr
                     key={r.source}
-                    className="border-b border-border-light last:border-0 hover:bg-[#f8faff] transition-colors"
+                    className="border-b border-border-light last:border-0 hover:bg-admin-hover transition-colors"
                   >
-                    <td className="px-4 py-3 text-dark font-medium">
+                    <td className="px-4 py-3 text-admin-text font-medium">
                       {r.source}
                     </td>
-                    <td className="px-4 py-3 text-right text-text-muted">
+                    <td className="px-4 py-3 text-right text-admin-text-secondary">
                       {r.count} <span className="text-xs">visits</span>
                     </td>
                   </tr>

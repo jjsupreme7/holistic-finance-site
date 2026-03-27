@@ -55,18 +55,18 @@ export default function ConfirmDialog({
       : "bg-gradient-to-r from-primary to-primary-light text-white hover:shadow-lg hover:shadow-primary/25";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-dark/45 px-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
       <div
-        className="w-full max-w-md rounded-3xl border border-border-light bg-white p-6 shadow-2xl"
+        className="w-full max-w-md rounded-3xl border border-border-light bg-admin-card p-6 shadow-2xl"
         role="dialog"
         aria-modal="true"
         aria-labelledby="confirm-dialog-title"
       >
         <div className="space-y-3">
-          <h2 id="confirm-dialog-title" className="text-xl font-semibold text-dark">
+          <h2 id="confirm-dialog-title" className="text-xl font-semibold text-admin-text">
             {title}
           </h2>
-          <p className="text-sm leading-6 text-text-muted">{description}</p>
+          <p className="text-sm leading-6 text-admin-text-secondary">{description}</p>
         </div>
 
         <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
@@ -74,7 +74,7 @@ export default function ConfirmDialog({
             type="button"
             onClick={onCancel}
             disabled={loading}
-            className="rounded-xl border border-border-light px-4 py-2.5 text-sm font-semibold text-text-light transition-colors hover:bg-[#f8faff] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-xl border border-border-light px-4 py-2.5 text-sm font-semibold text-text-light transition-colors hover:bg-admin-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
             {cancelLabel}
           </button>

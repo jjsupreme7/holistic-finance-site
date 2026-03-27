@@ -77,8 +77,8 @@ export default function AdminDashboard() {
   return (
     <div>
       <div className="mb-6 space-y-2">
-        <h1 className="text-2xl font-bold text-dark">Dashboard</h1>
-        <p className="max-w-3xl text-sm leading-6 text-text-muted">
+        <h1 className="text-2xl font-bold text-admin-text">Dashboard</h1>
+        <p className="max-w-3xl text-sm leading-6 text-admin-text-secondary">
           Use <strong>Courses &amp; Events</strong> for anything with a date on the calendar. Use
           <strong> Curriculum</strong> for evergreen training groups that stay available outside the
           live schedule.
@@ -86,44 +86,44 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        <Link href="/admin/submissions" className="bg-white rounded-xl p-6 border border-border-light no-underline block hover:border-primary/30 transition-colors">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+        <Link href="/admin/submissions" className="bg-admin-card rounded-xl p-6 border border-border-light no-underline block hover:border-primary/40 transition-colors">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-1">
             Contact Submissions
           </p>
           <p className="text-3xl font-bold text-primary">
-            {stats?.newSubmissions || 0} <span className="text-lg font-normal text-text-muted">new</span>
+            {stats?.newSubmissions || 0} <span className="text-lg font-normal text-admin-text-secondary">new</span>
           </p>
-          <p className="text-text-muted text-xs mt-1">
+          <p className="text-admin-text-secondary text-xs mt-1">
             {stats?.totalSubmissions || 0} total &rarr;
           </p>
         </Link>
 
-        <div className="bg-white rounded-xl p-6 border border-border-light">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+        <div className="bg-admin-card rounded-xl p-6 border border-border-light">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-1">
             Active Subscribers
           </p>
           <p className="text-3xl font-bold text-primary">
             {stats?.activeSubscribers || 0}
           </p>
-          <p className="text-text-muted text-xs mt-1">
+          <p className="text-admin-text-secondary text-xs mt-1">
             of {stats?.totalSubscribers || 0} total
           </p>
         </div>
 
-        <div className="bg-white rounded-xl p-6 border border-border-light">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+        <div className="bg-admin-card rounded-xl p-6 border border-border-light">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-1">
             Blog Posts
           </p>
           <p className="text-3xl font-bold text-primary">
             {stats?.publishedPosts || 0}
           </p>
-          <p className="text-text-muted text-xs mt-1">
+          <p className="text-admin-text-secondary text-xs mt-1">
             {stats?.totalPosts || 0} total ({(stats?.totalPosts || 0) - (stats?.publishedPosts || 0)} drafts)
           </p>
         </div>
 
-        <div className="bg-white rounded-xl p-6 border border-border-light">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+        <div className="bg-admin-card rounded-xl p-6 border border-border-light">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-1">
             Total Campaigns
           </p>
           <p className="text-3xl font-bold text-primary">
@@ -131,46 +131,46 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <Link href="/admin/analytics" className="bg-white rounded-xl p-6 border border-border-light no-underline block hover:border-primary/30 transition-colors">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+        <Link href="/admin/analytics" className="bg-admin-card rounded-xl p-6 border border-border-light no-underline block hover:border-primary/40 transition-colors">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-1">
             Page Views (7d)
           </p>
           <p className="text-3xl font-bold text-primary">
             {stats?.pageViews7d || 0}
           </p>
-          <p className="text-text-muted text-xs mt-1">
+          <p className="text-admin-text-secondary text-xs mt-1">
             View full analytics &rarr;
           </p>
         </Link>
 
-        <Link href="/admin/analytics" className="bg-white rounded-xl p-6 border border-border-light no-underline block hover:border-primary/30 transition-colors">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+        <Link href="/admin/analytics" className="bg-admin-card rounded-xl p-6 border border-border-light no-underline block hover:border-primary/40 transition-colors">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-1">
             Booking Clicks (7d)
           </p>
           <p className="text-3xl font-bold text-primary">
             {stats?.bookingClicks7d || 0}
           </p>
-          <p className="text-text-muted text-xs mt-1">
+          <p className="text-admin-text-secondary text-xs mt-1">
             View booking sources &rarr;
           </p>
         </Link>
 
-        <div className="bg-white rounded-xl p-6 border border-border-light">
-          <p className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-1">
+        <div className="bg-admin-card rounded-xl p-6 border border-border-light">
+          <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider mb-1">
             Last Campaign
           </p>
           {stats?.lastCampaign ? (
             <>
-              <p className="text-sm font-semibold text-dark truncate">
+              <p className="text-sm font-semibold text-admin-text truncate">
                 {stats.lastCampaign.subject}
               </p>
-              <p className="text-text-muted text-xs mt-1">
+              <p className="text-admin-text-secondary text-xs mt-1">
                 Sent to {stats.lastCampaign.recipient_count} &bull;{" "}
                 {new Date(stats.lastCampaign.sent_at).toLocaleDateString()}
               </p>
             </>
           ) : (
-            <p className="text-text-muted text-sm">No campaigns sent yet</p>
+            <p className="text-admin-text-secondary text-sm">No campaigns sent yet</p>
           )}
         </div>
       </div>
@@ -190,25 +190,25 @@ export default function AdminDashboard() {
         </Link>
         <Link
           href="/admin/subscribers"
-          className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
+          className="bg-admin-surface text-primary-light font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/10 transition-all"
         >
           View Subscribers
         </Link>
         <Link
           href="/admin/blog"
-          className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
+          className="bg-admin-surface text-primary-light font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/10 transition-all"
         >
           Manage Blog Posts
         </Link>
         <Link
           href="/admin/schedule"
-          className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
+          className="bg-admin-surface text-primary-light font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/10 transition-all"
         >
           Manage Courses & Events
         </Link>
         <Link
           href="/admin/training-modules"
-          className="bg-white text-primary font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/5 transition-all"
+          className="bg-admin-surface text-primary-light font-semibold px-6 py-2.5 rounded-lg no-underline text-sm border border-border-light hover:bg-primary/10 transition-all"
         >
           Manage Curriculum
         </Link>

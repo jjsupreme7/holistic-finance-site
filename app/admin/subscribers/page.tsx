@@ -137,14 +137,14 @@ export default function SubscribersPage() {
     <div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark">Subscribers</h1>
-          <p className="text-text-muted text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-admin-text">Subscribers</h1>
+          <p className="text-admin-text-secondary text-sm mt-0.5">
             {activeCount} active of {subscribers.length} total
           </p>
         </div>
         <button
           onClick={exportCSV}
-          className="bg-white text-primary font-semibold px-4 py-2 rounded-lg text-sm border border-border-light hover:bg-primary/5 transition-all cursor-pointer"
+          className="bg-admin-surface text-primary-light font-semibold px-4 py-2 rounded-lg text-sm border border-border-light hover:bg-primary/10 transition-all cursor-pointer"
         >
           Export CSV
         </button>
@@ -160,27 +160,27 @@ export default function SubscribersPage() {
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-border-light p-4 mb-4">
+      <div className="bg-admin-card rounded-2xl border border-border-light p-4 mb-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
           <div className="flex-1">
-            <label className="block text-sm font-semibold text-dark mb-2">Search subscribers</label>
+            <label className="block text-sm font-semibold text-admin-text mb-2">Search subscribers</label>
             <input
               type="text"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by email, name, or status"
-              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
 
           <div className="w-full lg:w-52">
-            <label className="block text-sm font-semibold text-dark mb-2">Sort by</label>
+            <label className="block text-sm font-semibold text-admin-text mb-2">Sort by</label>
             <select
               value={sortBy}
               onChange={(event) =>
                 setSortBy(event.target.value as "newest" | "oldest" | "email")
               }
-              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             >
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
@@ -197,7 +197,7 @@ export default function SubscribersPage() {
               className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize cursor-pointer border-none transition-colors ${
                 filter === f
                   ? "bg-primary text-white"
-                  : "bg-white text-text-light border border-border-light hover:bg-primary/5"
+                  : "bg-admin-surface text-text-light border border-border-light hover:bg-primary/10"
               }`}
             >
               {f}
@@ -206,24 +206,24 @@ export default function SubscribersPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border-light overflow-hidden">
+      <div className="bg-admin-card rounded-xl border border-border-light overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] text-sm">
             <thead>
-              <tr className="border-b border-border-light bg-[#f8faff]">
-                <th className="text-left px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+              <tr className="border-b border-border-light bg-admin-surface">
+                <th className="text-left px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                   Email
                 </th>
-                <th className="text-left px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                <th className="text-left px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                   Name
                 </th>
-                <th className="text-left px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                <th className="text-left px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                   Status
                 </th>
-                <th className="text-left px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                <th className="text-left px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                   Subscribed
                 </th>
-                <th className="text-right px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                <th className="text-right px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -231,7 +231,7 @@ export default function SubscribersPage() {
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-text-muted">
+                  <td colSpan={5} className="px-4 py-8 text-center text-admin-text-secondary">
                     No subscribers found.
                   </td>
                 </tr>
@@ -239,29 +239,29 @@ export default function SubscribersPage() {
                 filtered.map((s) => (
                   <tr
                     key={s.id}
-                    className="border-b border-border-light last:border-0 hover:bg-[#f8faff] transition-colors"
+                    className="border-b border-border-light last:border-0 hover:bg-admin-hover transition-colors"
                   >
-                    <td className="px-4 py-3 text-dark">{s.email}</td>
+                    <td className="px-4 py-3 text-admin-text">{s.email}</td>
                     <td className="px-4 py-3 text-text-light">{s.first_name || "—"}</td>
                     <td className="px-4 py-3">
                       <span
                         className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${
                           s.status === "active"
-                            ? "bg-success-bg text-success"
-                            : "bg-red-50 text-red-600"
+                            ? "bg-green-900/30 text-green-400"
+                            : "bg-red-900/30 text-red-400"
                         }`}
                       >
                         {s.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-text-muted">
+                    <td className="px-4 py-3 text-admin-text-secondary">
                       {new Date(s.subscribed_at).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={() => setPendingDelete(s)}
                         disabled={deleting === s.id}
-                        className="text-red-500 hover:text-red-700 text-xs font-semibold cursor-pointer border-none bg-transparent transition-colors disabled:opacity-50"
+                        className="text-red-400 hover:text-red-300 text-xs font-semibold cursor-pointer border-none bg-transparent transition-colors disabled:opacity-50"
                       >
                         {deleting === s.id ? "Deleting…" : "Delete Subscriber"}
                       </button>

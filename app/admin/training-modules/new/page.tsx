@@ -54,8 +54,8 @@ export default function NewTrainingModulesPage() {
           >
             &larr; Back to Curriculum
           </Link>
-          <h1 className="text-2xl font-bold text-dark">Add Curriculum Group</h1>
-          <p className="text-text-muted text-sm mt-1">
+          <h1 className="text-2xl font-bold text-admin-text">Add Curriculum Group</h1>
+          <p className="text-admin-text-secondary text-sm mt-1">
             Publish the group to make it appear on the public curriculum page.
           </p>
         </div>

@@ -113,7 +113,7 @@ export default function CampaignEditor({
         )}
 
         <div>
-          <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-admin-text-secondary uppercase tracking-wider mb-1.5">
             Subject Line
           </label>
           <input
@@ -123,12 +123,12 @@ export default function CampaignEditor({
             onChange={(e) => setSubject(e.target.value)}
             disabled={readOnly}
             placeholder="e.g. March Newsletter: Spring Financial Checkup"
-            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm disabled:opacity-60"
+            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm disabled:opacity-60"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-admin-text-secondary uppercase tracking-wider mb-1.5">
             Preview Text
           </label>
           <input
@@ -137,12 +137,12 @@ export default function CampaignEditor({
             onChange={(e) => setPreviewText(e.target.value)}
             disabled={readOnly}
             placeholder="Short preview shown in inbox (optional)"
-            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm disabled:opacity-60"
+            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm disabled:opacity-60"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-admin-text-secondary uppercase tracking-wider mb-1.5">
             Body (HTML)
           </label>
           <textarea
@@ -152,7 +152,7 @@ export default function CampaignEditor({
             disabled={readOnly}
             rows={16}
             placeholder={`<h1 style="color:#2c5aa0;">Hello!</h1>\n<p>Your newsletter content here...</p>`}
-            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm font-mono disabled:opacity-60 resize-y"
+            className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm font-mono disabled:opacity-60 resize-y"
           />
         </div>
 
@@ -171,20 +171,20 @@ export default function CampaignEditor({
                 type="button"
                 onClick={handleSendTest}
                 disabled={sendingTest}
-                className="bg-white text-primary font-semibold px-5 py-2.5 rounded-lg text-sm border border-border-light hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-60"
+                className="bg-admin-surface text-primary-light font-semibold px-5 py-2.5 rounded-lg text-sm border border-border-light hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-60"
               >
                 {sendingTest ? "Sending..." : "Send Test Email"}
               </button>
 
               {testMessage && (
-                <span className="text-sm text-text-muted">{testMessage}</span>
+                <span className="text-sm text-admin-text-secondary">{testMessage}</span>
               )}
             </div>
-            <p className="text-text-muted text-sm">
+            <p className="text-admin-text-secondary text-sm">
               Saving a draft does not email anyone. Campaigns only go out after you click the send
               button on the campaign page.
             </p>
-            <p className="text-text-muted text-sm">
+            <p className="text-admin-text-secondary text-sm">
               {isDirty ? "You have unsaved edits in this email." : "All changes are saved."}
             </p>
           </div>
@@ -193,16 +193,16 @@ export default function CampaignEditor({
 
       {/* Live Preview */}
       <div>
-        <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-1.5">
+        <label className="block text-xs font-semibold text-admin-text-secondary uppercase tracking-wider mb-1.5">
           Email Preview
         </label>
-        <div className="bg-white rounded-xl border border-border-light overflow-hidden">
-          <div className="bg-[#f0f4ff] px-4 py-2 border-b border-border-light">
-            <p className="text-xs text-text-muted">
+        <div className="bg-admin-card rounded-xl border border-border-light overflow-hidden">
+          <div className="bg-admin-surface px-4 py-2 border-b border-border-light">
+            <p className="text-xs text-admin-text-secondary">
               <strong>Subject:</strong> {subject || "(no subject)"}
             </p>
             {previewText && (
-              <p className="text-xs text-text-muted truncate">
+              <p className="text-xs text-admin-text-secondary truncate">
                 <strong>Preview:</strong> {previewText}
               </p>
             )}

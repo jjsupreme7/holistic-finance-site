@@ -158,7 +158,7 @@ export default function ScheduleEditor({
           : `Update ${kindLabel}`;
 
   const inputClass =
-    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
+    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -209,10 +209,10 @@ export default function ScheduleEditor({
         />
       )}
 
-      <div className="bg-white rounded-xl border border-border-light p-6 space-y-5">
+      <div className="bg-admin-card rounded-xl border border-border-light p-6 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">Kind</label>
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">Kind</label>
             <select
               value={kind}
               onChange={(e) => setKind(e.target.value as ScheduleKind)}
@@ -224,7 +224,7 @@ export default function ScheduleEditor({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">Status</label>
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">Status</label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as ScheduleStatus)}
@@ -233,7 +233,7 @@ export default function ScheduleEditor({
               <option value="published">Published</option>
               <option value="draft">Draft</option>
             </select>
-            <p className="text-text-muted text-xs mt-2">
+            <p className="text-admin-text-secondary text-xs mt-2">
               {status === "published"
                 ? `${kindLabel}s with published status appear on the public website.`
                 : `${kindLabel} drafts stay hidden until you publish them.`}
@@ -241,7 +241,7 @@ export default function ScheduleEditor({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">Sort Order</label>
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">Sort Order</label>
             <input
               type="number"
               value={sortOrder}
@@ -252,7 +252,7 @@ export default function ScheduleEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-dark mb-1.5">
+          <label className="block text-sm font-semibold text-admin-text mb-1.5">
             Title <span className="text-red-500">*</span>
           </label>
           <input
@@ -267,7 +267,7 @@ export default function ScheduleEditor({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">
               Date Label <span className="text-red-500">*</span>
             </label>
             <input
@@ -282,7 +282,7 @@ export default function ScheduleEditor({
 
           {kind === "event" ? (
             <div>
-              <label className="block text-sm font-semibold text-dark mb-1.5">
+              <label className="block text-sm font-semibold text-admin-text mb-1.5">
                 Time <span className="text-red-500">*</span>
               </label>
               <input
@@ -296,7 +296,7 @@ export default function ScheduleEditor({
             </div>
           ) : (
             <div>
-              <label className="block text-sm font-semibold text-dark mb-1.5">
+              <label className="block text-sm font-semibold text-admin-text mb-1.5">
                 Course Type
               </label>
               <select
@@ -315,7 +315,7 @@ export default function ScheduleEditor({
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div>
-                <label className="block text-sm font-semibold text-dark mb-1.5">Icon</label>
+                <label className="block text-sm font-semibold text-admin-text mb-1.5">Icon</label>
                 <select
                   value={icon}
                   onChange={(e) => setIcon(e.target.value)}
@@ -330,7 +330,7 @@ export default function ScheduleEditor({
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-dark mb-1.5">
+                <label className="block text-sm font-semibold text-admin-text mb-1.5">
                   Duration <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -344,7 +344,7 @@ export default function ScheduleEditor({
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-dark mb-1.5">
+                <label className="block text-sm font-semibold text-admin-text mb-1.5">
                   Format <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -360,7 +360,7 @@ export default function ScheduleEditor({
 
             {scheduleType === "paid" && (
               <div>
-                <label className="block text-sm font-semibold text-dark mb-1.5">Price Label</label>
+                <label className="block text-sm font-semibold text-admin-text mb-1.5">Price Label</label>
                 <input
                   type="text"
                   value={priceLabel}
@@ -375,7 +375,7 @@ export default function ScheduleEditor({
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-semibold text-dark mb-1.5">
+                <label className="block text-sm font-semibold text-admin-text mb-1.5">
                   Location <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -389,7 +389,7 @@ export default function ScheduleEditor({
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-dark mb-1.5">Hosted By</label>
+                <label className="block text-sm font-semibold text-admin-text mb-1.5">Hosted By</label>
                 <input
                   type="text"
                   value={sponsor}
@@ -401,7 +401,7 @@ export default function ScheduleEditor({
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-dark mb-1.5">Contact Label</label>
+              <label className="block text-sm font-semibold text-admin-text mb-1.5">Contact Label</label>
               <input
                 type="text"
                 value={contactLabel}
@@ -412,7 +412,7 @@ export default function ScheduleEditor({
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-dark mb-1.5">
+              <label className="block text-sm font-semibold text-admin-text mb-1.5">
                 Highlights
               </label>
               <textarea
@@ -422,13 +422,13 @@ export default function ScheduleEditor({
                 placeholder={"Cash only\nFamily-friendly event\nCommunity market"}
                 className={`${inputClass} resize-y`}
               />
-              <p className="text-text-muted text-xs mt-2">Enter one highlight per line.</p>
+              <p className="text-admin-text-secondary text-xs mt-2">Enter one highlight per line.</p>
             </div>
           </>
         )}
 
         <div>
-          <label className="block text-sm font-semibold text-dark mb-1.5">
+          <label className="block text-sm font-semibold text-admin-text mb-1.5">
             Description <span className="text-red-500">*</span>
           </label>
           <textarea
@@ -446,9 +446,9 @@ export default function ScheduleEditor({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border-light p-6">
+      <div className="bg-admin-card rounded-xl border border-border-light p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <p className="text-sm text-text-muted">
+          <p className="text-sm text-admin-text-secondary">
             {isDirty
               ? "You have unsaved changes in this item."
               : "All changes are saved."}

@@ -32,13 +32,13 @@ export default function BarChart({
   const combinedMax = overlay ? Math.max(maxValue, overlayMax) : maxValue;
 
   return (
-    <div className="bg-white rounded-xl border border-border-light p-6 mb-6">
+    <div className="bg-admin-card rounded-xl border border-border-light p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
-        <p className="text-text-muted text-xs font-semibold uppercase tracking-wider">
+        <p className="text-admin-text-secondary text-xs font-semibold uppercase tracking-wider">
           {title}
         </p>
         {overlay && overlayLabel && mainLabel && (
-          <div className="flex items-center gap-4 text-[10px] text-text-muted">
+          <div className="flex items-center gap-4 text-[10px] text-admin-text-secondary">
             <span className="flex items-center gap-1.5">
               <span className={`inline-block w-3 h-3 rounded-sm ${color}`} />
               {mainLabel}
@@ -57,7 +57,7 @@ export default function BarChart({
           const overlayCount = overlay?.[day] || 0;
           return (
             <div key={day} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[10px] text-text-muted font-medium">
+              <span className="text-[10px] text-admin-text-secondary font-medium">
                 {count > 0 ? count : ""}
               </span>
               <div className="w-full relative" style={{ height: "100%" }}>
@@ -80,7 +80,7 @@ export default function BarChart({
                   title={`${day}: ${count} ${unitLabel}`}
                 />
               </div>
-              <span className="text-[9px] text-text-muted mt-1 hidden sm:block">
+              <span className="text-[9px] text-admin-text-secondary mt-1 hidden sm:block">
                 {new Date(day + "T12:00:00").toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",

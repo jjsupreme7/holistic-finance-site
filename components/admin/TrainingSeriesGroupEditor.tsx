@@ -113,7 +113,7 @@ export default function TrainingSeriesGroupEditor({
           : "Update Curriculum Group";
 
   const inputClass =
-    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
+    "w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm";
 
   function updateModule(
     index: number,
@@ -200,10 +200,10 @@ export default function TrainingSeriesGroupEditor({
         />
       )}
 
-      <div className="bg-white rounded-xl border border-border-light p-6 space-y-5">
+      <div className="bg-admin-card rounded-xl border border-border-light p-6 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">Status</label>
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">Status</label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as TrainingSeriesStatus)}
@@ -212,7 +212,7 @@ export default function TrainingSeriesGroupEditor({
               <option value="published">Published</option>
               <option value="draft">Draft</option>
             </select>
-            <p className="text-text-muted text-xs mt-2">
+            <p className="text-admin-text-secondary text-xs mt-2">
               {status === "published"
                 ? "Published curriculum groups appear on the public curriculum page."
                 : "Draft curriculum groups stay hidden until you publish them."}
@@ -220,7 +220,7 @@ export default function TrainingSeriesGroupEditor({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">Accent Icon</label>
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">Accent Icon</label>
             <select
               value={accent}
               onChange={(e) => setAccent(e.target.value)}
@@ -235,7 +235,7 @@ export default function TrainingSeriesGroupEditor({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">Sort Order</label>
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">Sort Order</label>
             <input
               type="number"
               value={sortOrder}
@@ -247,7 +247,7 @@ export default function TrainingSeriesGroupEditor({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">
               Section Label <span className="text-red-500">*</span>
             </label>
             <input
@@ -261,7 +261,7 @@ export default function TrainingSeriesGroupEditor({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-dark mb-1.5">
+            <label className="block text-sm font-semibold text-admin-text mb-1.5">
               Group Title <span className="text-red-500">*</span>
             </label>
             <input
@@ -276,7 +276,7 @@ export default function TrainingSeriesGroupEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-dark mb-1.5">
+          <label className="block text-sm font-semibold text-admin-text mb-1.5">
             Description <span className="text-red-500">*</span>
           </label>
           <textarea
@@ -290,18 +290,18 @@ export default function TrainingSeriesGroupEditor({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border-light p-6">
+      <div className="bg-admin-card rounded-xl border border-border-light p-6">
         <div className="flex items-center justify-between gap-4 mb-5">
           <div>
-            <h2 className="text-lg font-semibold text-dark">Modules</h2>
-            <p className="text-text-muted text-sm mt-1">
+            <h2 className="text-lg font-semibold text-admin-text">Modules</h2>
+            <p className="text-admin-text-secondary text-sm mt-1">
               Add, remove, and reorder the module cards that appear inside this group.
             </p>
           </div>
           <button
             type="button"
             onClick={addModule}
-            className="bg-white text-primary font-semibold px-4 py-2 rounded-lg border border-border-light text-sm hover:bg-primary/5 transition-all cursor-pointer"
+            className="bg-admin-surface text-primary-light font-semibold px-4 py-2 rounded-lg border border-border-light text-sm hover:bg-primary/5 transition-all cursor-pointer"
           >
             Add Module
           </button>
@@ -309,15 +309,15 @@ export default function TrainingSeriesGroupEditor({
 
         <div className="space-y-4">
           {modules.map((module, index) => (
-            <div key={index} className="rounded-xl border border-border-light p-5 bg-[#fbfcfe]">
+            <div key={index} className="rounded-xl border border-border-light p-5 bg-admin-surface">
               <div className="flex items-center justify-between gap-3 mb-4">
-                <p className="text-sm font-semibold text-dark">Module {index + 1}</p>
+                <p className="text-sm font-semibold text-admin-text">Module {index + 1}</p>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => moveModule(index, "up")}
                     disabled={index === 0}
-                    className="bg-white text-primary font-semibold px-3 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-40"
+                    className="bg-admin-surface text-primary-light font-semibold px-3 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-40"
                   >
                     Move Up
                   </button>
@@ -325,14 +325,14 @@ export default function TrainingSeriesGroupEditor({
                     type="button"
                     onClick={() => moveModule(index, "down")}
                     disabled={index === modules.length - 1}
-                    className="bg-white text-primary font-semibold px-3 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-40"
+                    className="bg-admin-surface text-primary-light font-semibold px-3 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-40"
                   >
                     Move Down
                   </button>
                   <button
                     type="button"
                     onClick={() => removeModule(index)}
-                    className="bg-white text-red-600 font-semibold px-3 py-1.5 rounded-lg border border-red-200 text-xs hover:bg-red-50 transition-all cursor-pointer"
+                    className="bg-admin-surface text-red-400 font-semibold px-3 py-1.5 rounded-lg border border-red-800 text-xs hover:bg-red-900/20 transition-all cursor-pointer"
                   >
                     Remove
                   </button>
@@ -341,7 +341,7 @@ export default function TrainingSeriesGroupEditor({
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-dark mb-1.5">
+                  <label className="block text-sm font-semibold text-admin-text mb-1.5">
                     Module Title <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -355,7 +355,7 @@ export default function TrainingSeriesGroupEditor({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-dark mb-1.5">
+                  <label className="block text-sm font-semibold text-admin-text mb-1.5">
                     Module Description <span className="text-red-500">*</span>
                   </label>
                   <textarea
@@ -369,8 +369,8 @@ export default function TrainingSeriesGroupEditor({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-dark mb-1.5">
-                    Video URL <span className="text-text-muted font-normal">(optional)</span>
+                  <label className="block text-sm font-semibold text-admin-text mb-1.5">
+                    Video URL <span className="text-admin-text-secondary font-normal">(optional)</span>
                   </label>
                   <input
                     type="url"
@@ -386,9 +386,9 @@ export default function TrainingSeriesGroupEditor({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border-light p-6">
+      <div className="bg-admin-card rounded-xl border border-border-light p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <p className="text-sm text-text-muted">
+          <p className="text-sm text-admin-text-secondary">
             {isDirty
               ? "You have unsaved changes in this curriculum group."
               : "All changes are saved."}

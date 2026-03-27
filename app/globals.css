@@ -14,11 +14,16 @@
   --color-success-bg: #e8f5e9;
 
   /* Admin panel colors */
-  --color-dark: #1a1a2e;
-  --color-primary: #2c5aa0;
-  --color-primary-light: #3d7dd4;
-  --color-text-light: #6b7280;
-  --color-border-light: #e5e7eb;
+  --color-dark: #0d1117;
+  --color-admin-card: #161b22;
+  --color-admin-surface: #1c2333;
+  --color-admin-hover: #21262d;
+  --color-primary: #3b82f6;
+  --color-primary-light: #60a5fa;
+  --color-text-light: #8b949e;
+  --color-border-light: #30363d;
+  --color-admin-text: #e6edf3;
+  --color-admin-text-secondary: #8b949e;
 
   --font-heading: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -118,7 +123,7 @@
 
 /* Admin Rich Text Editor (Tiptap / ProseMirror) */
 .prose-admin {
-  color: var(--color-dark);
+  color: var(--color-admin-text);
 }
 .prose-admin h1 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.5rem; line-height: 1.3; }
 .prose-admin h2 { font-size: 1.25rem; font-weight: 600; margin: 1.25rem 0 0.5rem; line-height: 1.3; }

@@ -113,7 +113,7 @@ export default function CampaignDetailPage({
   }
 
   if (!campaign) {
-    return <p className="text-text-muted">Campaign not found.</p>;
+    return <p className="text-admin-text-secondary">Campaign not found.</p>;
   }
 
   const isSent = campaign.status === "sent";
@@ -129,27 +129,27 @@ export default function CampaignDetailPage({
     <div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark">
+          <h1 className="text-2xl font-bold text-admin-text">
             {isSent ? "Campaign Details" : "Edit Campaign"}
           </h1>
           {isSent && (
-            <p className="text-text-muted text-sm mt-0.5">
+            <p className="text-admin-text-secondary text-sm mt-0.5">
               Sent to {campaign.recipient_count} subscribers on{" "}
               {new Date(campaign.sent_at!).toLocaleDateString()}
             </p>
           )}
           {campaign.status === "sending" && (
-            <p className="text-text-muted text-sm mt-0.5">
+            <p className="text-admin-text-secondary text-sm mt-0.5">
               This campaign is currently sending. Editing is temporarily locked.
             </p>
           )}
           {campaign.status === "failed" && campaign.recipient_count === 0 && (
-            <p className="text-red-600 text-sm mt-0.5">
+            <p className="text-red-400 text-sm mt-0.5">
               The last send failed before any emails were delivered. You can edit and try again.
             </p>
           )}
           {campaign.status === "failed" && campaign.recipient_count > 0 && (
-            <p className="text-red-600 text-sm mt-0.5">
+            <p className="text-red-400 text-sm mt-0.5">
               This campaign was only partially delivered to {campaign.recipient_count} subscribers.
               It is locked to avoid duplicate sends.
             </p>

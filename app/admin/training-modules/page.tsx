@@ -208,8 +208,8 @@ export default function AdminTrainingModulesPage() {
     <div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-dark">Curriculum</h1>
-          <p className="text-text-muted text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-admin-text">Curriculum</h1>
+          <p className="text-admin-text-secondary text-sm mt-0.5">
             Manage evergreen training groups here. These are module collections that stay available
             outside the live class and event calendar.
           </p>
@@ -218,7 +218,7 @@ export default function AdminTrainingModulesPage() {
           <button
             onClick={handleSeed}
             disabled={seeding || !schemaReady}
-            className="bg-white text-primary font-semibold px-5 py-2.5 rounded-lg border border-border-light text-sm hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-50"
+            className="bg-admin-surface text-primary-light font-semibold px-5 py-2.5 rounded-lg border border-border-light text-sm hover:bg-primary/10 transition-all cursor-pointer disabled:opacity-50"
           >
             {seeding ? "Importing..." : "Import Defaults"}
           </button>
@@ -242,34 +242,34 @@ export default function AdminTrainingModulesPage() {
       )}
 
       {!schemaReady && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-5 mb-6">
-          <p className="text-sm text-yellow-800">
+        <div className="bg-yellow-900/30 border border-yellow-800/50 rounded-xl p-5 mb-6">
+          <p className="text-sm text-yellow-400">
             The `training_module_groups` table does not exist yet. Run the updated SQL in
             `supabase-schema.sql`, then reload this page.
           </p>
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-border-light p-4 mb-6">
+      <div className="bg-admin-card rounded-2xl border border-border-light p-4 mb-6">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_180px_180px]">
           <div>
-            <label className="block text-sm font-semibold text-dark mb-2">Search curriculum</label>
+            <label className="block text-sm font-semibold text-admin-text mb-2">Search curriculum</label>
             <input
               type="text"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by title, label, description, or module"
-              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text placeholder:text-admin-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-dark mb-2">Status</label>
+            <label className="block text-sm font-semibold text-admin-text mb-2">Status</label>
             <select
               value={statusFilter}
               onChange={(event) =>
                 setStatusFilter(event.target.value as "all" | "published" | "draft")
               }
-              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             >
               <option value="all">All statuses</option>
               <option value="published">Published</option>
@@ -277,13 +277,13 @@ export default function AdminTrainingModulesPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-dark mb-2">Sort by</label>
+            <label className="block text-sm font-semibold text-admin-text mb-2">Sort by</label>
             <select
               value={sortBy}
               onChange={(event) =>
                 setSortBy(event.target.value as "manual" | "title" | "modules")
               }
-              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-white text-dark focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+              className="w-full px-4 py-3 rounded-xl border-2 border-border-light bg-admin-surface text-admin-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
             >
               <option value="manual">Manual order</option>
               <option value="title">Title A-Z</option>
@@ -294,9 +294,9 @@ export default function AdminTrainingModulesPage() {
       </div>
 
       {items.length === 0 ? (
-        <div className="bg-white rounded-xl border border-border-light p-12 text-center">
-          <p className="text-text-muted mb-4">No training groups yet.</p>
-          <p className="text-text-muted text-sm mb-6">
+        <div className="bg-admin-card rounded-xl border border-border-light p-12 text-center">
+          <p className="text-admin-text-secondary mb-4">No training groups yet.</p>
+          <p className="text-admin-text-secondary text-sm mb-6">
             Use &ldquo;Import Defaults&rdquo; to pull in the current 26 training modules, then
             manage them from here going forward.
           </p>
@@ -309,21 +309,21 @@ export default function AdminTrainingModulesPage() {
           </button>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-border-light overflow-hidden">
+        <div className="bg-admin-card rounded-xl border border-border-light overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-sm">
               <thead>
-                <tr className="border-b border-border-light bg-[#f8faff]">
-                  <th className="text-left px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                <tr className="border-b border-border-light bg-admin-surface">
+                  <th className="text-left px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                     Group
                   </th>
-                  <th className="text-left px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                     Modules
                   </th>
-                  <th className="text-left px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="text-right px-4 py-3 font-semibold text-text-muted text-xs uppercase tracking-wider">
+                  <th className="text-right px-4 py-3 font-semibold text-admin-text-secondary text-xs uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -331,7 +331,7 @@ export default function AdminTrainingModulesPage() {
               <tbody>
                 {filteredItems.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-text-muted">
+                    <td colSpan={4} className="px-4 py-8 text-center text-admin-text-secondary">
                       No curriculum groups match your current filters.
                     </td>
                   </tr>
@@ -339,28 +339,28 @@ export default function AdminTrainingModulesPage() {
                   filteredItems.map((item) => (
                     <tr
                       key={item.id}
-                      className="border-b border-border-light last:border-0 hover:bg-[#f8faff] transition-colors"
+                      className="border-b border-border-light last:border-0 hover:bg-admin-hover transition-colors"
                     >
                       <td className="px-4 py-3">
                         <Link
                           href={`/admin/training-modules/${item.id}`}
-                          className="text-dark font-medium no-underline hover:text-primary transition-colors"
+                          className="text-admin-text font-medium no-underline hover:text-primary-light transition-colors"
                         >
                           {item.title}
                         </Link>
-                        <p className="text-text-muted text-xs mt-0.5">
+                        <p className="text-admin-text-secondary text-xs mt-0.5">
                           {item.eyebrow} · sort #{item.sort_order}
                         </p>
                       </td>
-                      <td className="px-4 py-3 text-text-muted">
+                      <td className="px-4 py-3 text-admin-text-secondary">
                         {(item.modules || []).length} modules
                       </td>
                       <td className="px-4 py-3">
                         <span
                           className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize ${
                             item.status === "published"
-                              ? "bg-success-bg text-success"
-                              : "bg-yellow-50 text-yellow-700"
+                              ? "bg-green-900/30 text-green-400"
+                              : "bg-yellow-900/30 text-yellow-400"
                           }`}
                         >
                           {item.status}
@@ -380,21 +380,21 @@ export default function AdminTrainingModulesPage() {
                             <button
                               onClick={() => handleStatusChange(item, "draft")}
                               disabled={savingId === item.id || deletingId === item.id}
-                              className="bg-white text-primary font-semibold px-3 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/5 transition-all cursor-pointer disabled:opacity-50"
+                              className="bg-admin-surface text-primary-light font-semibold px-3 py-1.5 rounded-lg border border-border-light text-xs hover:bg-primary/10 transition-all cursor-pointer disabled:opacity-50"
                             >
                               {savingId === item.id ? "Saving..." : "Move to Draft"}
                             </button>
                           )}
                           <Link
                             href={`/admin/training-modules/${item.id}`}
-                            className="bg-white text-primary font-semibold px-3 py-1.5 rounded-lg border border-border-light no-underline text-xs hover:bg-primary/5 transition-all"
+                            className="bg-admin-surface text-primary-light font-semibold px-3 py-1.5 rounded-lg border border-border-light no-underline text-xs hover:bg-primary/10 transition-all"
                           >
                             Edit
                           </Link>
                           <button
                             onClick={() => setPendingDelete(item)}
                             disabled={savingId === item.id || deletingId === item.id}
-                            className="bg-white text-red-600 font-semibold px-3 py-1.5 rounded-lg border border-red-200 text-xs hover:bg-red-50 transition-all cursor-pointer disabled:opacity-50"
+                            className="bg-red-900/20 text-red-400 font-semibold px-3 py-1.5 rounded-lg border border-red-800/50 text-xs hover:bg-red-900/30 transition-all cursor-pointer disabled:opacity-50"
                           >
                             {deletingId === item.id ? "Deleting..." : "Delete"}
                           </button>

@@ -124,7 +124,7 @@ export default function AdminNav({ mobileOpen = false, onClose }: AdminNavProps)
           <button
             type="button"
             onClick={onClose}
-            className="absolute inset-0 bg-dark/55"
+            className="absolute inset-0 bg-black/60"
             aria-label="Close navigation"
           />
           <aside className="relative z-10 flex h-full w-[88vw] max-w-xs flex-col bg-dark shadow-2xl">
