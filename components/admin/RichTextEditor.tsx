@@ -359,10 +359,11 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         </ToolbarButton>
         <ToolbarButton
           onClick={() => {
-            if (editor.isActive("blockquote")) {
-              editor.chain().focus().clearNodes().run();
-            } else {
-              editor.chain().focus().setBlockquote().run();
+            // toggleBlockquote handles both wrap and unwrap reliably
+            const success = editor.chain().focus().toggleBlockquote().run();
+            // Fallback: if toggle didn't remove it, force clear
+            if (!success || editor.isActive("blockquote")) {
+              editor.chain().focus().selectAll().clearNodes().run();
             }
           }}
           active={editor.isActive("blockquote")}
