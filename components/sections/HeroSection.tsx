@@ -1,15 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { BOOKING_URL, IMAGES, SITE_NAME } from "@/lib/constants";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-end text-white overflow-hidden" role="img" aria-label="Pacific Northwest mountain landscape with lake">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${IMAGES.heroHome})` }}
+    <section className="relative min-h-screen flex items-end text-white overflow-hidden">
+      <Image
+        src={IMAGES.heroHome}
+        alt="Pacific Northwest mountain landscape with lake"
+        fill
+        priority
+        className="absolute inset-0 object-cover"
+        sizes="100vw"
+        quality={80}
       />
       <div className="absolute inset-0 bg-foreground/40" />
 

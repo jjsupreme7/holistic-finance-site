@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { IMAGES, SITE_NAME } from "@/lib/constants";
@@ -39,12 +40,16 @@ function Breadcrumbs() {
 
 export default function PageHero({ title, tagline, backgroundImage }: PageHeroProps) {
   return (
-    <section
-      className="relative pt-40 pb-20 text-white bg-cover bg-center overflow-hidden"
-      style={{ backgroundImage: `url(${backgroundImage ?? IMAGES.hero})` }}
-      role="img"
-      aria-label={`${title} page hero background`}
-    >
+    <section className="relative pt-40 pb-20 text-white overflow-hidden">
+      <Image
+        src={backgroundImage ?? IMAGES.hero}
+        alt={`${title} page hero background`}
+        fill
+        priority
+        className="absolute inset-0 object-cover"
+        sizes="100vw"
+        quality={75}
+      />
       <div className="absolute inset-0 bg-foreground/50" />
 
       <div className="container-site relative z-10">
