@@ -26,7 +26,8 @@ import {
   Highlighter,
   RemoveFormatting,
 } from "lucide-react";
-import { useEffect, useCallback, useState, useRef } from "react";
+import { useEffect, useCallback, useState, useRef, useMemo } from "react";
+import { marked } from "marked";
 
 interface RichTextEditorProps {
   content: string;
@@ -159,7 +160,18 @@ function ColorDropdown({
   );
 }
 
+function isHtml(text: string): boolean {
+  return /^\s*</.test(text);
+}
+
 export default function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
+  // Convert markdown to HTML for existing posts; pass HTML content through as-is
+  const initialContent = useMemo(() => {
+    if (!content) return "";
+    if (isHtml(content)) return content;
+    return marked.parse(content, { async: false }) as string;
+  }, [content]);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -174,7 +186,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
       Color,
       Highlight.configure({ multicolor: true }),
     ],
-    content,
+    content: initialContent,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
@@ -188,10 +200,10 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
 
   // Sync external content changes (e.g. when loading initial data after mount)
   useEffect(() => {
-    if (editor && content && editor.isEmpty) {
-      editor.commands.setContent(content);
+    if (editor && initialContent && editor.isEmpty) {
+      editor.commands.setContent(initialContent);
     }
-  }, [editor, content]);
+  }, [editor, initialContent]);
 
   const handleLink = useCallback(() => {
     if (!editor) return;
