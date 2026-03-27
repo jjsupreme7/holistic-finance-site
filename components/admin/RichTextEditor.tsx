@@ -358,7 +358,13 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
           <ListOrdered size={iconSize} />
         </ToolbarButton>
         <ToolbarButton
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          onClick={() => {
+            if (editor.isActive("blockquote")) {
+              editor.chain().focus().lift("blockquote").run();
+            } else {
+              editor.chain().focus().setBlockquote().run();
+            }
+          }}
           active={editor.isActive("blockquote")}
           title="Blockquote"
         >
