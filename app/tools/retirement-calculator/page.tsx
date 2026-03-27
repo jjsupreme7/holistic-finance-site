@@ -212,7 +212,7 @@ export default function RetirementCalculator() {
         </div>
       </section>
 
-      <CTABanner title="Ready to Take Control of Your Financial Future?" text="Schedule a consultation and let us help you build a personalized plan." buttonText="Book a Consultation" buttonHref="https://calendly.com/holistic-health-finance/consultation" buttonExternal />
+      <CTABanner title="Ready to Take Control of Your Financial Future?" text="Schedule a consultation and let us help you build a personalized plan." buttonText="Book a Consultation" buttonHref={BOOKING_URL} buttonExternal />
     </>
   );
 }

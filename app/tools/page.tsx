@@ -4,7 +4,7 @@ import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
-import { IMAGES } from "@/lib/constants";
+import { IMAGES, BOOKING_URL } from "@/lib/constants";
 import Link from "next/link";
 
 const calculators = [
@@ -80,7 +80,7 @@ export default function ToolsPage() {
         </div>
       </section>
 
-      <CTABanner title="Ready to Take Control of Your Financial Future?" text="Schedule a consultation and let us help you build a personalized plan." buttonText="Book a Consultation" buttonHref="https://calendly.com/holistic-health-finance/consultation" buttonExternal />
+      <CTABanner title="Ready to Take Control of Your Financial Future?" text="Schedule a consultation and let us help you build a personalized plan." buttonText="Book a Consultation" buttonHref={BOOKING_URL} buttonExternal />
     </>
   );
 }

@@ -2,68 +2,42 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import Markdown from "react-markdown";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import { getPublishedBlogPostBySlug } from "@/lib/blog/server";
 import { BOOKING_URL, SITE_NAME } from "@/lib/constants";
 import { DEFAULT_SOCIAL_IMAGE } from "@/lib/seo";
 
-function renderContent(text: string) {
-  return text
-    .split(/\n\n+/)
-    .filter((paragraph) => paragraph.trim())
-    .map((paragraph, index) => {
-      const trimmed = paragraph.trim();
-
-      if (trimmed.startsWith("### ")) {
-        return (
-          <h4 key={index} className="text-lg font-medium text-foreground mt-8 mb-3">
-            {trimmed.slice(4)}
-          </h4>
-        );
-      }
-
-      if (trimmed.startsWith("## ")) {
-        return (
-          <h3 key={index} className="text-xl font-extralight text-foreground mt-10 mb-3">
-            {trimmed.slice(3)}
-          </h3>
-        );
-      }
-
-      if (trimmed.startsWith("# ")) {
-        return (
-          <h2 key={index} className="text-2xl font-extralight text-foreground mt-12 mb-4">
-            {trimmed.slice(2)}
-          </h2>
-        );
-      }
-
-      if (trimmed.split("\n").every((line) => line.trim().startsWith("- "))) {
-        return (
-          <ul
-            key={index}
-            className="list-disc pl-6 space-y-1 text-text-secondary leading-relaxed mb-4"
-          >
-            {trimmed.split("\n").map((line, lineIndex) => (
-              <li key={lineIndex}>{line.trim().slice(2)}</li>
-            ))}
-          </ul>
-        );
-      }
-
-      return (
-        <p key={index} className="text-text-secondary leading-relaxed mb-4">
-          {trimmed.split("\n").map((line, lineIndex) => (
-            <span key={lineIndex}>
-              {lineIndex > 0 ? <br /> : null}
-              {line}
-            </span>
-          ))}
-        </p>
-      );
-    });
-}
+const markdownComponents = {
+  h1: (props: React.ComponentProps<"h1">) => (
+    <h2 className="text-2xl font-extralight text-foreground mt-12 mb-4" {...props} />
+  ),
+  h2: (props: React.ComponentProps<"h2">) => (
+    <h3 className="text-xl font-extralight text-foreground mt-10 mb-3" {...props} />
+  ),
+  h3: (props: React.ComponentProps<"h3">) => (
+    <h4 className="text-lg font-medium text-foreground mt-8 mb-3" {...props} />
+  ),
+  p: (props: React.ComponentProps<"p">) => (
+    <p className="text-text-secondary leading-relaxed mb-4" {...props} />
+  ),
+  ul: (props: React.ComponentProps<"ul">) => (
+    <ul className="list-disc pl-6 space-y-1 text-text-secondary leading-relaxed mb-4" {...props} />
+  ),
+  ol: (props: React.ComponentProps<"ol">) => (
+    <ol className="list-decimal pl-6 space-y-1 text-text-secondary leading-relaxed mb-4" {...props} />
+  ),
+  a: (props: React.ComponentProps<"a">) => (
+    <a className="text-accent-dark underline hover:text-accent transition-colors" {...props} />
+  ),
+  blockquote: (props: React.ComponentProps<"blockquote">) => (
+    <blockquote className="border-l-2 border-accent pl-6 my-6 text-text-secondary italic" {...props} />
+  ),
+  strong: (props: React.ComponentProps<"strong">) => (
+    <strong className="font-medium text-foreground" {...props} />
+  ),
+};
 
 function buildMetadataDescription(excerpt: string | null, content: string) {
   const fallback = content.replace(/\s+/g, " ").trim().slice(0, 160);
@@ -172,7 +146,9 @@ export default async function BlogPostPage({
 
       <article className="py-16 px-6">
         <div className="max-w-[720px] mx-auto">
-          <FadeIn>{renderContent(post.content)}</FadeIn>
+          <FadeIn>
+            <Markdown components={markdownComponents}>{post.content}</Markdown>
+          </FadeIn>
 
           <div className="border-t border-border mt-16 pt-8">
             <Link

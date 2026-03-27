@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import AdminNotice from "@/components/admin/AdminNotice";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 interface BlogEditorProps {
   onSave: (data: {
@@ -213,15 +214,12 @@ export default function BlogEditor({
             Content <span className="text-red-500">*</span>
           </label>
           <p className="text-text-muted text-xs mb-2">
-            Write your article below. Use blank lines to separate paragraphs.
+            Use the toolbar to format your article with headings, bold, lists, links, and more.
           </p>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+          <RichTextEditor
+            content={content}
+            onChange={setContent}
             placeholder="Start writing your article..."
-            rows={18}
-            className={`${inputClass} resize-y leading-relaxed`}
-            required
           />
         </div>
       </div>

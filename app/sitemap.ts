@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { getPublishedBlogPosts } from "@/lib/blog/server";
+import { SITE_URL } from "@/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://myholisticfinance.com";
+  const baseUrl = SITE_URL;
   const blogPosts = await getPublishedBlogPosts();
 
   return [
