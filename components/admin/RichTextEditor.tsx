@@ -360,7 +360,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         <ToolbarButton
           onClick={() => {
             if (editor.isActive("blockquote")) {
-              editor.chain().focus().lift("blockquote").run();
+              editor.chain().focus().clearNodes().run();
             } else {
               editor.chain().focus().setBlockquote().run();
             }
