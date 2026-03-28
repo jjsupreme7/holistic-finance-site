@@ -3,15 +3,23 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Markdown from "react-markdown";
+import { Clock, ArrowLeft } from "lucide-react";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import BlogHtmlContent from "@/components/blog/BlogHtmlContent";
+import ShareButtons from "@/components/blog/ShareButtons";
 import { getPublishedBlogPostBySlug } from "@/lib/blog/server";
 import { BOOKING_URL, SITE_NAME } from "@/lib/constants";
 import { DEFAULT_SOCIAL_IMAGE } from "@/lib/seo";
 
 function isHtmlContent(content: string): boolean {
   return /^\s*</.test(content);
+}
+
+function estimateReadTime(content: string): string {
+  const words = content.replace(/<[^>]*>/g, '').split(/\s+/).length;
+  const minutes = Math.max(1, Math.ceil(words / 230));
+  return `${minutes} min read`;
 }
 
 const markdownComponents = {
@@ -103,6 +111,8 @@ export default async function BlogPostPage({
     notFound();
   }
 
+  const readTime = estimateReadTime(post.content);
+
   return (
     <>
       {post.cover_image ? (
@@ -118,13 +128,18 @@ export default async function BlogPostPage({
           <div className="absolute inset-0 flex items-end">
             <div className="container-site pb-16">
               <FadeIn>
-                <p className="label text-white/70 mb-4">
-                  {new Date(post.published_at).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </p>
+                <div className="flex items-center gap-4 text-sm text-white/60 mb-4">
+                  <span>
+                    {new Date(post.published_at).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock size={14} /> {readTime}
+                  </span>
+                </div>
                 <h1 className="heading-lg font-extralight text-white max-w-3xl">
                   {post.title}
                 </h1>
@@ -136,13 +151,18 @@ export default async function BlogPostPage({
         <div className="bg-foreground pt-32 pb-16 px-6">
           <div className="container-site">
             <FadeIn>
-              <p className="label text-white/50 mb-4">
-                {new Date(post.published_at).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </p>
+              <div className="flex items-center gap-4 text-sm text-white/60 mb-4">
+                <span>
+                  {new Date(post.published_at).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Clock size={14} /> {readTime}
+                </span>
+              </div>
               <h1 className="heading-lg font-extralight text-white max-w-3xl">{post.title}</h1>
             </FadeIn>
           </div>
@@ -150,6 +170,15 @@ export default async function BlogPostPage({
       )}
 
       <article className="py-16 px-6">
+        <div className="max-w-[720px] mx-auto mb-8">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-text-muted text-sm no-underline hover:text-foreground transition-colors"
+          >
+            <ArrowLeft size={16} /> Back to all articles
+          </Link>
+        </div>
+
         <div className="max-w-[720px] mx-auto">
           <FadeIn>
             {isHtmlContent(post.content) ? (
@@ -159,13 +188,8 @@ export default async function BlogPostPage({
             )}
           </FadeIn>
 
-          <div className="border-t border-border mt-16 pt-8">
-            <Link
-              href="/blog"
-              className="text-text-muted text-sm no-underline hover:text-foreground transition-colors"
-            >
-              &larr; Back to all articles
-            </Link>
+          <div className="border-t border-border mt-12 pt-8 flex items-center justify-between">
+            <ShareButtons title={post.title} />
           </div>
         </div>
       </article>

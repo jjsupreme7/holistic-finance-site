@@ -7,6 +7,7 @@ import PageHero from "@/components/ui/PageHero";
 import FadeIn from "@/components/motion/FadeIn";
 import CTABanner from "@/components/sections/CTABanner";
 import { BOOKING_URL, IMAGES } from "@/lib/constants";
+import { Clock, FileText } from "lucide-react";
 import type { PublishedBlogPostSummary } from "@/lib/blog/server";
 
 const POSTS_PER_PAGE = 9;
@@ -44,6 +45,9 @@ export default function BlogIndexPage({
     setBrokenImageIds((current) => (current.includes(postId) ? current : [...current, postId]));
   };
 
+  const hasImage = (post: PublishedBlogPostSummary) =>
+    post.cover_image && !brokenImageIds.includes(post.id);
+
   return (
     <>
       <PageHero
@@ -54,40 +58,6 @@ export default function BlogIndexPage({
 
       <section className="py-20 px-6">
         <div className="container-site">
-          <FadeIn>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border mb-12">
-              <div className="bg-background p-8">
-                <span className="label text-text-muted block mb-3">Blog</span>
-                <h2 className="text-2xl font-extralight text-foreground mb-3">
-                  Read Full Articles Here
-                </h2>
-                <p className="text-text-secondary leading-relaxed">
-                  The blog is the public library for on-site reading: educational articles,
-                  explainers, and longer-form financial guidance.
-                </p>
-              </div>
-              <div className="bg-muted p-8">
-                <span className="label text-text-muted block mb-3">Email Updates</span>
-                <h2 className="text-2xl font-extralight text-foreground mb-3">
-                  Get Alerts in Your Inbox
-                </h2>
-                <p className="text-text-secondary leading-relaxed mb-4">
-                  Subscribe if you want notices about new blog posts, classes, events, and future
-                  product launches without checking the site manually.
-                </p>
-                <Link
-                  href="/newsletter"
-                  className="inline-flex items-center gap-2 text-foreground font-medium no-underline group text-sm uppercase tracking-[0.15em]"
-                >
-                  Go to Email Updates
-                  <span className="inline-block transition-transform group-hover:translate-x-1">
-                    &rarr;
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </FadeIn>
-
           {posts.length === 0 ? (
             <FadeIn>
               <div className="border border-border p-16 text-center max-w-xl mx-auto">
@@ -101,15 +71,17 @@ export default function BlogIndexPage({
           ) : (
             <>
               {posts.length > 3 && (
-                <div className="mb-10 max-w-md">
-                  <input
-                    type="text"
-                    placeholder="Search articles..."
-                    value={search}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    className="w-full px-4 py-3 border border-border bg-transparent text-foreground placeholder:text-text-muted text-sm focus:outline-none focus:border-foreground transition-colors"
-                  />
-                </div>
+                <FadeIn>
+                  <div className="mb-12 max-w-md mx-auto">
+                    <input
+                      type="text"
+                      placeholder="Search articles..."
+                      value={search}
+                      onChange={(e) => handleSearchChange(e.target.value)}
+                      className="w-full px-5 py-3 border border-border rounded-lg bg-background text-foreground placeholder:text-text-muted text-sm focus:outline-none focus:border-foreground transition-colors"
+                    />
+                  </div>
+                </FadeIn>
               )}
 
               {filtered.length === 0 ? (
@@ -120,46 +92,55 @@ export default function BlogIndexPage({
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {paginated.map((post, index) => (
                       <FadeIn key={post.id} delay={index * 0.08}>
                         <Link
                           href={`/blog/${post.slug}`}
-                          className="block bg-background group no-underline"
+                          className="group block no-underline"
                         >
-                          {post.cover_image && !brokenImageIds.includes(post.id) ? (
-                            <div className="relative h-52 overflow-hidden">
-                              <Image
-                                src={post.cover_image}
-                                alt={post.title}
-                                fill
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                onError={() => markImageBroken(post.id)}
-                              />
-                            </div>
-                          ) : post.cover_image ? (
-                            <div className="h-52 bg-muted border-b border-border p-6 flex items-end">
-                              <span className="label text-text-muted">Article</span>
-                            </div>
-                          ) : null}
-                          <div className="p-8">
-                            <p className="label text-text-muted mb-3">
+                          {/* Cover image or placeholder */}
+                          <div className="h-48 rounded-lg overflow-hidden border border-border group-hover:border-accent transition-colors">
+                            {hasImage(post) ? (
+                              <div className="relative h-full w-full">
+                                <Image
+                                  src={post.cover_image!}
+                                  alt={post.title}
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                  onError={() => markImageBroken(post.id)}
+                                />
+                              </div>
+                            ) : (
+                              <div className="h-full w-full bg-muted flex items-center justify-center">
+                                <FileText className="w-10 h-10 text-text-muted" />
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Post meta */}
+                          <div className="pt-4">
+                            <p className="flex items-center gap-1.5 text-text-muted text-xs mb-2">
+                              <Clock className="w-3.5 h-3.5" />
                               {new Date(post.published_at).toLocaleDateString("en-US", {
                                 month: "long",
                                 day: "numeric",
                                 year: "numeric",
                               })}
                             </p>
-                            <h2 className="text-xl font-extralight text-foreground mb-3 group-hover:text-accent transition-colors">
+
+                            <h2 className="text-lg font-medium text-foreground group-hover:text-accent transition-colors mb-2">
                               {post.title}
                             </h2>
-                            {post.excerpt ? (
-                              <p className="text-text-secondary text-sm leading-relaxed">
+
+                            {post.excerpt && (
+                              <p className="text-text-secondary text-sm leading-relaxed line-clamp-2 mb-3">
                                 {post.excerpt}
                               </p>
-                            ) : null}
-                            <span className="inline-block mt-4 text-text-muted text-sm group-hover:translate-x-1 transition-transform">
+                            )}
+
+                            <span className="text-accent text-sm font-medium">
                               Read more &rarr;
                             </span>
                           </div>
