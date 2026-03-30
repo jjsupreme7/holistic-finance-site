@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import PageHero from "@/components/ui/PageHero";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
@@ -7,7 +8,16 @@ import TestimonialsGrid from "@/components/sections/TestimonialsGrid";
 import FAQ from "@/components/sections/FAQ";
 import CTABanner from "@/components/sections/CTABanner";
 import ServicesAnimatedGrid from "@/components/sections/ServicesAnimatedGrid";
-import { BOOKING_URL, SERVICES_DETAIL, IMAGES } from "@/lib/constants";
+import { BOOKING_URL, SERVICES_DETAIL, IMAGES, SITE_NAME } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Services & Pricing",
+  description: `Explore ${SITE_NAME}'s financial planning, insurance, tax preparation, and retirement services. View pricing and book a consultation.`,
+  openGraph: {
+    title: `Services & Pricing - ${SITE_NAME}`,
+    description: `Explore ${SITE_NAME}'s financial planning, insurance, tax preparation, and retirement services.`,
+  },
+};
 
 export default function ServicesPage() {
   return (
