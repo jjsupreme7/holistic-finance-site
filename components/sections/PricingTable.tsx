@@ -71,7 +71,7 @@ export default function PricingTable() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className={`p-8 relative bg-background ${
+              className={`p-8 relative bg-background flex flex-col ${
                 plan.popular ? "bg-foreground text-background" : ""
               }`}
             >
@@ -116,7 +116,7 @@ export default function PricingTable() {
                 href={plan.href}
                 external={plan.external}
                 variant={plan.popular ? "primary" : "outline"}
-                className="w-full text-center text-sm"
+                className="w-full text-center text-sm mt-auto"
               >
                 {plan.cta}
               </Button>
