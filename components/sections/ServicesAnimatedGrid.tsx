@@ -44,7 +44,7 @@ export default function ServicesAnimatedGrid({ services, bookingUrl }: ServicesA
           key={service.title}
           id={titleToId(service.title)}
           variants={item}
-          className="bg-background p-6 group hover:bg-muted transition-colors"
+          className="bg-background p-6 group hover:bg-muted transition-colors flex flex-col"
         >
           <div className="text-text-muted mb-4">
             <Icon name={service.icon} size={28} />
@@ -62,7 +62,7 @@ export default function ServicesAnimatedGrid({ services, bookingUrl }: ServicesA
           <p className="text-text-secondary text-sm leading-relaxed mb-5">
             {service.description}
           </p>
-          <Button href={bookingUrl} external variant="outline" className="text-xs w-full text-center">
+          <Button href={bookingUrl} external variant="outline" className="text-xs w-full text-center mt-auto">
             Get Started
           </Button>
         </motion.div>
