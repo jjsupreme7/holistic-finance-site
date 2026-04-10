@@ -19,7 +19,7 @@ const calendlySteps = [
 
 const bookingBenefits = [
   "Live availability without back-and-forth emails",
-  "45-minute consultation booking",
+  "30-minute consultation booking",
   "Payment can be collected during scheduling when required",
   "Automatic confirmation and reminder emails",
 ];
@@ -113,7 +113,7 @@ export default async function EventsPage() {
               </ol>
               <div className="flex flex-wrap gap-3 mb-8">
                 <span className="text-text-secondary text-sm font-medium border border-border px-5 py-2">
-                  45-minute consultation
+                  30-minute consultation
                 </span>
                 <span className="text-text-secondary text-sm font-medium border border-border px-5 py-2">
                   Online scheduling with Calendly
@@ -285,7 +285,7 @@ export default async function EventsPage() {
                     Reach out if you do not see the right opening.
                   </h3>
                   <p className="text-background/80 leading-relaxed mb-6">
-                    If the current 45-minute Calendly option is not the right fit, use the contact
+                    If the current 30-minute Calendly option is not the right fit, use the contact
                     page and we can help route your request.
                   </p>
                   <Button href="/contact" variant="dark">Contact Us</Button>
